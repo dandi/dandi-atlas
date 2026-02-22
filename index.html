@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>3D Allen CCF Brain Atlas — DANDI Explorer</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <!-- Left sidebar: Hierarchy tree -->
+  <aside id="sidebar-left" class="sidebar">
+    <div class="sidebar-header">
+      <h2>Brain Regions</h2>
+      <input type="text" id="search-box" placeholder="Search regions..." autocomplete="off">
+    </div>
+    <div id="hierarchy-tree" class="tree-container"></div>
+    <div id="resize-handle" class="resize-handle"></div>
+  </aside>
+
+  <!-- Center: 3D viewer -->
+  <main id="viewer">
+    <canvas id="brain-canvas"></canvas>
+    <div id="orient-buttons" class="orient-buttons">
+      <button data-view="dorsal" title="Dorsal (top)">D</button>
+      <button data-view="ventral" title="Ventral (bottom)">V</button>
+      <button data-view="anterior" title="Anterior (front)">A</button>
+      <button data-view="posterior" title="Posterior (back)">P</button>
+      <button data-view="left" title="Left">L</button>
+      <button data-view="right" title="Right">R</button>
+    </div>
+    <div id="tooltip" class="tooltip hidden"></div>
+    <div id="loading-overlay" class="loading-overlay">
+      <div class="spinner"></div>
+      <p id="loading-text">Loading brain atlas...</p>
+    </div>
+    <div id="controls-hint" class="controls-hint">
+      Left-click drag: rotate &middot; Scroll: zoom &middot; Right-click drag: pan &middot; Click region: select
+    </div>
+  </main>
+
+  <!-- Right sidebar: Region info + dandisets -->
+  <aside id="sidebar-right" class="sidebar">
+    <div class="sidebar-header">
+      <h2>Region Details</h2>
+    </div>
+    <div id="region-panel" class="region-panel">
+      <p class="placeholder-text">Click a brain region to view details and associated DANDI datasets.</p>
+    </div>
+  </aside>
+
+  <script type="importmap">
+  {
+    "imports": {
+      "three": "https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js",
+      "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.160.0/examples/jsm/"
+    }
+  }
+  </script>
+  <script type="module" src="app.js"></script>
+</body>
+</html>
