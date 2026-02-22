@@ -449,24 +449,136 @@ body {
   letter-spacing: 0.5px;
   color: var(--text-secondary);
   margin-bottom: 8px;
+  display: flex;
+  align-items: baseline;
+  gap: 8px;
 }
 
-.dandiset-link {
-  display: block;
-  padding: 6px 10px;
-  margin-bottom: 4px;
-  background: rgba(83, 168, 182, 0.08);
+.dandiset-list-hint {
+  font-size: 10px;
+  font-weight: 400;
+  text-transform: none;
+  letter-spacing: 0;
+  color: var(--text-dim);
+  font-style: italic;
+}
+
+/* Dandiset cards */
+.dandiset-card {
+  display: flex;
+  align-items: center;
+  padding: 10px 12px;
+  margin-bottom: 6px;
+  background: rgba(83, 168, 182, 0.1);
+  border: 1px solid rgba(83, 168, 182, 0.2);
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background 0.15s, border-color 0.15s, transform 0.1s;
+}
+
+.dandiset-card:hover {
+  background: rgba(83, 168, 182, 0.25);
+  border-color: var(--accent);
+  transform: translateX(2px);
+}
+
+.dandiset-card:active {
+  transform: translateX(0);
+  background: rgba(83, 168, 182, 0.35);
+}
+
+.dandiset-card-id {
+  color: var(--accent);
+  font-size: 13px;
+  font-family: 'SF Mono', 'Menlo', 'Monaco', monospace;
+  font-weight: 700;
+  background: rgba(83, 168, 182, 0.15);
+  padding: 2px 8px;
   border-radius: 4px;
+}
+
+.dandiset-card-count {
+  color: var(--text-secondary);
+  font-size: 11px;
+  margin-left: 10px;
+  flex: 1;
+}
+
+.dandiset-card-ext {
+  color: var(--text-secondary);
+  text-decoration: none;
+  font-size: 14px;
+  line-height: 1;
+  padding: 4px 8px;
+  border-radius: 4px;
+  border: 1px solid var(--border-color);
+  transition: color 0.15s, background 0.15s, border-color 0.15s;
+}
+
+.dandiset-card-ext:hover {
+  color: var(--accent-hover);
+  background: rgba(83, 168, 182, 0.2);
+  border-color: var(--accent);
+}
+
+/* Dandiset detail view - external link */
+.dandiset-external-link {
+  display: inline-block;
+  margin-top: 8px;
+  padding: 6px 12px;
+  background: rgba(83, 168, 182, 0.15);
+  border-radius: 6px;
   color: var(--accent);
   text-decoration: none;
   font-size: 13px;
-  font-family: 'SF Mono', 'Menlo', 'Monaco', monospace;
-  transition: background 0.15s, color 0.15s;
+  transition: background 0.15s;
 }
 
-.dandiset-link:hover {
+.dandiset-external-link:hover {
+  background: rgba(83, 168, 182, 0.3);
+}
+
+/* Region cards (in dandiset view) */
+.region-card {
+  display: flex;
+  align-items: center;
+  padding: 8px 10px;
+  margin-bottom: 4px;
+  background: rgba(83, 168, 182, 0.08);
+  border: 1px solid rgba(83, 168, 182, 0.15);
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background 0.15s, border-color 0.15s, transform 0.1s;
+}
+
+.region-card:hover {
   background: rgba(83, 168, 182, 0.2);
-  color: var(--accent-hover);
+  border-color: var(--accent);
+  transform: translateX(2px);
+}
+
+.region-card-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  margin-right: 8px;
+  flex-shrink: 0;
+}
+
+.region-card-label {
+  color: var(--accent);
+  font-size: 13px;
+  font-weight: 600;
+  margin-right: 8px;
+}
+
+.region-card-name {
+  color: var(--text-secondary);
+  font-size: 12px;
+  flex: 1;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 /* No-data message for right panel */

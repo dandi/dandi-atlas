@@ -19,6 +19,8 @@ const CAM_DIST = 18000;
 let dataStructureIds = new Set();
 let ancestorStructureIds = new Set();
 let noMeshIds = new Set();
+let dandisetToStructures = {};  // dandiset_id -> [structure_ids]
+let selectedDandiset = null;
 
 // ── Initialization ─────────────────────────────────────────────────────────
 async function init() {
@@ -41,6 +43,14 @@ async function init() {
   // Build flat lookup from the tree
   flattenTree(structureGraph);
 
+  // Build reverse lookup: dandiset -> structure IDs (direct only)
+  for (const [sid, region] of Object.entries(dandiRegions)) {
+    for (const did of region.dandisets) {
+      if (!dandisetToStructures[did]) dandisetToStructures[did] = [];
+      dandisetToStructures[did].push(parseInt(sid));
+    }
+  }
+
   updateLoadingText('Setting up 3D scene...');
   setupScene();
   buildHierarchyTree();
@@ -51,6 +61,10 @@ async function init() {
 
   hideLoading();
   animate();
+
+  // Restore view from URL hash, or listen for changes
+  applyHashState();
+  window.addEventListener('hashchange', () => applyHashState());
 }
 
 function flattenTree(nodes) {
@@ -180,10 +194,15 @@ function loadMesh(structureId) {
         scene.add(mesh);
         meshObjects[structureId] = mesh;
 
-        // If a region is already selected, dim this new mesh unless it's part of the selection
+        // If a region or dandiset is already selected, hide this new mesh unless it's part of the selection
         if (selectedId !== null) {
           const activeIds = getDescendantIds(selectedId);
           if (!activeIds.has(structureId) && structureId !== meshManifest.root_id) {
+            applyDimmed(mesh);
+          }
+        } else if (selectedDandiset !== null) {
+          const dandiStructures = new Set(dandisetToStructures[selectedDandiset] || []);
+          if (!dandiStructures.has(structureId)) {
             applyDimmed(mesh);
           }
         }
@@ -239,9 +258,9 @@ function onMouseMove(event) {
 
   raycaster.setFromCamera(mouse, camera);
 
-  // Only pick non-dimmed data meshes
+  // Only pick visible data meshes
   const pickable = Object.values(meshObjects).filter(
-    m => m.userData.isData && !m.userData.isDimmed
+    m => m.userData.isData && m.visible
   );
   const intersects = raycaster.intersectObjects(pickable, false);
 
@@ -283,9 +302,7 @@ function onMouseMove(event) {
 
 function highlightMesh(structureId) {
   const mesh = meshObjects[structureId];
-  if (!mesh) return;
-  // Only highlight if the mesh isn't dimmed
-  if (mesh.userData.isDimmed) return;
+  if (!mesh || !mesh.visible) return;
   mesh.material.emissive = new THREE.Color(0x335577);
   mesh.material.emissiveIntensity = 0.5;
 }
@@ -293,9 +310,8 @@ function highlightMesh(structureId) {
 function unhighlightMesh(structureId) {
   if (structureId === null) return;
   const mesh = meshObjects[structureId];
-  if (!mesh) return;
+  if (!mesh || !mesh.visible) return;
   if (structureId === selectedId) return;
-  if (mesh.userData.isDimmed) return;
   mesh.material.emissive = new THREE.Color(0x000000);
   mesh.material.emissiveIntensity = 0;
 }
@@ -307,7 +323,7 @@ function onClick(event) {
 
   raycaster.setFromCamera(mouse, camera);
 
-  const pickable = Object.values(meshObjects).filter(m => m.userData.isData && !m.userData.isDimmed);
+  const pickable = Object.values(meshObjects).filter(m => m.userData.isData && m.visible);
   const intersects = raycaster.intersectObjects(pickable, false);
 
   if (intersects.length > 0) {
@@ -328,14 +344,7 @@ function getDescendantIds(structureId) {
 }
 
 function applyDimmed(mesh) {
-  const mat = mesh.userData.originalMaterial.clone();
-  mat.color.set(0x666666);
-  mat.transparent = true;
-  mat.opacity = 0.03;
-  mat.depthWrite = false;
-  mat.wireframe = false;
-  mat.needsUpdate = true;
-  mesh.material = mat;
+  mesh.visible = false;
   mesh.userData.isDimmed = true;
 }
 
@@ -344,6 +353,19 @@ function restoreOriginal(mesh) {
     mesh.material = mesh.userData.originalMaterial.clone();
     mesh.material.needsUpdate = true;
   }
+  mesh.visible = true;
+  mesh.userData.isDimmed = false;
+}
+
+function applyActive(mesh) {
+  const orig = mesh.userData.originalMaterial;
+  const mat = orig.clone();
+  mat.opacity = 1.0;
+  mat.transparent = false;
+  mat.depthWrite = true;
+  mat.needsUpdate = true;
+  mesh.material = mat;
+  mesh.visible = true;
   mesh.userData.isDimmed = false;
 }
 
@@ -381,20 +403,12 @@ function isolateRegion(structureId) {
 }
 
 function applyIsolation(selectedStructureId, activeIds, fallbackId) {
-  // Only show the selected (or fallback) mesh; dim everything else
+  // Only show the selected (or fallback) mesh; hide everything else
   const showId = meshObjects[selectedStructureId] ? selectedStructureId : fallbackId;
   for (const [idStr, mesh] of Object.entries(meshObjects)) {
     const id = parseInt(idStr);
     if (id === showId) {
-      // Selected region: full color, full opacity
-      const orig = mesh.userData.originalMaterial;
-      const mat = orig.clone();
-      mat.opacity = 1.0;
-      mat.transparent = false;
-      mat.depthWrite = true;
-      mat.needsUpdate = true;
-      mesh.material = mat;
-      mesh.userData.isDimmed = false;
+      applyActive(mesh);
     } else {
       applyDimmed(mesh);
     }
@@ -407,7 +421,99 @@ function showAllRegions() {
   }
 }
 
-function selectRegion(structureId, { expandTree = true } = {}) {
+async function selectDandiset(dandisetId, { pushState = true } = {}) {
+  selectedDandiset = dandisetId;
+  selectedId = null;
+
+  // Update URL hash
+  if (pushState) {
+    setHash(`dandiset=${dandisetId}`);
+  }
+
+  // Deselect tree
+  const prevEl = document.querySelector('.tree-node-content.selected');
+  if (prevEl) prevEl.classList.remove('selected');
+
+  const structureIds = dandisetToStructures[dandisetId] || [];
+  const activeSet = new Set(structureIds);
+
+  // Ensure meshes are loaded for all structures in this dandiset
+  const toLoad = [];
+  for (const sid of structureIds) {
+    if (!meshObjects[sid] && !failedMeshIds.has(sid) && !noMeshIds.has(sid)) {
+      toLoad.push(ensureMeshLoaded(sid));
+    }
+  }
+  if (toLoad.length > 0) {
+    await Promise.all(toLoad);
+  }
+
+  // For structures that still don't have meshes, add their nearest ancestor
+  for (const sid of structureIds) {
+    if (!meshObjects[sid]) {
+      const fallback = findNearestAncestorWithMesh(sid);
+      if (fallback) activeSet.add(fallback);
+    }
+  }
+
+  // Apply isolation: show active regions, hide everything else (including root)
+  activeSet.delete(meshManifest.root_id);
+  for (const [idStr, mesh] of Object.entries(meshObjects)) {
+    const id = parseInt(idStr);
+    if (activeSet.has(id)) {
+      applyActive(mesh);
+    } else {
+      applyDimmed(mesh);
+    }
+  }
+
+  // Update right panel to show dandiset info
+  updateDandisetPanel(dandisetId, structureIds);
+}
+
+function updateDandisetPanel(dandisetId, structureIds) {
+  const panel = document.getElementById('region-panel');
+
+  let html = `
+    <div class="region-header">
+      <div class="region-name">Dandiset ${dandisetId}</div>
+      <a class="dandiset-external-link" href="https://dandiarchive.org/dandiset/${dandisetId}" target="_blank" rel="noopener">
+        View on DANDI Archive &#8599;
+      </a>
+    </div>
+    <div class="region-stats">
+      <div class="stat-item">
+        <div class="stat-value">${structureIds.length}</div>
+        <div class="stat-label">Brain Regions</div>
+      </div>
+    </div>
+    <div class="dandiset-list-header">Recorded Brain Regions</div>
+  `;
+
+  for (const sid of structureIds) {
+    const region = dandiRegions[String(sid)];
+    if (!region) continue;
+    const color = region.color_hex_triplet || 'aaaaaa';
+    html += `
+      <div class="region-card" data-structure-id="${sid}">
+        <span class="region-card-dot" style="background:#${color}"></span>
+        <span class="region-card-label">${region.acronym}</span>
+        <span class="region-card-name">${region.name}</span>
+      </div>`;
+  }
+
+  panel.innerHTML = html;
+
+  // Click on region cards to select that region
+  panel.querySelectorAll('.region-card').forEach(card => {
+    card.addEventListener('click', () => {
+      const sid = parseInt(card.dataset.structureId);
+      selectRegion(sid);
+    });
+  });
+}
+
+function selectRegion(structureId, { expandTree = true, pushState = true } = {}) {
   // Deselect previous
   if (selectedId !== null) {
     unhighlightMesh(selectedId);
@@ -416,18 +522,26 @@ function selectRegion(structureId, { expandTree = true } = {}) {
   }
 
   selectedId = structureId;
+  selectedDandiset = null;
+
+  // Update URL hash
+  if (pushState) {
+    setHash(`region=${structureId}`);
+  }
 
   // Isolate this region in the 3D view, then highlight
   isolateRegion(structureId);
   highlightMesh(structureId);
 
   // Update tree selection
+  if (expandTree) {
+    expandToNode(structureId);
+  }
+  // Query after expandToNode so lazily-rendered nodes exist in DOM
   const el = document.querySelector(`.tree-node-content[data-id="${structureId}"]`);
   if (el) {
     el.classList.add('selected');
     if (expandTree) {
-      // Expand parents and scroll into view (only when selected from 3D view)
-      expandToNode(structureId);
       el.scrollIntoView({ behavior: 'smooth', block: 'center' });
     }
   }
@@ -486,18 +600,30 @@ function updateRegionPanel(structureId) {
       </div>`;
 
     if (hasDirect) {
-      html += `<div class="dandiset-list-header">Direct Dandisets</div>`;
+      html += `<div class="dandiset-list-header">Direct Dandisets <span class="dandiset-list-hint">click to view in 3D</span></div>`;
       for (const did of region.dandisets) {
-        html += `<a class="dandiset-link" href="https://dandiarchive.org/dandiset/${did}" target="_blank" rel="noopener">${did}</a>`;
+        const regionCount = (dandisetToStructures[did] || []).length;
+        html += `
+          <div class="dandiset-card" data-dandiset-id="${did}">
+            <span class="dandiset-card-id">${did}</span>
+            <span class="dandiset-card-count">${regionCount} region${regionCount !== 1 ? 's' : ''}</span>
+            <a class="dandiset-card-ext" href="https://dandiarchive.org/dandiset/${did}" target="_blank" rel="noopener" title="Open on DANDI Archive">&#8599;</a>
+          </div>`;
       }
     }
 
     if (hasDescendant) {
       const descendantOnly = (region.total_dandisets || []).filter(d => !region.dandisets.includes(d));
       if (descendantOnly.length > 0) {
-        html += `<div class="dandiset-list-header" style="margin-top:12px">Sub-region Dandisets</div>`;
+        html += `<div class="dandiset-list-header" style="margin-top:12px">Sub-region Dandisets <span class="dandiset-list-hint">click to view in 3D</span></div>`;
         for (const did of descendantOnly) {
-          html += `<a class="dandiset-link" href="https://dandiarchive.org/dandiset/${did}" target="_blank" rel="noopener">${did}</a>`;
+          const regionCount = (dandisetToStructures[did] || []).length;
+          html += `
+            <div class="dandiset-card" data-dandiset-id="${did}">
+              <span class="dandiset-card-id">${did}</span>
+              <span class="dandiset-card-count">${regionCount} region${regionCount !== 1 ? 's' : ''}</span>
+              <a class="dandiset-card-ext" href="https://dandiarchive.org/dandiset/${did}" target="_blank" rel="noopener" title="Open on DANDI Archive">&#8599;</a>
+            </div>`;
         }
       }
     }
@@ -506,6 +632,14 @@ function updateRegionPanel(structureId) {
   }
 
   panel.innerHTML = html;
+
+  // Click dandiset cards to highlight all their brain regions
+  panel.querySelectorAll('.dandiset-card').forEach(card => {
+    card.addEventListener('click', (e) => {
+      if (e.target.closest('.dandiset-card-ext')) return;  // Let external link work normally
+      selectDandiset(card.dataset.dandisetId);
+    });
+  });
 }
 
 // ── Hierarchy Tree (Left Sidebar) ──────────────────────────────────────────
@@ -829,6 +963,42 @@ function setupResize() {
 }
 
 setupResize();
+
+// ── URL Hash State ──────────────────────────────────────────────────────────
+function setHash(hash) {
+  history.pushState(null, '', '#' + hash);
+}
+
+function applyHashState() {
+  const hash = location.hash.slice(1); // remove '#'
+  if (!hash) {
+    // No hash — show default view
+    if (selectedId !== null || selectedDandiset !== null) {
+      selectedId = null;
+      selectedDandiset = null;
+      const prevEl = document.querySelector('.tree-node-content.selected');
+      if (prevEl) prevEl.classList.remove('selected');
+      showAllRegions();
+      document.getElementById('region-panel').innerHTML =
+        '<p class="placeholder-text">Click a brain region to view details and associated DANDI datasets.</p>';
+    }
+    return;
+  }
+
+  const [key, value] = hash.split('=');
+  if (key === 'region' && value) {
+    const sid = parseInt(value);
+    if (idToStructure[sid]) {
+      selectRegion(sid, { expandTree: true, pushState: false });
+    }
+  } else if (key === 'dandiset' && value) {
+    if (dandisetToStructures[value]) {
+      selectDandiset(value, { pushState: false });
+    }
+  }
+}
+
+window.addEventListener('popstate', () => applyHashState());
 
 // ── Start ──────────────────────────────────────────────────────────────────
 init().catch(err => {
