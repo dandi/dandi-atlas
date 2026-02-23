@@ -665,6 +665,7 @@ function clearDandisetFilter() {
   clearElectrodePoints();
   dandisetRegionFilter = null;
   hiddenRegionIds = new Set();
+  document.getElementById('region-toggles-overlay').classList.add('hidden');
 
   // Remove dandiset filter classes from all tree nodes
   const container = document.getElementById('hierarchy-tree');
@@ -829,19 +830,25 @@ function updateDandisetPanel(dandisetId, structureIds) {
         };
       }).sort((a, b) => a.name.localeCompare(b.name));
 
+      // Render region toggles into the 3D viewer overlay
+      const toggleOverlay = document.getElementById('region-toggles-overlay');
       if (regionList.length > 0) {
-        html += `<div class="region-toggles">`;
-        html += `<div class="region-toggles-header"><label class="region-toggle-all-label"><input type="checkbox" id="toggle-all-regions"> Brain Regions (${regionList.length})</label></div>`;
-        html += `<div class="region-toggle-list">`;
+        let toggleHtml = `<div class="region-toggles-header"><label class="region-toggle-all-label"><input type="checkbox" id="toggle-all-regions"> Brain Regions (${regionList.length})</label></div>`;
+        toggleHtml += `<div class="region-toggle-list">`;
         for (const r of regionList) {
           const checked = !hiddenRegionIds.has(r.id);
-          html += `<label class="region-toggle-row" title="${r.name}">`;
-          html += `<input type="checkbox" data-region-id="${r.id}" ${checked ? 'checked' : ''}>`;
-          html += `<span class="region-toggle-dot" style="background:#${r.color}"></span>`;
-          html += `<span class="region-toggle-name">${r.acronym || r.name}</span>`;
-          html += `</label>`;
+          toggleHtml += `<label class="region-toggle-row" title="${r.name}">`;
+          toggleHtml += `<input type="checkbox" data-region-id="${r.id}" ${checked ? 'checked' : ''}>`;
+          toggleHtml += `<span class="region-toggle-dot" style="background:#${r.color}"></span>`;
+          toggleHtml += `<span class="region-toggle-name">${r.acronym || r.name}</span>`;
+          toggleHtml += `</label>`;
         }
-        html += `</div></div>`;
+        toggleHtml += `</div>`;
+        toggleOverlay.innerHTML = toggleHtml;
+        toggleOverlay.classList.remove('hidden');
+      } else {
+        toggleOverlay.innerHTML = '';
+        toggleOverlay.classList.add('hidden');
       }
 
       // "All Subjects" button above the header
@@ -952,8 +959,9 @@ function updateDandisetPanel(dandisetId, structureIds) {
     function applyToggleToMesh(rid) {
       const meshId = meshIdForRegion(rid);
       if (!meshId || !meshObjects[meshId]) return;
+      const overlay = document.getElementById('region-toggles-overlay');
       // Check if ANY visible toggle region sharing this mesh is still checked
-      const shouldShow = [...panel.querySelectorAll('.region-toggle-row:not(.toggle-hidden) input[type="checkbox"]')].some(otherCb => {
+      const shouldShow = [...overlay.querySelectorAll('.region-toggle-row:not(.toggle-hidden) input[type="checkbox"]')].some(otherCb => {
         const otherRid = parseInt(otherCb.dataset.regionId);
         if (hiddenRegionIds.has(otherRid)) return false;
         return meshIdForRegion(otherRid) === meshId;
@@ -965,7 +973,8 @@ function updateDandisetPanel(dandisetId, structureIds) {
       }
     }
 
-    panel.querySelectorAll('.region-toggle-row input[type="checkbox"]').forEach(cb => {
+    const overlay = document.getElementById('region-toggles-overlay');
+    overlay.querySelectorAll('.region-toggle-row input[type="checkbox"]').forEach(cb => {
       cb.addEventListener('change', () => {
         const rid = parseInt(cb.dataset.regionId);
         if (cb.checked) {
@@ -978,14 +987,14 @@ function updateDandisetPanel(dandisetId, structureIds) {
       });
     });
 
-    const toggleAll = panel.querySelector('#toggle-all-regions');
+    const toggleAll = overlay.querySelector('#toggle-all-regions');
     if (toggleAll) {
       filterRegionToggles();  // set initial toggle-all state
       toggleAll.addEventListener('change', () => {
         const checked = toggleAll.checked;
         // Collect affected mesh IDs to update after all checkboxes are set
         const affectedMeshIds = new Set();
-        panel.querySelectorAll('.region-toggle-row:not(.toggle-hidden) input[type="checkbox"]').forEach(cb => {
+        overlay.querySelectorAll('.region-toggle-row:not(.toggle-hidden) input[type="checkbox"]').forEach(cb => {
           const rid = parseInt(cb.dataset.regionId);
           cb.checked = checked;
           if (checked) {
@@ -1087,10 +1096,10 @@ async function isolateStructureIds(structureIds) {
 }
 
 function filterRegionToggles(regionIds) {
-  const panel = document.getElementById('region-panel');
+  const overlay = document.getElementById('region-toggles-overlay');
   const activeSet = regionIds ? new Set(regionIds) : null;
   let visibleCount = 0;
-  const rows = panel.querySelectorAll('.region-toggle-row');
+  const rows = overlay.querySelectorAll('.region-toggle-row');
   rows.forEach(row => {
     const rid = parseInt(row.querySelector('input[type="checkbox"]').dataset.regionId);
     if (!activeSet || activeSet.has(rid)) {
@@ -1100,15 +1109,15 @@ function filterRegionToggles(regionIds) {
       row.classList.add('toggle-hidden');
     }
   });
-  const headerLabel = panel.querySelector('.region-toggle-all-label');
+  const headerLabel = overlay.querySelector('.region-toggle-all-label');
   if (headerLabel) {
     const total = rows.length;
     headerLabel.lastChild.textContent = ` Brain Regions (${activeSet ? visibleCount : total})`;
   }
   // Update toggle-all checkbox state
-  const ta = panel.querySelector('#toggle-all-regions');
+  const ta = overlay.querySelector('#toggle-all-regions');
   if (ta) {
-    const cbs = [...panel.querySelectorAll('.region-toggle-row:not(.toggle-hidden) input[type="checkbox"]')];
+    const cbs = [...overlay.querySelectorAll('.region-toggle-row:not(.toggle-hidden) input[type="checkbox"]')];
     if (cbs.length === 0) { ta.checked = false; ta.indeterminate = false; }
     else {
       const allChecked = cbs.every(c => c.checked);
@@ -1197,6 +1206,7 @@ function selectRegion(structureId, { expandTree = true, pushState = true } = {})
   selectedId = structureId;
   selectedDandiset = null;
   hiddenRegionIds = new Set();
+  document.getElementById('region-toggles-overlay').classList.add('hidden');
   clearElectrodePoints();
 
   // Update URL hash
@@ -1720,6 +1730,7 @@ async function applyHashState() {
       selectedDandiset = null;
       dandisetSubjectCounts = null;
       hiddenRegionIds = new Set();
+      document.getElementById('region-toggles-overlay').classList.add('hidden');
       clearElectrodePoints();
       const prevEl = document.querySelector('.tree-node-content.selected');
       if (prevEl) prevEl.classList.remove('selected');
