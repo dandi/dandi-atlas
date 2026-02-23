@@ -1350,19 +1350,31 @@ setupResize();
 
 // ── Alpha Sliders ───────────────────────────────────────────────────────────
 document.getElementById('electrode-alpha').addEventListener('input', (e) => {
+  const val = parseFloat(e.target.value);
   if (electrodePoints) {
-    electrodePoints.material.opacity = parseFloat(e.target.value);
+    if (val === 0) {
+      scene.remove(electrodePoints);
+    } else {
+      if (!electrodePoints.parent) scene.add(electrodePoints);
+      electrodePoints.material.opacity = val;
+    }
   }
 });
 
 document.getElementById('region-alpha').addEventListener('input', (e) => {
   regionAlpha = parseFloat(e.target.value);
   for (const mesh of Object.values(meshObjects)) {
-    const orig = mesh.userData.originalMaterial;
-    if (!orig || mesh.userData.isDimmed) continue;
-    mesh.material.opacity = orig.opacity * regionAlpha;
-    mesh.material.transparent = mesh.material.opacity < 1;
-    mesh.material.needsUpdate = true;
+    if (mesh.userData.isDimmed) continue;
+    if (regionAlpha === 0) {
+      mesh.visible = false;
+    } else {
+      mesh.visible = true;
+      const orig = mesh.userData.originalMaterial;
+      if (!orig) continue;
+      mesh.material.opacity = orig.opacity * regionAlpha;
+      mesh.material.transparent = mesh.material.opacity < 1;
+      mesh.material.needsUpdate = true;
+    }
   }
 });
 
