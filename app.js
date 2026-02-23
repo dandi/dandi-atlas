@@ -26,6 +26,9 @@ let selectedDandiset = null;
 let dandisetElectrodes = {};  // dandiset_id -> {subject_dir: [[x,y,z], ...]}
 let electrodePoints = null;   // THREE.Points object
 let regionAlpha = 1;          // global opacity multiplier for brain meshes
+let dandisetRegionFilter = null; // structure_id when filtering subjects by region within a dandiset
+let dandisetSubjectCounts = null; // { directSubjects, totalSubjects } when a dandiset is selected
+let hiddenRegionIds = new Set();  // regions toggled off by user in dandiset/subject view
 
 // ── Initialization ─────────────────────────────────────────────────────────
 async function init() {
@@ -377,7 +380,11 @@ function onClick(event) {
 
   if (intersects.length > 0) {
     const sid = intersects[0].object.userData.structureId;
-    selectRegion(sid);
+    if (selectedDandiset) {
+      filterDandisetPanelByRegion(sid);
+    } else {
+      selectRegion(sid);
+    }
   }
 }
 
@@ -472,9 +479,80 @@ function showAllRegions() {
   }
 }
 
+function computeDandisetSubjectCounts(dandisetId) {
+  const assets = dandisetAssets[dandisetId] || [];
+
+  // Build regionId -> Set<subjectDir> for direct counts
+  const directSubjects = {};
+  for (const asset of assets) {
+    const parts = asset.path.split('/');
+    const subjectDir = parts.length > 1 ? parts[0] : asset.path.split('_')[0];
+    for (const r of asset.regions) {
+      if (!directSubjects[r.id]) directSubjects[r.id] = new Set();
+      directSubjects[r.id].add(subjectDir);
+    }
+  }
+
+  // Build total counts by walking up ancestry
+  const totalSubjects = {};
+  for (const [ridStr, subjects] of Object.entries(directSubjects)) {
+    const rid = parseInt(ridStr);
+    if (!totalSubjects[rid]) totalSubjects[rid] = new Set();
+    for (const s of subjects) totalSubjects[rid].add(s);
+    let current = idToStructure[rid]?.parent_structure_id;
+    while (current != null) {
+      if (!totalSubjects[current]) totalSubjects[current] = new Set();
+      for (const s of subjects) totalSubjects[current].add(s);
+      current = idToStructure[current]?.parent_structure_id;
+    }
+  }
+
+  return { directSubjects, totalSubjects };
+}
+
+function renderBadge(badge, nodeId) {
+  const region = dandiRegions[String(nodeId)];
+  if (!region) { badge.innerHTML = ''; badge.title = ''; return; }
+
+  let direct, total, unit;
+  if (dandisetSubjectCounts) {
+    direct = dandisetSubjectCounts.directSubjects[nodeId]?.size || 0;
+    total = dandisetSubjectCounts.totalSubjects[nodeId]?.size || 0;
+    unit = 'subjects';
+  } else {
+    direct = region.dandiset_count;
+    total = region.total_dandiset_count || direct;
+    unit = 'dandisets';
+  }
+
+  if (total === 0) {
+    badge.innerHTML = '';
+    badge.title = '';
+  } else if (direct > 0 && direct !== total) {
+    badge.innerHTML = `<span class="badge-direct">${direct}</span><span class="badge-sep">/</span><span class="badge-total">${total}</span>`;
+    badge.title = `${direct} direct, ${total} incl. sub-regions ${unit}`;
+  } else if (direct > 0) {
+    badge.innerHTML = `<span class="badge-direct">${direct}</span>`;
+    badge.title = `${direct} ${unit}`;
+  } else {
+    badge.innerHTML = `<span class="badge-total">${total}</span>`;
+    badge.title = `${total} ${unit} in sub-regions`;
+  }
+}
+
+function updateTreeBadges() {
+  document.getElementById('hierarchy-tree').querySelectorAll('.tree-badge').forEach(badge => {
+    const content = badge.closest('.tree-node-content');
+    if (content) renderBadge(badge, parseInt(content.dataset.id));
+  });
+}
+
 async function selectDandiset(dandisetId, { pushState = true } = {}) {
   selectedDandiset = dandisetId;
   selectedId = null;
+  dandisetRegionFilter = null;
+  dandisetSubjectCounts = computeDandisetSubjectCounts(dandisetId);
+  hiddenRegionIds = new Set();
   clearElectrodePoints();
 
   // Update URL hash
@@ -500,11 +578,14 @@ async function selectDandiset(dandisetId, { pushState = true } = {}) {
     await Promise.all(toLoad);
   }
 
-  // For structures that still don't have meshes, add their nearest ancestor
+  // Build mapping: meshId -> [regionIds it represents]
+  const meshToRegions = new Map();
   for (const sid of structureIds) {
-    if (!meshObjects[sid]) {
-      const fallback = findNearestAncestorWithMesh(sid);
-      if (fallback) activeSet.add(fallback);
+    const meshId = meshObjects[sid] ? sid : findNearestAncestorWithMesh(sid);
+    if (meshId) {
+      activeSet.add(meshId);
+      if (!meshToRegions.has(meshId)) meshToRegions.set(meshId, []);
+      meshToRegions.get(meshId).push(sid);
     }
   }
 
@@ -513,7 +594,13 @@ async function selectDandiset(dandisetId, { pushState = true } = {}) {
   for (const [idStr, mesh] of Object.entries(meshObjects)) {
     const id = parseInt(idStr);
     if (activeSet.has(id)) {
-      applyActive(mesh);
+      const regions = meshToRegions.get(id) || [id];
+      const allHidden = regions.every(rid => hiddenRegionIds.has(rid));
+      if (!allHidden) {
+        applyActive(mesh);
+      } else {
+        applyDimmed(mesh);
+      }
     } else {
       applyDimmed(mesh);
     }
@@ -524,6 +611,9 @@ async function selectDandiset(dandisetId, { pushState = true } = {}) {
 
   // Filter the left panel tree to highlight matching regions
   filterTreeByDandiset(dandisetId);
+
+  // Update tree badges to show subject counts
+  updateTreeBadges();
 }
 
 function filterTreeByDandiset(dandisetId) {
@@ -573,6 +663,8 @@ function clearDandisetFilter() {
   document.getElementById('dandiset-filter-bar').classList.add('hidden');
   hideSubjectFilter();
   clearElectrodePoints();
+  dandisetRegionFilter = null;
+  hiddenRegionIds = new Set();
 
   // Remove dandiset filter classes from all tree nodes
   const container = document.getElementById('hierarchy-tree');
@@ -587,20 +679,58 @@ function clearDandisetFilter() {
   showAllRegions();
   selectedDandiset = null;
   selectedId = null;
+  dandisetSubjectCounts = null;
 
   // Clear URL hash
   history.pushState(null, '', window.location.pathname);
+
+  // Restore tree badges to dandiset counts
+  updateTreeBadges();
 
   // Reset right panel
   document.getElementById('region-panel').innerHTML =
     '<p class="placeholder-text">Click a brain region to view details and associated DANDI datasets.</p>';
 }
 
-function showSubjectFilter(subjectName) {
+function filterDandisetPanelByRegion(structureId) {
+  if (!selectedDandiset) return;
+
+  dandisetRegionFilter = structureId;
+
+  // Re-render the panel with the region filter active
+  const structureIds = dandisetToStructures[selectedDandiset] || [];
+  updateDandisetPanel(selectedDandiset, structureIds);
+
+  // Show region filter indicator
+  const s = idToStructure[structureId];
+  const regionName = s ? (s.name || s.acronym) : `Region ${structureId}`;
+  showSubjectFilter(`Region: ${regionName}`);
+
+  // Clear electrodes (no specific subject selected)
+  clearElectrodePoints();
+
+  // Update 3D view: isolate to matching structures within this dandiset
+  const descendantIds = getDescendantIds(structureId);
+  const dandiStructures = dandisetToStructures[selectedDandiset] || [];
+  const matchingStructures = dandiStructures.filter(id => descendantIds.has(id));
+  if (matchingStructures.length > 0) {
+    isolateStructureIds(matchingStructures);
+  } else {
+    isolateStructureIds([structureId]);
+  }
+
+  // Highlight region in tree
+  const prevEl = document.querySelector('.tree-node-content.selected');
+  if (prevEl) prevEl.classList.remove('selected');
+  const el = document.querySelector(`.tree-node-content[data-id="${structureId}"]`);
+  if (el) el.classList.add('selected');
+}
+
+function showSubjectFilter(filterText) {
   const bar = document.getElementById('subject-filter-bar');
   const label = document.getElementById('subject-filter-label');
   bar.classList.remove('hidden');
-  label.textContent = `Subject: ${subjectName}`;
+  label.textContent = filterText;
 }
 
 function hideSubjectFilter() {
@@ -638,7 +768,18 @@ function updateDandisetPanel(dandisetId, structureIds) {
   }
 
   const allRegionIds = [...uniqueRegionIds];
-  const subjects = [...subjectMap.entries()];  // array for pagination
+  const allSubjects = [...subjectMap.entries()];
+
+  // Filter subjects by region if a region filter is active
+  let displaySubjects = allSubjects;
+  if (dandisetRegionFilter) {
+    const filterDescendants = getDescendantIds(dandisetRegionFilter);
+    displaySubjects = allSubjects.filter(([, entry]) => {
+      return [...entry.regions.keys()].some(rid => filterDescendants.has(rid));
+    });
+  }
+
+  const subjects = displaySubjects;
   const PAGE_SIZE = 20;
   let currentPage = 0;
   const totalPages = Math.ceil(subjects.length / PAGE_SIZE);
@@ -659,7 +800,7 @@ function updateDandisetPanel(dandisetId, structureIds) {
       </div>
       <div class="region-stats">
         <div class="stat-item">
-          <div class="stat-value">${subjectMap.size}</div>
+          <div class="stat-value">${dandisetRegionFilter ? `${subjects.length} / ${subjectMap.size}` : subjectMap.size}</div>
           <div class="stat-label">Subjects</div>
         </div>
         <div class="stat-item">
@@ -672,8 +813,39 @@ function updateDandisetPanel(dandisetId, structureIds) {
     if (subjectMap.size === 0) {
       html += '<p class="no-data-msg">No asset data available for this dandiset.</p>';
     } else {
+      // Region visibility toggles
+      const displayRegionIds = new Set();
+      for (const [, entry] of subjects) {
+        for (const rid of entry.regions.keys()) displayRegionIds.add(rid);
+      }
+      const regionList = [...displayRegionIds].map(rid => {
+        const r = dandiRegions[String(rid)] || {};
+        const s = idToStructure[rid] || {};
+        return {
+          id: rid,
+          name: r.name || s.name || `Region ${rid}`,
+          acronym: r.acronym || s.acronym || '',
+          color: r.color_hex_triplet || s.color_hex_triplet || 'aaaaaa',
+        };
+      }).sort((a, b) => a.name.localeCompare(b.name));
+
+      if (regionList.length > 0) {
+        html += `<div class="region-toggles">`;
+        html += `<div class="region-toggles-header"><label class="region-toggle-all-label"><input type="checkbox" id="toggle-all-regions"> Brain Regions (${regionList.length})</label></div>`;
+        html += `<div class="region-toggle-list">`;
+        for (const r of regionList) {
+          const checked = !hiddenRegionIds.has(r.id);
+          html += `<label class="region-toggle-row" title="${r.name}">`;
+          html += `<input type="checkbox" data-region-id="${r.id}" ${checked ? 'checked' : ''}>`;
+          html += `<span class="region-toggle-dot" style="background:#${r.color}"></span>`;
+          html += `<span class="region-toggle-name">${r.acronym || r.name}</span>`;
+          html += `</label>`;
+        }
+        html += `</div></div>`;
+      }
+
       // "All Subjects" button above the header
-      html += `<div class="asset-card asset-card-selected" data-region-ids='${JSON.stringify(allRegionIds)}' data-all="true">`;
+      html += `<div class="asset-card${dandisetRegionFilter ? '' : ' asset-card-selected'}" data-region-ids='${JSON.stringify(allRegionIds)}' data-all="true">`;
       html += `<span class="asset-card-filename">All Subjects</span>`;
       html += `<span class="asset-card-region-count">${uniqueRegionIds.size} regions</span>`;
       html += `</div>`;
@@ -716,14 +888,32 @@ function updateDandisetPanel(dandisetId, structureIds) {
         const regionIds = JSON.parse(card.dataset.regionIds || '[]');
 
         if (card.dataset.all) {
+          const hadRegionFilter = dandisetRegionFilter !== null;
+          dandisetRegionFilter = null;
           filterTreeByDandiset(dandisetId);
           hideSubjectFilter();
           clearElectrodePoints();
           setHash(`dandiset=${dandisetId}`);
+          // Deselect tree node
+          const selEl = document.querySelector('.tree-node-content.selected');
+          if (selEl) selEl.classList.remove('selected');
+          // If we had a region filter, re-render to show all subjects and restore 3D
+          if (hadRegionFilter) {
+            isolateStructureIds(structureIds);
+            updateDandisetPanel(dandisetId, structureIds);
+            // Re-select "All Subjects" card after re-render
+            const newAllCard = panel.querySelector('.asset-card[data-all]');
+            if (newAllCard) newAllCard.classList.add('asset-card-selected');
+            return;
+          }
         } else {
+          dandisetRegionFilter = null;
           const subjectName = card.querySelector('.asset-card-filename')?.textContent || '';
           filterTreeByStructureIds(regionIds);
-          showSubjectFilter(subjectName);
+          showSubjectFilter(`Subject: ${subjectName}`);
+          // Deselect tree node if any
+          const selEl = document.querySelector('.tree-node-content.selected');
+          if (selEl) selEl.classList.remove('selected');
           const subjectDir = card.dataset.subjectDir;
           if (subjectDir) {
             showElectrodePoints(dandisetId, subjectDir);
@@ -734,6 +924,7 @@ function updateDandisetPanel(dandisetId, structureIds) {
           }
         }
         isolateStructureIds(regionIds);
+        filterRegionToggles(card.dataset.all ? null : regionIds);
 
         panel.querySelectorAll('.asset-card').forEach(c => c.classList.remove('asset-card-selected'));
         card.classList.add('asset-card-selected');
@@ -749,6 +940,73 @@ function updateDandisetPanel(dandisetId, structureIds) {
         }
       });
     });
+
+    // Region visibility toggles
+    // Find the actual mesh for a region (direct or fallback ancestor)
+    function meshIdForRegion(rid) {
+      if (meshObjects[rid]) return rid;
+      return findNearestAncestorWithMesh(rid);
+    }
+
+    // After updating hiddenRegionIds, update the mesh for a given region
+    function applyToggleToMesh(rid) {
+      const meshId = meshIdForRegion(rid);
+      if (!meshId || !meshObjects[meshId]) return;
+      // Check if ANY visible toggle region sharing this mesh is still checked
+      const shouldShow = [...panel.querySelectorAll('.region-toggle-row:not(.toggle-hidden) input[type="checkbox"]')].some(otherCb => {
+        const otherRid = parseInt(otherCb.dataset.regionId);
+        if (hiddenRegionIds.has(otherRid)) return false;
+        return meshIdForRegion(otherRid) === meshId;
+      });
+      if (shouldShow) {
+        applyActive(meshObjects[meshId]);
+      } else {
+        applyDimmed(meshObjects[meshId]);
+      }
+    }
+
+    panel.querySelectorAll('.region-toggle-row input[type="checkbox"]').forEach(cb => {
+      cb.addEventListener('change', () => {
+        const rid = parseInt(cb.dataset.regionId);
+        if (cb.checked) {
+          hiddenRegionIds.delete(rid);
+        } else {
+          hiddenRegionIds.add(rid);
+        }
+        applyToggleToMesh(rid);
+        filterRegionToggles();  // update toggle-all state
+      });
+    });
+
+    const toggleAll = panel.querySelector('#toggle-all-regions');
+    if (toggleAll) {
+      filterRegionToggles();  // set initial toggle-all state
+      toggleAll.addEventListener('change', () => {
+        const checked = toggleAll.checked;
+        // Collect affected mesh IDs to update after all checkboxes are set
+        const affectedMeshIds = new Set();
+        panel.querySelectorAll('.region-toggle-row:not(.toggle-hidden) input[type="checkbox"]').forEach(cb => {
+          const rid = parseInt(cb.dataset.regionId);
+          cb.checked = checked;
+          if (checked) {
+            hiddenRegionIds.delete(rid);
+          } else {
+            hiddenRegionIds.add(rid);
+          }
+          const meshId = meshIdForRegion(rid);
+          if (meshId) affectedMeshIds.add(meshId);
+        });
+        // Apply visibility for all affected meshes
+        for (const meshId of affectedMeshIds) {
+          if (!meshObjects[meshId]) continue;
+          if (checked) {
+            applyActive(meshObjects[meshId]);
+          } else {
+            applyDimmed(meshObjects[meshId]);
+          }
+        }
+      });
+    }
   }
 
   render(0);
@@ -799,11 +1057,14 @@ async function isolateStructureIds(structureIds) {
   }
   if (toLoad.length > 0) await Promise.all(toLoad);
 
-  // For structures without meshes, show nearest ancestor
+  // Build mapping: meshId -> [regionIds it represents]
+  const meshToRegions = new Map();
   for (const sid of structureIds) {
-    if (!meshObjects[sid]) {
-      const fallback = findNearestAncestorWithMesh(sid);
-      if (fallback) activeSet.add(fallback);
+    const meshId = meshObjects[sid] ? sid : findNearestAncestorWithMesh(sid);
+    if (meshId) {
+      activeSet.add(meshId);
+      if (!meshToRegions.has(meshId)) meshToRegions.set(meshId, []);
+      meshToRegions.get(meshId).push(sid);
     }
   }
 
@@ -811,9 +1072,49 @@ async function isolateStructureIds(structureIds) {
   for (const [idStr, mesh] of Object.entries(meshObjects)) {
     const id = parseInt(idStr);
     if (activeSet.has(id)) {
-      applyActive(mesh);
+      // Show mesh only if at least one of its represented regions is not hidden
+      const regions = meshToRegions.get(id) || [id];
+      const allHidden = regions.every(rid => hiddenRegionIds.has(rid));
+      if (!allHidden) {
+        applyActive(mesh);
+      } else {
+        applyDimmed(mesh);
+      }
     } else {
       applyDimmed(mesh);
+    }
+  }
+}
+
+function filterRegionToggles(regionIds) {
+  const panel = document.getElementById('region-panel');
+  const activeSet = regionIds ? new Set(regionIds) : null;
+  let visibleCount = 0;
+  const rows = panel.querySelectorAll('.region-toggle-row');
+  rows.forEach(row => {
+    const rid = parseInt(row.querySelector('input[type="checkbox"]').dataset.regionId);
+    if (!activeSet || activeSet.has(rid)) {
+      row.classList.remove('toggle-hidden');
+      visibleCount++;
+    } else {
+      row.classList.add('toggle-hidden');
+    }
+  });
+  const headerLabel = panel.querySelector('.region-toggle-all-label');
+  if (headerLabel) {
+    const total = rows.length;
+    headerLabel.lastChild.textContent = ` Brain Regions (${activeSet ? visibleCount : total})`;
+  }
+  // Update toggle-all checkbox state
+  const ta = panel.querySelector('#toggle-all-regions');
+  if (ta) {
+    const cbs = [...panel.querySelectorAll('.region-toggle-row:not(.toggle-hidden) input[type="checkbox"]')];
+    if (cbs.length === 0) { ta.checked = false; ta.indeterminate = false; }
+    else {
+      const allChecked = cbs.every(c => c.checked);
+      const noneChecked = cbs.every(c => !c.checked);
+      ta.checked = allChecked;
+      ta.indeterminate = !allChecked && !noneChecked;
     }
   }
 }
@@ -825,9 +1126,10 @@ function selectSubjectByDir(dandisetId, subjectDir) {
   const regionIds = JSON.parse(card.dataset.regionIds || '[]');
   const subjectName = card.querySelector('.asset-card-filename')?.textContent || '';
   filterTreeByStructureIds(regionIds);
-  showSubjectFilter(subjectName);
+  showSubjectFilter(`Subject: ${subjectName}`);
   showElectrodePoints(dandisetId, subjectDir);
   isolateStructureIds(regionIds);
+  filterRegionToggles(regionIds);
   panel.querySelectorAll('.asset-card').forEach(c => c.classList.remove('asset-card-selected'));
   card.classList.add('asset-card-selected');
 }
@@ -894,6 +1196,7 @@ function selectRegion(structureId, { expandTree = true, pushState = true } = {})
 
   selectedId = structureId;
   selectedDandiset = null;
+  hiddenRegionIds = new Set();
   clearElectrodePoints();
 
   // Update URL hash
@@ -1081,22 +1384,11 @@ function createTreeNode(node, depth) {
   content.appendChild(dot);
   content.appendChild(label);
 
-  // Badge: show direct / total dandiset counts in different colors
+  // Badge: show counts (dandisets normally, subjects when a dandiset is selected)
   if (hasData) {
-    const direct = region.dandiset_count;
-    const total = region.total_dandiset_count || direct;
     const badge = document.createElement('span');
     badge.className = 'tree-badge';
-    if (direct > 0 && direct !== total) {
-      badge.innerHTML = `<span class="badge-direct">${direct}</span><span class="badge-sep">/</span><span class="badge-total">${total}</span>`;
-      badge.title = `${direct} direct, ${total} including sub-regions`;
-    } else if (direct > 0) {
-      badge.innerHTML = `<span class="badge-direct">${direct}</span>`;
-      badge.title = `${direct} dandisets`;
-    } else {
-      badge.innerHTML = `<span class="badge-total">${total}</span>`;
-      badge.title = `${total} dandisets in sub-regions`;
-    }
+    renderBadge(badge, node.id);
     content.appendChild(badge);
   }
 
@@ -1123,14 +1415,22 @@ function createTreeNode(node, depth) {
       const isExpanded = childrenEl.classList.toggle('expanded');
       toggle.classList.toggle('expanded', isExpanded);
 
-      // Also select this region (don't re-expand the tree)
-      selectRegion(node.id, { expandTree: false });
+      // If in dandiset mode, filter subjects by this region
+      if (selectedDandiset) {
+        filterDandisetPanelByRegion(node.id);
+      } else {
+        selectRegion(node.id, { expandTree: false });
+      }
       ensureMeshLoaded(node.id);
     });
   } else {
     content.addEventListener('click', (e) => {
       e.stopPropagation();
-      selectRegion(node.id, { expandTree: false });
+      if (selectedDandiset) {
+        filterDandisetPanelByRegion(node.id);
+      } else {
+        selectRegion(node.id, { expandTree: false });
+      }
       ensureMeshLoaded(node.id);
     });
   }
@@ -1383,12 +1683,21 @@ document.getElementById('dandiset-filter-clear').addEventListener('click', clear
 document.getElementById('subject-filter-clear').addEventListener('click', () => {
   hideSubjectFilter();
   clearElectrodePoints();
+  const hadRegionFilter = dandisetRegionFilter !== null;
+  dandisetRegionFilter = null;
+  // Deselect tree node
+  const selEl = document.querySelector('.tree-node-content.selected');
+  if (selEl) selEl.classList.remove('selected');
   // Restore to full dandiset view
   if (selectedDandiset) {
     setHash(`dandiset=${selectedDandiset}`);
     filterTreeByDandiset(selectedDandiset);
     const structureIds = dandisetToStructures[selectedDandiset] || [];
     isolateStructureIds(structureIds);
+    // Re-render panel if region filter was active, to show all subjects
+    if (hadRegionFilter) {
+      updateDandisetPanel(selectedDandiset, structureIds);
+    }
     // Deselect subject card, select "All Subjects"
     const panel = document.getElementById('region-panel');
     panel.querySelectorAll('.asset-card').forEach(c => c.classList.remove('asset-card-selected'));
@@ -1409,10 +1718,13 @@ async function applyHashState() {
     if (selectedId !== null || selectedDandiset !== null) {
       selectedId = null;
       selectedDandiset = null;
+      dandisetSubjectCounts = null;
+      hiddenRegionIds = new Set();
       clearElectrodePoints();
       const prevEl = document.querySelector('.tree-node-content.selected');
       if (prevEl) prevEl.classList.remove('selected');
       showAllRegions();
+      updateTreeBadges();
       // Clear dandiset filter bar
       document.getElementById('dandiset-filter-bar').classList.add('hidden');
       const tree = document.getElementById('hierarchy-tree');
