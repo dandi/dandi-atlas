@@ -950,6 +950,9 @@ body {
 }
 
 .region-toggles-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
   padding: 6px 10px;
   font-size: 11px;
   font-weight: 600;
@@ -957,6 +960,25 @@ body {
   letter-spacing: 0.3px;
   color: var(--text-secondary);
   background: rgba(255,255,255,0.04);
+}
+
+.region-toggles-collapse-btn {
+  background: none;
+  border: none;
+  color: var(--text-secondary);
+  font-size: 10px;
+  cursor: pointer;
+  padding: 2px 4px;
+  line-height: 1;
+  transition: color 0.15s;
+}
+
+.region-toggles-collapse-btn:hover {
+  color: var(--text-primary);
+}
+
+.region-toggles-overlay.collapsed .region-toggle-list {
+  display: none;
 }
 
 .region-toggle-all-label {

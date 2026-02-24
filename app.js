@@ -183,6 +183,7 @@ function setupScene() {
 
   // Events
   canvas.addEventListener('mousemove', onMouseMove);
+  canvas.addEventListener('pointerdown', (e) => { pointerDownPos = { x: e.clientX, y: e.clientY }; });
   canvas.addEventListener('click', onClick);
   window.addEventListener('resize', onResize);
 }
@@ -382,7 +383,14 @@ function unhighlightMesh(structureId) {
   mesh.material.emissiveIntensity = 0;
 }
 
+let pointerDownPos = null;
+
 function onClick(event) {
+  if (pointerDownPos) {
+    const dx = event.clientX - pointerDownPos.x;
+    const dy = event.clientY - pointerDownPos.y;
+    if (dx * dx + dy * dy > 9) return; // ignore drags (>3px)
+  }
   const rect = renderer.domElement.getBoundingClientRect();
   mouse.x = ((event.clientX - rect.left) / rect.width) * 2 - 1;
   mouse.y = -((event.clientY - rect.top) / rect.height) * 2 + 1;
@@ -707,10 +715,15 @@ function clearDandisetFilter() {
     '<p class="placeholder-text">Click a brain region to view details and associated DANDI datasets.</p>';
 }
 
-function filterDandisetPanelByRegion(structureId) {
+function filterDandisetPanelByRegion(structureId, { pushState = true } = {}) {
   if (!selectedDandiset) return;
 
   dandisetRegionFilter = structureId;
+
+  // Update URL hash to include region
+  if (pushState) {
+    setHash(`dandiset=${selectedDandiset}&region=${structureId}`);
+  }
 
   // Re-render the panel with the region filter active
   const structureIds = dandisetToStructures[selectedDandiset] || [];
@@ -847,7 +860,8 @@ function updateDandisetPanel(dandisetId, structureIds) {
       // Render region toggles into the 3D viewer overlay
       const toggleOverlay = document.getElementById('region-toggles-overlay');
       if (regionList.length > 0) {
-        let toggleHtml = `<div class="region-toggles-header"><label class="region-toggle-all-label"><input type="checkbox" id="toggle-all-regions"> Brain Regions (${regionList.length})</label></div>`;
+        const wasCollapsed = toggleOverlay.classList.contains('collapsed');
+        let toggleHtml = `<div class="region-toggles-header"><label class="region-toggle-all-label"><input type="checkbox" id="toggle-all-regions"> Brain Regions (${regionList.length})</label><button class="region-toggles-collapse-btn" title="Collapse">${wasCollapsed ? '&#x25B6;' : '&#x25BC;'}</button></div>`;
         toggleHtml += `<div class="region-toggle-list">`;
         for (const r of regionList) {
           const checked = !hiddenRegionIds.has(r.id);
@@ -1000,6 +1014,15 @@ function updateDandisetPanel(dandisetId, structureIds) {
         filterRegionToggles();  // update toggle-all state
       });
     });
+
+    const collapseBtn = overlay.querySelector('.region-toggles-collapse-btn');
+    if (collapseBtn) {
+      collapseBtn.addEventListener('click', (e) => {
+        e.preventDefault();
+        overlay.classList.toggle('collapsed');
+        collapseBtn.innerHTML = overlay.classList.contains('collapsed') ? '&#x25B6;' : '&#x25BC;';
+      });
+    }
 
     const toggleAll = overlay.querySelector('#toggle-all-regions');
     if (toggleAll) {
@@ -1771,6 +1794,12 @@ async function applyHashState() {
     const did = params.dandiset;
     if (dandisetToStructures[did]) {
       await selectDandiset(did, { pushState: false });
+      if (params.region) {
+        const rid = parseInt(params.region);
+        if (idToStructure[rid]) {
+          filterDandisetPanelByRegion(rid, { pushState: false });
+        }
+      }
       if (params.subject) {
         selectSubjectByDir(did, params.subject);
       }
