@@ -225,7 +225,7 @@ body {
 
 .tree-children {
   display: none;
-  padding-left: 16px;
+  padding-left: 5px;
 }
 
 .tree-children.expanded {
