@@ -375,7 +375,7 @@ def match_location(location, lookups):
 
 
 # ---------------------------------------------------------------------------
-# Subject extraction
+# Subject / session extraction
 # ---------------------------------------------------------------------------
 
 
@@ -383,6 +383,28 @@ def extract_subject(path):
     """Extract subject directory from asset path."""
     parts = path.split("/")
     return parts[0] if len(parts) > 1 else path.split("_")[0]
+
+
+def extract_session(path):
+    """Extract session ID from a BIDS-style NWB filename.
+
+    Strips known non-standard suffixes like '-processed-only' that some
+    datasets (e.g., IBL) append to the session UUID without an underscore.
+    """
+    import re
+    match = re.search(r"_ses-([^_/]+)", path)
+    if not match:
+        return None
+    session = match.group(1)
+    session = re.sub(r"-processed-only$", "", session)
+    return session
+
+
+def extract_desc(path):
+    """Extract description label from a BIDS-style NWB filename."""
+    import re
+    match = re.search(r"_desc-([^_/]+)", path)
+    return match.group(1) if match else None
 
 
 # ---------------------------------------------------------------------------

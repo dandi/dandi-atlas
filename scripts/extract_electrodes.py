@@ -3,7 +3,7 @@
 Reads dandiset_assets.json to get asset list, opens each NWB via HTTP streaming
 (remfile + h5py), and extracts electrode coordinates from the electrodes table.
 
-Outputs data/dandiset_electrodes.json grouped by dandiset and subject.
+Outputs data/dandiset_electrodes.json grouped by dandiset and asset_id.
 
 Usage:
     python extract_electrodes.py [--workers N] [--no-cache]
@@ -65,16 +65,10 @@ def extract_electrode_coords(url):
             continue
         # Log warning for out-of-bounds but still include
         if not (0 <= xi <= ALLEN_X_MAX and 0 <= yi <= ALLEN_Y_MAX and 0 <= zi <= ALLEN_Z_MAX):
-            pass  # Out of bounds — included anyway
+            pass  # Out of bounds, included anyway
         coords.append([round(xi, 1), round(yi, 1), round(zi, 1)])
 
     return coords if coords else None
-
-
-def extract_subject(path):
-    """Extract subject directory from asset path."""
-    parts = path.split("/")
-    return parts[0] if len(parts) > 1 else path.split("_")[0]
 
 
 def load_cache():
@@ -117,7 +111,7 @@ def main():
 
     print(f"{len(work_items)} assets to process ({args.workers} workers)")
 
-    # Results: dandiset_id -> subject -> coords
+    # Results: dandiset_id -> asset_id -> coords
     results = defaultdict(dict)
     errors = 0
 
@@ -131,8 +125,7 @@ def main():
             if cache_key in cache:
                 entry = cache[cache_key]
                 if entry.get("coords"):
-                    subject = extract_subject(path)
-                    results[dandiset_id][subject] = entry["coords"]
+                    results[dandiset_id][asset_id] = entry["coords"]
                 return
 
         try:
@@ -157,8 +150,7 @@ def main():
                 f.write(json.dumps(entry) + "\n")
             cache[cache_key] = entry
             if coords:
-                subject = extract_subject(path)
-                results[dandiset_id][subject] = coords
+                results[dandiset_id][asset_id] = coords
 
     with tqdm(total=len(work_items), desc="Assets", unit="asset") as pbar:
         with ThreadPoolExecutor(max_workers=args.workers) as executor:
@@ -176,19 +168,19 @@ def main():
     # Build output: only dandisets with electrode data
     output = {}
     for dandiset_id in sorted(results):
-        subjects = results[dandiset_id]
-        if subjects:
-            output[dandiset_id] = dict(sorted(subjects.items()))
+        asset_coords = results[dandiset_id]
+        if asset_coords:
+            output[dandiset_id] = dict(sorted(asset_coords.items()))
 
     with open(OUTPUT_FILE, "w") as f:
         json.dump(output, f, separators=(",", ":"))
 
-    total_subjects = sum(len(v) for v in output.values())
+    total_assets = sum(len(v) for v in output.values())
     total_electrodes = sum(
-        len(coords) for subjects in output.values() for coords in subjects.values()
+        len(coords) for asset_coords in output.values() for coords in asset_coords.values()
     )
     print(f"\nWrote {OUTPUT_FILE}")
-    print(f"  {len(output)} dandisets, {total_subjects} subjects, {total_electrodes} electrodes")
+    print(f"  {len(output)} dandisets, {total_assets} assets with electrodes, {total_electrodes} electrodes")
     print(f"  {errors} errors")
 
 

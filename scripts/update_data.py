@@ -30,8 +30,10 @@ from dandi_helpers import (
     check_species_mouse,
     compute_mesh_set,
     download_meshes,
+    extract_desc,
     extract_electrode_coords,
     extract_locations,
+    extract_session,
     extract_subject,
     fetch_allen_structure_graph,
     flatten_structure_graph,
@@ -196,7 +198,8 @@ def process_asset_electrodes(dandiset_id, asset):
 def build_dandiset_assets(label_cache):
     """Convert label cache entries to dandiset_assets.json format.
 
-    Keeps one asset per subject per dandiset.
+    Keeps all assets per subject per dandiset, with session and description
+    metadata extracted from BIDS filenames.
     """
     dandisets = defaultdict(lambda: defaultdict(list))
 
@@ -218,20 +221,30 @@ def build_dandiset_assets(label_cache):
                     })
 
         subject = extract_subject(path)
-        dandisets[ds_id][subject].append({
+        asset_entry = {
             "path": path,
             "asset_id": asset_id,
             "regions": regions,
-        })
+        }
 
-    # Keep first asset per subject (sorted by path)
+        session = extract_session(path)
+        if session:
+            asset_entry["session"] = session
+
+        desc = extract_desc(path)
+        if desc:
+            asset_entry["desc"] = desc
+
+        dandisets[ds_id][subject].append(asset_entry)
+
+    # Keep ALL assets per subject, sorted by path
     result = {}
     for did in sorted(dandisets):
         subjects = dandisets[did]
         assets = []
         for subj in sorted(subjects):
             sorted_assets = sorted(subjects[subj], key=lambda a: a["path"])
-            assets.append(sorted_assets[0])
+            assets.extend(sorted_assets)
         result[did] = assets
 
     return result
@@ -243,14 +256,14 @@ def build_dandiset_electrodes(electrode_cache):
 
     for (ds_id, _), entry in electrode_cache.items():
         if entry.get("coords"):
-            subject = extract_subject(entry["path"])
-            results[ds_id][subject] = entry["coords"]
+            asset_id = entry["asset_id"]
+            results[ds_id][asset_id] = entry["coords"]
 
     output = {}
     for dandiset_id in sorted(results):
-        subjects = results[dandiset_id]
-        if subjects:
-            output[dandiset_id] = dict(sorted(subjects.items()))
+        asset_coords = results[dandiset_id]
+        if asset_coords:
+            output[dandiset_id] = dict(sorted(asset_coords.items()))
 
     return output
 
@@ -390,14 +403,26 @@ def main():
 
         subject_assets = defaultdict(list)
         for asset in all_assets:
+            # TEMPORARY: IBL dandiset 000409 contains legacy file variants that
+            # duplicate data already present in the canonical desc-raw / desc-processed
+            # files. Filter them out to avoid displaying files with wrong localization
+            if ds_id == "000409":
+                fname = asset["path"].split("/")[-1]
+                if (fname.endswith("-processed-only_behavior.nwb")
+                        or "_behavior+ecephys+image.nwb" in fname
+                        or "_ecephys+image.nwb" in fname
+                        or "-raw-only_ecephys+image.nwb" in fname
+                        or (("_behavior+ecephys.nwb" in fname)
+                            and "_desc-processed_" not in fname)):
+                    continue
             subj = extract_subject(asset["path"])
             subject_assets[subj].append(asset)
 
-        # Pick first asset per subject (by path)
+        # Process all assets per subject (sorted by path)
         work_items = []
         for subj in sorted(subject_assets):
             assets = sorted(subject_assets[subj], key=lambda a: a["path"])
-            work_items.append(assets[0])
+            work_items.extend(assets)
 
         print(f"  {len(work_items)} subjects, processing...")
 
