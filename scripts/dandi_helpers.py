@@ -233,7 +233,30 @@ def extract_electrode_coords(url):
             continue
         coords.append([round(xi, 1), round(yi, 1), round(zi, 1)])
 
-    return coords if coords else None
+    if not coords:
+        return None
+
+    # Filter out non-atlas coordinates. Many NWB files store probe-relative
+    # positions or placeholders instead of Allen CCF coordinates. Valid CCF
+    # positions are inside the brain (~0-13200 µm per axis), so the median
+    # electrode position should have at least 2 axes with |value| > 1000.
+    # Some files use 10 µm voxel units (max ~1320); for those, require
+    # at least 2 axes with |median| > 100.
+    xs = sorted(abs(c[0]) for c in coords)
+    ys = sorted(abs(c[1]) for c in coords)
+    zs = sorted(abs(c[2]) for c in coords)
+    med = [xs[len(xs) // 2], ys[len(ys) // 2], zs[len(zs) // 2]]
+    max_val = max(xs[-1], ys[-1], zs[-1])
+    if max_val > 1500:
+        # Likely µm: require 2 axes with median > 1000
+        if sum(1 for m in med if m > 1000) < 2:
+            return None
+    else:
+        # Likely 10 µm voxel units: require 2 axes with median > 100
+        if sum(1 for m in med if m > 100) < 2:
+            return None
+
+    return coords
 
 
 # ---------------------------------------------------------------------------
