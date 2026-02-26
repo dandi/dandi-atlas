@@ -23,7 +23,7 @@ let dandisetToStructures = {};  // dandiset_id -> [structure_ids]
 let dandisetTitles = {};        // dandiset_id -> title string
 let dandisetAssets = {};        // dandiset_id -> [{path, asset_id, regions}]
 let selectedDandiset = null;
-let dandisetElectrodes = {};  // dandiset_id -> {asset_id: [[x,y,z], ...]}
+let dandisetElectrodes = {};  // cache: dandiset_id -> {asset_id: [[x,y,z], ...]}
 let electrodePoints = null;   // THREE.Points object
 let regionAlpha = 1;          // global opacity multiplier for brain meshes
 let dandisetRegionFilter = null; // structure_id when filtering subjects by region within a dandiset
@@ -34,12 +34,11 @@ let hiddenRegionIds = new Set();  // regions toggled off by user in dandiset/sub
 async function init() {
   updateLoadingText('Fetching data...');
 
-  const [graphResp, regionsResp, manifestResp, assetsResp, electrodesResp, lastUpdatedResp] = await Promise.all([
+  const [graphResp, regionsResp, manifestResp, assetsResp, lastUpdatedResp] = await Promise.all([
     fetch('data/structure_graph.json').then(r => r.json()),
     fetch('data/dandi_regions.json').then(r => r.json()),
     fetch('data/mesh_manifest.json').then(r => r.json()),
     fetch('data/dandiset_assets.json').then(r => r.json()),
-    fetch('data/dandiset_electrodes.json').then(r => r.json()).catch(() => ({})),
     fetch('data/last_updated.json').then(r => r.json()).catch(() => null),
   ]);
 
@@ -47,7 +46,6 @@ async function init() {
   dandiRegions = regionsResp;
   meshManifest = manifestResp;
   dandisetAssets = assetsResp;
-  dandisetElectrodes = electrodesResp;
 
   // Show last-updated timestamp
   if (lastUpdatedResp && lastUpdatedResp.timestamp) {
@@ -765,9 +763,12 @@ function hideSubjectFilter() {
   document.getElementById('subject-filter-bar').classList.add('hidden');
 }
 
-function updateDandisetPanel(dandisetId, structureIds) {
+async function updateDandisetPanel(dandisetId, structureIds) {
   const panel = document.getElementById('region-panel');
   const assets = dandisetAssets[dandisetId] || [];
+
+  // Pre-fetch electrode data for this dandiset (lazy, cached)
+  await fetchElectrodes(dandisetId);
 
   const title = dandisetTitles[dandisetId] || '';
 
@@ -1302,9 +1303,20 @@ function selectSubjectByDir(dandisetId, subjectDir, sessionAssetId) {
 }
 
 // ── Electrode Points ───────────────────────────────────────────────────────
-function showElectrodePoints(dandisetId, assetId) {
+async function fetchElectrodes(dandisetId) {
+  if (dandisetElectrodes[dandisetId]) return dandisetElectrodes[dandisetId];
+  try {
+    const resp = await fetch(`data/electrodes/${dandisetId}.json`);
+    if (!resp.ok) return null;
+    const data = await resp.json();
+    dandisetElectrodes[dandisetId] = data;
+    return data;
+  } catch { return null; }
+}
+
+async function showElectrodePoints(dandisetId, assetId) {
   clearElectrodePoints();
-  const assetCoords = dandisetElectrodes[dandisetId];
+  const assetCoords = await fetchElectrodes(dandisetId);
   if (!assetCoords) return;
   const coords = assetCoords[assetId];
   if (!coords || coords.length === 0) return;
