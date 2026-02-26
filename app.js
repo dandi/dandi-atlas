@@ -1,6 +1,6 @@
 import * as THREE from 'three';
 import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
-import { OBJLoader } from 'three/addons/loaders/OBJLoader.js';
+import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
 
 // ── State ──────────────────────────────────────────────────────────────────
 let scene, camera, renderer, controls, raycaster, mouse;
@@ -196,16 +196,19 @@ function onResize() {
 }
 
 // ── Mesh Loading ───────────────────────────────────────────────────────────
-const objLoader = new OBJLoader();
+const gltfLoader = new GLTFLoader();
 const failedMeshIds = new Set();
 
 function loadMesh(structureId) {
   return new Promise((resolve) => {
-    const path = `data/meshes/${structureId}.obj`;
-    objLoader.load(
+    const path = `data/meshes/${structureId}.glb`;
+    gltfLoader.load(
       path,
-      (obj) => {
-        const mesh = obj.children[0];
+      (gltf) => {
+        let mesh = null;
+        gltf.scene.traverse((child) => {
+          if (!mesh && child.isMesh) mesh = child;
+        });
         if (!mesh) { resolve(null); return; }
 
         // Get color and style based on whether this structure has data
