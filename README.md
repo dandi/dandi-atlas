@@ -4,7 +4,11 @@ Interactive 3D viewer of the Allen Common Coordinate Framework (CCF) mouse brain
 
 Read the [blog post](https://about.dandiarchive.org/blog/2026/02/24/introducing-dandi-atlas-explorer-explore-the-dandi-archive-in-3d/) for more details.
 
-[![DANDI Atlas Explorer Demo](https://img.youtube.com/vi/D8514CLVXYo/maxresdefault.jpg)](https://www.youtube.com/watch?v=D8514CLVXYo)
+<p align="center">
+  <a href="https://www.youtube.com/watch?v=D8514CLVXYo">
+    <img src="https://img.youtube.com/vi/D8514CLVXYo/maxresdefault.jpg" alt="DANDI Atlas Explorer Demo" width="500">
+  </a>
+</p>
 
 ## Features
 
