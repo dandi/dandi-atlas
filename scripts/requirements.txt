@@ -1,4 +1,5 @@
 h5py
 remfile
 requests
+trimesh
 tqdm

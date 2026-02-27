@@ -527,8 +527,10 @@ def main():
     print("\nStep 8: Checking meshes...")
     data_ids, ancestor_ids, all_mesh_ids = compute_mesh_set(dandi_regions, parent_map)
 
-    # Check which meshes are missing
-    missing = [sid for sid in all_mesh_ids if not (MESHES_DIR / f"{sid}.obj").exists()]
+    # Check which meshes are missing (accept either .obj or .glb)
+    missing = [sid for sid in all_mesh_ids
+               if not (MESHES_DIR / f"{sid}.glb").exists()
+               and not (MESHES_DIR / f"{sid}.obj").exists()]
     if missing:
         print(f"  Downloading {len(missing)} new meshes...")
         failed_ids = download_meshes(set(missing), MESHES_DIR)
@@ -536,10 +538,19 @@ def main():
         print("  All meshes present")
         failed_ids = []
 
+    # Convert any OBJ files to GLB
+    obj_files = list(MESHES_DIR.glob("*.obj"))
+    if obj_files:
+        print(f"  Converting {len(obj_files)} OBJ meshes to GLB...")
+        from convert_meshes import convert_obj_to_glb
+        for obj_path in obj_files:
+            if convert_obj_to_glb(obj_path):
+                obj_path.unlink()
+
     # Check for any missing meshes overall
     all_failed = []
     for sid in sorted(all_mesh_ids):
-        if not (MESHES_DIR / f"{sid}.obj").exists():
+        if not (MESHES_DIR / f"{sid}.glb").exists():
             all_failed.append(sid)
 
     # ── Step 9: Rebuild mesh_manifest.json ─────────────────────────────────
