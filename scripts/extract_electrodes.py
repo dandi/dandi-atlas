@@ -23,8 +23,10 @@ from tqdm import tqdm
 DANDI_API = "https://api.dandiarchive.org/api"
 
 SCRIPT_DIR = Path(__file__).resolve().parent
-ASSETS_FILE = SCRIPT_DIR.parent / "data" / "dandiset_assets.json"
-OUTPUT_FILE = SCRIPT_DIR.parent / "data" / "dandiset_electrodes.json"
+DATA_DIR = SCRIPT_DIR.parent / "data"
+ASSETS_FILE = DATA_DIR / "dandiset_assets.json"
+OUTPUT_FILE = DATA_DIR / "dandiset_electrodes.json"
+ELECTRODE_MANIFEST_FILE = DATA_DIR / "dandisets_with_electrodes.json"
 CACHE_FILE = SCRIPT_DIR / "electrode_cache.jsonl"
 
 # Allen CCF bounds (micrometers)
@@ -175,11 +177,16 @@ def main():
     with open(OUTPUT_FILE, "w") as f:
         json.dump(output, f, separators=(",", ":"))
 
+    # Write manifest of dandiset IDs with electrode data (for frontend)
+    with open(ELECTRODE_MANIFEST_FILE, "w") as f:
+        json.dump(sorted(output.keys()), f)
+
     total_assets = sum(len(v) for v in output.values())
     total_electrodes = sum(
         len(coords) for asset_coords in output.values() for coords in asset_coords.values()
     )
     print(f"\nWrote {OUTPUT_FILE}")
+    print(f"Wrote {ELECTRODE_MANIFEST_FILE} ({len(output)} dandisets)")
     print(f"  {len(output)} dandisets, {total_assets} assets with electrodes, {total_electrodes} electrodes")
     print(f"  {errors} errors")
 

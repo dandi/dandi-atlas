@@ -11,6 +11,7 @@ from pathlib import Path
 DATA_DIR = Path(__file__).resolve().parent.parent / "data"
 OLD_FILE = DATA_DIR / "dandiset_electrodes.json"
 ELECTRODES_DIR = DATA_DIR / "electrodes"
+ELECTRODE_MANIFEST_FILE = DATA_DIR / "dandisets_with_electrodes.json"
 
 
 def main():
@@ -30,8 +31,13 @@ def main():
         size_kb = out.stat().st_size / 1024
         print(f"  {dandiset_id}.json: {len(asset_coords)} assets, {size_kb:.0f} KB")
 
+    # Write manifest of dandiset IDs with electrode data (for frontend)
+    with open(ELECTRODE_MANIFEST_FILE, "w") as f:
+        json.dump(sorted(data.keys()), f)
+
     OLD_FILE.unlink()
     print(f"\nMigrated {len(data)} dandisets to {ELECTRODES_DIR}/")
+    print(f"Wrote {ELECTRODE_MANIFEST_FILE}")
     print(f"Removed {OLD_FILE}")
 
 

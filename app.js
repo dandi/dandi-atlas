@@ -29,17 +29,19 @@ let regionAlpha = 1;          // global opacity multiplier for brain meshes
 let dandisetRegionFilter = null; // structure_id when filtering subjects by region within a dandiset
 let dandisetSubjectCounts = null; // { directSubjects, totalSubjects } when a dandiset is selected
 let hiddenRegionIds = new Set();  // regions toggled off by user in dandiset/subject view
+let dandisetsWithElectrodes = new Set();  // dandiset IDs that have electrode coordinate data
 
 // ── Initialization ─────────────────────────────────────────────────────────
 async function init() {
   updateLoadingText('Fetching data...');
 
-  const [graphResp, regionsResp, manifestResp, assetsResp, lastUpdatedResp] = await Promise.all([
+  const [graphResp, regionsResp, manifestResp, assetsResp, lastUpdatedResp, electrodeManifestResp] = await Promise.all([
     fetch('data/structure_graph.json').then(r => r.json()),
     fetch('data/dandi_regions.json').then(r => r.json()),
     fetch('data/mesh_manifest.json').then(r => r.json()),
     fetch('data/dandiset_assets.json').then(r => r.json()),
     fetch('data/last_updated.json').then(r => r.json()).catch(() => null),
+    fetch('data/dandisets_with_electrodes.json').then(r => r.json()).catch(() => []),
   ]);
 
   structureGraph = graphResp;
@@ -55,6 +57,7 @@ async function init() {
     if (el) el.textContent = `Data updated ${formatted}`;
   }
 
+  dandisetsWithElectrodes = new Set(electrodeManifestResp);
   dataStructureIds = new Set(meshManifest.data_structures);
   ancestorStructureIds = new Set(meshManifest.ancestor_structures);
   noMeshIds = new Set(meshManifest.no_mesh || []);
@@ -1464,9 +1467,11 @@ function updateRegionPanel(structureId) {
         html += `<div class="dandiset-list-header">Dandisets <span class="dandiset-list-hint">click to view in 3D</span></div>`;
         for (const did of pageDandisets) {
           const regionCount = (dandisetToStructures[did] || []).length;
+          const hasElectrodes = dandisetsWithElectrodes.has(did);
           html += `
             <div class="dandiset-card" data-dandiset-id="${did}">
               <div class="dandiset-card-top">
+                ${hasElectrodes ? '<span class="electrode-indicator" title="Has electrode coordinates"></span>' : ''}
                 <span class="dandiset-card-id">${did}</span>
                 <span class="dandiset-card-count">${regionCount} region${regionCount !== 1 ? 's' : ''}</span>
                 <a class="dandiset-card-ext" href="https://dandiarchive.org/dandiset/${did}" target="_blank" rel="noopener" title="Open on DANDI Archive">&#8599;</a>

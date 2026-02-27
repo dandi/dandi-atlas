@@ -569,13 +569,14 @@ body {
 .dandiset-card-top {
   display: flex;
   align-items: center;
+  gap: 6px;
   width: 100%;
 }
 
 .dandiset-card-count {
   color: var(--text-secondary);
   font-size: 11px;
-  margin-left: 10px;
+  margin-left: 4px;
   flex: 1;
 }
 
