@@ -30,8 +30,10 @@ from dandi_helpers import (
     check_species_mouse,
     compute_mesh_set,
     download_meshes,
+    extract_desc,
     extract_electrode_coords,
     extract_locations,
+    extract_session,
     extract_subject,
     fetch_allen_structure_graph,
     flatten_structure_graph,
@@ -196,7 +198,8 @@ def process_asset_electrodes(dandiset_id, asset):
 def build_dandiset_assets(label_cache):
     """Convert label cache entries to dandiset_assets.json format.
 
-    Keeps one asset per subject per dandiset.
+    Keeps all assets per subject per dandiset, with session and description
+    metadata extracted from BIDS filenames.
     """
     dandisets = defaultdict(lambda: defaultdict(list))
 
@@ -218,20 +221,30 @@ def build_dandiset_assets(label_cache):
                     })
 
         subject = extract_subject(path)
-        dandisets[ds_id][subject].append({
+        asset_entry = {
             "path": path,
             "asset_id": asset_id,
             "regions": regions,
-        })
+        }
 
-    # Keep first asset per subject (sorted by path)
+        session = extract_session(path)
+        if session:
+            asset_entry["session"] = session
+
+        desc = extract_desc(path)
+        if desc:
+            asset_entry["desc"] = desc
+
+        dandisets[ds_id][subject].append(asset_entry)
+
+    # Keep ALL assets per subject, sorted by path
     result = {}
     for did in sorted(dandisets):
         subjects = dandisets[did]
         assets = []
         for subj in sorted(subjects):
             sorted_assets = sorted(subjects[subj], key=lambda a: a["path"])
-            assets.append(sorted_assets[0])
+            assets.extend(sorted_assets)
         result[did] = assets
 
     return result
@@ -243,14 +256,14 @@ def build_dandiset_electrodes(electrode_cache):
 
     for (ds_id, _), entry in electrode_cache.items():
         if entry.get("coords"):
-            subject = extract_subject(entry["path"])
-            results[ds_id][subject] = entry["coords"]
+            asset_id = entry["asset_id"]
+            results[ds_id][asset_id] = entry["coords"]
 
     output = {}
     for dandiset_id in sorted(results):
-        subjects = results[dandiset_id]
-        if subjects:
-            output[dandiset_id] = dict(sorted(subjects.items()))
+        asset_coords = results[dandiset_id]
+        if asset_coords:
+            output[dandiset_id] = dict(sorted(asset_coords.items()))
 
     return output
 
@@ -390,18 +403,31 @@ def main():
 
         subject_assets = defaultdict(list)
         for asset in all_assets:
+            # TEMPORARY: IBL dandiset 000409 contains legacy file variants that
+            # duplicate data already present in the canonical desc-raw / desc-processed
+            # files. Filter them out to avoid displaying files with wrong localization
+            if ds_id == "000409":
+                fname = asset["path"].split("/")[-1]
+                if (fname.endswith("-processed-only_behavior.nwb")
+                        or "_behavior+ecephys+image.nwb" in fname
+                        or "_ecephys+image.nwb" in fname
+                        or "-raw-only_ecephys+image.nwb" in fname
+                        or (("_behavior+ecephys.nwb" in fname)
+                            and "_desc-processed_" not in fname)):
+                    continue
             subj = extract_subject(asset["path"])
             subject_assets[subj].append(asset)
 
-        # Pick first asset per subject (by path)
+        # Process all assets per subject (sorted by path)
         work_items = []
         for subj in sorted(subject_assets):
             assets = sorted(subject_assets[subj], key=lambda a: a["path"])
-            work_items.append(assets[0])
+            work_items.extend(assets)
 
-        print(f"  {len(work_items)} subjects, processing...")
+        print(f"  {len(work_items)} assets, processing...")
 
         def process_one(asset):
+            """Process a single asset. Returns the label_result status."""
             nonlocal total_assets_processed, total_errors
             asset_id = asset["asset_id"]
             path = asset["path"]
@@ -411,7 +437,7 @@ def main():
             with cache_lock:
                 if cache_key in label_cache:
                     # Already cached, skip
-                    return
+                    return label_cache[cache_key]["status"]
 
             # Process locations
             label_result = process_asset_locations(ds_id, asset, lookups)
@@ -437,8 +463,27 @@ def main():
                     tqdm.write(f"  {path}: {label_result['status']}, {n_regions} regions" +
                                (", has electrodes" if has_coords else ""))
 
+            return label_result["status"]
+
+        # Early stopping: probe first EARLY_STOP_PROBE assets sequentially.
+        # If none have matched locations, skip the rest of this dandiset.
+        EARLY_STOP_PROBE = 5
+        probe_items = work_items[:EARLY_STOP_PROBE]
+        remaining_items = work_items[EARLY_STOP_PROBE:]
+        found_match = False
+
+        for asset in probe_items:
+            status = process_one(asset)
+            if status == "matched":
+                found_match = True
+
+        if not found_match and remaining_items:
+            print(f"  Skipping remaining {len(remaining_items)} assets "
+                  f"(no matches in first {len(probe_items)})")
+            continue
+
         with ThreadPoolExecutor(max_workers=args.workers) as executor:
-            futures = {executor.submit(process_one, asset): asset for asset in work_items}
+            futures = {executor.submit(process_one, asset): asset for asset in remaining_items}
             for future in as_completed(futures):
                 exc = future.exception()
                 if exc:
@@ -448,18 +493,27 @@ def main():
     # ── Step 6: Build data files ──────────────────────────────────────────
     print(f"\n\nStep 6: Building data files...")
 
+    electrodes_dir = DATA_DIR / "electrodes"
+
+    def load_existing_electrodes():
+        """Load existing per-dandiset electrode files into a single dict."""
+        result = {}
+        if electrodes_dir.exists():
+            for fp in electrodes_dir.glob("*.json"):
+                did = fp.stem
+                with open(fp) as f:
+                    result[did] = json.load(f)
+        return result
+
     if not is_full and not args.dandiset:
         # Incremental: merge with existing data
         existing_assets_path = DATA_DIR / "dandiset_assets.json"
-        existing_electrodes_path = DATA_DIR / "dandiset_electrodes.json"
 
         if existing_assets_path.exists():
             with open(existing_assets_path) as f:
                 existing_assets = json.load(f)
-            # Also load the full label cache to get everything
             full_label_cache = load_label_cache()
             dandiset_assets = build_dandiset_assets(full_label_cache)
-            # Merge: updated dandisets replace existing, others kept
             for did in existing_assets:
                 if did not in dandiset_assets and did not in mouse_ids:
                     dandiset_assets[did] = existing_assets[did]
@@ -467,17 +521,12 @@ def main():
             full_label_cache = load_label_cache()
             dandiset_assets = build_dandiset_assets(full_label_cache)
 
-        if existing_electrodes_path.exists():
-            with open(existing_electrodes_path) as f:
-                existing_electrodes = json.load(f)
-            full_electrode_cache = load_electrode_cache()
-            dandiset_electrodes = build_dandiset_electrodes(full_electrode_cache)
-            for did in existing_electrodes:
-                if did not in dandiset_electrodes and did not in mouse_ids:
-                    dandiset_electrodes[did] = existing_electrodes[did]
-        else:
-            full_electrode_cache = load_electrode_cache()
-            dandiset_electrodes = build_dandiset_electrodes(full_electrode_cache)
+        existing_electrodes = load_existing_electrodes()
+        full_electrode_cache = load_electrode_cache()
+        dandiset_electrodes = build_dandiset_electrodes(full_electrode_cache)
+        for did in existing_electrodes:
+            if did not in dandiset_electrodes and did not in mouse_ids:
+                dandiset_electrodes[did] = existing_electrodes[did]
     else:
         # Full or specific: build entirely from cache
         if is_full:
@@ -486,17 +535,13 @@ def main():
         else:
             # Specific dandisets: merge with existing
             existing_assets_path = DATA_DIR / "dandiset_assets.json"
-            existing_electrodes_path = DATA_DIR / "dandiset_electrodes.json"
 
             dandiset_assets = {}
             if existing_assets_path.exists():
                 with open(existing_assets_path) as f:
                     dandiset_assets = json.load(f)
 
-            dandiset_electrodes = {}
-            if existing_electrodes_path.exists():
-                with open(existing_electrodes_path) as f:
-                    dandiset_electrodes = json.load(f)
+            dandiset_electrodes = load_existing_electrodes()
 
             # Replace entries for specified dandisets
             new_assets = build_dandiset_assets(label_cache)
@@ -510,11 +555,14 @@ def main():
     total_assets = sum(len(v) for v in dandiset_assets.values())
     print(f"  dandiset_assets.json: {len(dandiset_assets)} dandisets, {total_assets} assets")
 
-    # Write dandiset_electrodes.json
-    with open(DATA_DIR / "dandiset_electrodes.json", "w") as f:
-        json.dump(dandiset_electrodes, f, separators=(",", ":"))
-    total_electrode_subjects = sum(len(v) for v in dandiset_electrodes.values())
-    print(f"  dandiset_electrodes.json: {len(dandiset_electrodes)} dandisets, {total_electrode_subjects} subjects")
+    # Write per-dandiset electrode files
+    electrodes_dir.mkdir(parents=True, exist_ok=True)
+    total_electrode_assets = 0
+    for dandiset_id, asset_coords in dandiset_electrodes.items():
+        with open(electrodes_dir / f"{dandiset_id}.json", "w") as f:
+            json.dump(asset_coords, f, separators=(",", ":"))
+        total_electrode_assets += len(asset_coords)
+    print(f"  electrodes/: {len(dandiset_electrodes)} files, {total_electrode_assets} assets")
 
     # ── Step 7: Rebuild dandi_regions.json ─────────────────────────────────
     print("\nStep 7: Building dandi_regions.json...")

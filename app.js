@@ -23,31 +23,31 @@ let dandisetToStructures = {};  // dandiset_id -> [structure_ids]
 let dandisetTitles = {};        // dandiset_id -> title string
 let dandisetAssets = {};        // dandiset_id -> [{path, asset_id, regions}]
 let selectedDandiset = null;
-let dandisetElectrodes = {};  // dandiset_id -> {subject_dir: [[x,y,z], ...]}
+let dandisetElectrodes = {};  // cache: dandiset_id -> {asset_id: [[x,y,z], ...]}
 let electrodePoints = null;   // THREE.Points object
 let regionAlpha = 1;          // global opacity multiplier for brain meshes
 let dandisetRegionFilter = null; // structure_id when filtering subjects by region within a dandiset
 let dandisetSubjectCounts = null; // { directSubjects, totalSubjects } when a dandiset is selected
 let hiddenRegionIds = new Set();  // regions toggled off by user in dandiset/subject view
+let dandisetsWithElectrodes = new Set();  // dandiset IDs that have electrode coordinate data
 
 // ── Initialization ─────────────────────────────────────────────────────────
 async function init() {
   updateLoadingText('Fetching data...');
 
-  const [graphResp, regionsResp, manifestResp, assetsResp, electrodesResp, lastUpdatedResp] = await Promise.all([
+  const [graphResp, regionsResp, manifestResp, assetsResp, lastUpdatedResp, electrodeManifestResp] = await Promise.all([
     fetch('data/structure_graph.json').then(r => r.json()),
     fetch('data/dandi_regions.json').then(r => r.json()),
     fetch('data/mesh_manifest.json').then(r => r.json()),
     fetch('data/dandiset_assets.json').then(r => r.json()),
-    fetch('data/dandiset_electrodes.json').then(r => r.json()).catch(() => ({})),
     fetch('data/last_updated.json').then(r => r.json()).catch(() => null),
+    fetch('data/dandisets_with_electrodes.json').then(r => r.json()).catch(() => []),
   ]);
 
   structureGraph = graphResp;
   dandiRegions = regionsResp;
   meshManifest = manifestResp;
   dandisetAssets = assetsResp;
-  dandisetElectrodes = electrodesResp;
 
   // Show last-updated timestamp
   if (lastUpdatedResp && lastUpdatedResp.timestamp) {
@@ -57,6 +57,7 @@ async function init() {
     if (el) el.textContent = `Data updated ${formatted}`;
   }
 
+  dandisetsWithElectrodes = new Set(electrodeManifestResp);
   dataStructureIds = new Set(meshManifest.data_structures);
   ancestorStructureIds = new Set(meshManifest.ancestor_structures);
   noMeshIds = new Set(meshManifest.no_mesh || []);
@@ -768,9 +769,12 @@ function hideSubjectFilter() {
   document.getElementById('subject-filter-bar').classList.add('hidden');
 }
 
-function updateDandisetPanel(dandisetId, structureIds) {
+async function updateDandisetPanel(dandisetId, structureIds) {
   const panel = document.getElementById('region-panel');
   const assets = dandisetAssets[dandisetId] || [];
+
+  // Pre-fetch electrode data for this dandiset (lazy, cached)
+  await fetchElectrodes(dandisetId);
 
   const title = dandisetTitles[dandisetId] || '';
 
@@ -782,10 +786,10 @@ function updateDandisetPanel(dandisetId, structureIds) {
     const subjectId = subjectDir.replace(/^sub-/, '');
 
     if (!subjectMap.has(subjectId)) {
-      subjectMap.set(subjectId, { regions: new Map(), sessionCount: 0, subjectDir });
+      subjectMap.set(subjectId, { regions: new Map(), assets: [], subjectDir });
     }
     const entry = subjectMap.get(subjectId);
-    entry.sessionCount++;
+    entry.assets.push(asset);
     for (const r of asset.regions) {
       if (!entry.regions.has(r.id)) {
         entry.regions.set(r.id, r);
@@ -894,14 +898,60 @@ function updateDandisetPanel(dandisetId, structureIds) {
         const regionIds = JSON.stringify([...entry.regions.keys()]);
         const dandiFilesUrl = `https://dandiarchive.org/dandiset/${dandisetId}/draft/files?location=${encodeURIComponent(entry.subjectDir)}`;
         const regionCount = entry.regions.size;
-        const hasElectrodes = dandisetElectrodes[dandisetId]?.[entry.subjectDir]?.length > 0;
+        const electrodeData = dandisetElectrodes[dandisetId] || {};
+        const hasAnyElectrodes = entry.assets.some(a => electrodeData[a.asset_id]?.length > 0);
+        const isMultiSession = entry.assets.length > 1;
 
-        html += `<div class="asset-card" data-region-ids='${regionIds}' data-subject-dir="${entry.subjectDir}">`;
-        if (hasElectrodes) html += `<span class="electrode-indicator" title="Has electrode coordinates"></span>`;
-        html += `<span class="asset-card-filename">${subjectId}</span>`;
-        html += `<span class="asset-card-region-count">${regionCount} region${regionCount !== 1 ? 's' : ''}</span>`;
-        html += `<a class="asset-card-ext" href="${dandiFilesUrl}" target="_blank" rel="noopener" title="View on DANDI Archive">&#8599;</a>`;
-        html += `</div>`;
+        if (isMultiSession) {
+          // Expandable subject card with session rows
+          html += `<div class="subject-group">`;
+          html += `<div class="asset-card subject-card-expandable" data-region-ids='${regionIds}' data-subject-dir="${entry.subjectDir}">`;
+          if (hasAnyElectrodes) html += `<span class="electrode-indicator" title="Has electrode coordinates"></span>`;
+          html += `<span class="expand-arrow">&#x25B6;</span>`;
+          html += `<span class="asset-card-filename">${subjectId}</span>`;
+          const uniqueSessions = new Set(entry.assets.map(a => a.session || a.path)).size;
+          const sessionWord = uniqueSessions === 1 ? 'session' : 'sessions';
+          const fileInfo = entry.assets.length > uniqueSessions ? `, ${entry.assets.length} files` : '';
+          html += `<span class="asset-card-region-count">${uniqueSessions} ${sessionWord}${fileInfo}, ${regionCount} region${regionCount !== 1 ? 's' : ''}</span>`;
+          html += `<a class="asset-card-ext" href="${dandiFilesUrl}" target="_blank" rel="noopener" title="View on DANDI Archive">&#8599;</a>`;
+          html += `</div>`;
+          html += `<div class="session-list hidden">`;
+          for (const asset of entry.assets) {
+            const sessionLabel = asset.session || '';
+            let descLabel = '';
+            if (asset.desc) {
+              descLabel = ` (${asset.desc})`;
+            } else {
+              // Derive a short type label from the filename
+              const fname = asset.path.split('/').pop();
+              if (fname.includes('processed-only_behavior')) descLabel = ' (behavior-only)';
+              else if (fname.includes('behavior+ecephys+image')) descLabel = ' (processed)';
+              else if (fname.includes('behavior+ecephys')) descLabel = ' (processed)';
+              else if (fname.includes('ecephys+image')) descLabel = ' (ecephys+image)';
+            }
+            const label = sessionLabel ? `ses-${sessionLabel}${descLabel}` : asset.path.split('/').pop();
+            const assetRegionIds = JSON.stringify(asset.regions.map(r => r.id));
+            const sessionHasElectrodes = electrodeData[asset.asset_id]?.length > 0;
+            const tooltip = `Session: ${sessionLabel || 'unknown'}\nPath: ${asset.path}\nAsset ID: ${asset.asset_id}`;
+            html += `<div class="session-row" title="${tooltip.replace(/"/g, '&quot;')}" data-asset-id="${asset.asset_id}" data-region-ids='${assetRegionIds}' data-subject-dir="${entry.subjectDir}">`;
+            if (sessionHasElectrodes) html += `<span class="electrode-indicator" title="Has electrode coordinates"></span>`;
+            html += `<span class="session-row-label">${label}</span>`;
+            html += `<span class="asset-card-region-count">${asset.regions.length} region${asset.regions.length !== 1 ? 's' : ''}</span>`;
+            html += `</div>`;
+          }
+          html += `</div>`;
+          html += `</div>`;
+        } else {
+          // Single-session subject card (original behavior)
+          const singleAsset = entry.assets[0];
+          const singleHasElectrodes = electrodeData[singleAsset.asset_id]?.length > 0;
+          html += `<div class="asset-card" data-region-ids='${regionIds}' data-subject-dir="${entry.subjectDir}" data-asset-id="${singleAsset.asset_id}">`;
+          if (singleHasElectrodes) html += `<span class="electrode-indicator" title="Has electrode coordinates"></span>`;
+          html += `<span class="asset-card-filename">${subjectId}</span>`;
+          html += `<span class="asset-card-region-count">${regionCount} region${regionCount !== 1 ? 's' : ''}</span>`;
+          html += `<a class="asset-card-ext" href="${dandiFilesUrl}" target="_blank" rel="noopener" title="View on DANDI Archive">&#8599;</a>`;
+          html += `</div>`;
+        }
       }
 
       // Pagination controls
@@ -919,8 +969,59 @@ function updateDandisetPanel(dandisetId, structureIds) {
   }
 
   function attachCardListeners() {
-    // Click on subject cards
-    panel.querySelectorAll('.asset-card').forEach(card => {
+    // Expand/collapse for multi-session subject cards
+    panel.querySelectorAll('.subject-card-expandable').forEach(card => {
+      card.addEventListener('click', (e) => {
+        if (e.target.closest('.asset-card-ext')) return;
+        const group = card.closest('.subject-group');
+        const sessionList = group.querySelector('.session-list');
+        const arrow = card.querySelector('.expand-arrow');
+        const isExpanded = group.classList.contains('expanded');
+        if (isExpanded) {
+          group.classList.remove('expanded');
+          sessionList.classList.add('hidden');
+          arrow.classList.remove('expanded');
+        } else {
+          group.classList.add('expanded');
+          sessionList.classList.remove('hidden');
+          arrow.classList.add('expanded');
+        }
+      });
+    });
+
+    // Click on session rows within expanded subject cards
+    panel.querySelectorAll('.session-row').forEach(row => {
+      row.addEventListener('click', () => {
+        const regionIds = JSON.parse(row.dataset.regionIds || '[]');
+        const assetId = row.dataset.assetId;
+        const subjectDir = row.dataset.subjectDir;
+        const sessionLabel = row.querySelector('.session-row-label')?.textContent || '';
+
+        dandisetRegionFilter = null;
+        filterTreeByStructureIds(regionIds);
+        showSubjectFilter(`${subjectDir.replace(/^sub-/, '')} / ${sessionLabel}`);
+        const selEl = document.querySelector('.tree-node-content.selected');
+        if (selEl) selEl.classList.remove('selected');
+
+        if (assetId) {
+          showElectrodePoints(dandisetId, assetId);
+          setHash(`dandiset=${dandisetId}&subject=${subjectDir}&session=${assetId}`);
+        } else {
+          clearElectrodePoints();
+          setHash(`dandiset=${dandisetId}&subject=${subjectDir}`);
+        }
+
+        isolateStructureIds(regionIds);
+        filterRegionToggles(regionIds);
+
+        panel.querySelectorAll('.asset-card').forEach(c => c.classList.remove('asset-card-selected'));
+        panel.querySelectorAll('.session-row').forEach(r => r.classList.remove('session-row-selected'));
+        row.classList.add('session-row-selected');
+      });
+    });
+
+    // Click on single-session subject cards and "All Subjects"
+    panel.querySelectorAll('.asset-card:not(.subject-card-expandable)').forEach(card => {
       card.addEventListener('click', (e) => {
         if (e.target.closest('.asset-card-ext')) return;
         const regionIds = JSON.parse(card.dataset.regionIds || '[]');
@@ -932,14 +1033,11 @@ function updateDandisetPanel(dandisetId, structureIds) {
           hideSubjectFilter();
           clearElectrodePoints();
           setHash(`dandiset=${dandisetId}`);
-          // Deselect tree node
           const selEl = document.querySelector('.tree-node-content.selected');
           if (selEl) selEl.classList.remove('selected');
-          // If we had a region filter, re-render to show all subjects and restore 3D
           if (hadRegionFilter) {
             isolateStructureIds(structureIds);
             updateDandisetPanel(dandisetId, structureIds);
-            // Re-select "All Subjects" card after re-render
             const newAllCard = panel.querySelector('.asset-card[data-all]');
             if (newAllCard) newAllCard.classList.add('asset-card-selected');
             return;
@@ -949,13 +1047,13 @@ function updateDandisetPanel(dandisetId, structureIds) {
           const subjectName = card.querySelector('.asset-card-filename')?.textContent || '';
           filterTreeByStructureIds(regionIds);
           showSubjectFilter(`Subject: ${subjectName}`);
-          // Deselect tree node if any
           const selEl = document.querySelector('.tree-node-content.selected');
           if (selEl) selEl.classList.remove('selected');
+          const assetId = card.dataset.assetId;
           const subjectDir = card.dataset.subjectDir;
-          if (subjectDir) {
-            showElectrodePoints(dandisetId, subjectDir);
-            setHash(`dandiset=${dandisetId}&subject=${subjectDir}`);
+          if (assetId) {
+            showElectrodePoints(dandisetId, assetId);
+            setHash(`dandiset=${dandisetId}&subject=${subjectDir}&session=${assetId}`);
           } else {
             clearElectrodePoints();
             setHash(`dandiset=${dandisetId}`);
@@ -965,6 +1063,7 @@ function updateDandisetPanel(dandisetId, structureIds) {
         filterRegionToggles(card.dataset.all ? null : regionIds);
 
         panel.querySelectorAll('.asset-card').forEach(c => c.classList.remove('asset-card-selected'));
+        panel.querySelectorAll('.session-row').forEach(r => r.classList.remove('session-row-selected'));
         card.classList.add('asset-card-selected');
       });
     });
@@ -1168,27 +1267,64 @@ function filterRegionToggles(regionIds) {
   }
 }
 
-function selectSubjectByDir(dandisetId, subjectDir) {
+function selectSubjectByDir(dandisetId, subjectDir, sessionAssetId) {
   const panel = document.getElementById('region-panel');
+
+  // If a specific session asset is requested, find and click the session row
+  if (sessionAssetId) {
+    const sessionRow = panel.querySelector(`.session-row[data-asset-id="${sessionAssetId}"]`);
+    if (sessionRow) {
+      // Expand the parent subject group first
+      const group = sessionRow.closest('.subject-group');
+      if (group) {
+        group.classList.add('expanded');
+        const sessionList = group.querySelector('.session-list');
+        const arrow = group.querySelector('.expand-arrow');
+        if (sessionList) sessionList.classList.remove('hidden');
+        if (arrow) arrow.classList.add('expanded');
+      }
+      sessionRow.click();
+      return;
+    }
+  }
+
+  // Fall back to selecting the subject card (single-session or expandable)
   const card = panel.querySelector(`.asset-card[data-subject-dir="${subjectDir}"]`);
   if (!card) return;
-  const regionIds = JSON.parse(card.dataset.regionIds || '[]');
-  const subjectName = card.querySelector('.asset-card-filename')?.textContent || '';
-  filterTreeByStructureIds(regionIds);
-  showSubjectFilter(`Subject: ${subjectName}`);
-  showElectrodePoints(dandisetId, subjectDir);
-  isolateStructureIds(regionIds);
-  filterRegionToggles(regionIds);
-  panel.querySelectorAll('.asset-card').forEach(c => c.classList.remove('asset-card-selected'));
-  card.classList.add('asset-card-selected');
+
+  if (card.classList.contains('subject-card-expandable')) {
+    // Expand multi-session card
+    const group = card.closest('.subject-group');
+    if (group) {
+      group.classList.add('expanded');
+      const sessionList = group.querySelector('.session-list');
+      const arrow = card.querySelector('.expand-arrow');
+      if (sessionList) sessionList.classList.remove('hidden');
+      if (arrow) arrow.classList.add('expanded');
+    }
+  } else {
+    // Single-session card: click to select
+    card.click();
+  }
 }
 
 // ── Electrode Points ───────────────────────────────────────────────────────
-function showElectrodePoints(dandisetId, subjectDir) {
+async function fetchElectrodes(dandisetId) {
+  if (dandisetElectrodes[dandisetId]) return dandisetElectrodes[dandisetId];
+  try {
+    const resp = await fetch(`data/electrodes/${dandisetId}.json`);
+    if (!resp.ok) return null;
+    const data = await resp.json();
+    dandisetElectrodes[dandisetId] = data;
+    return data;
+  } catch { return null; }
+}
+
+async function showElectrodePoints(dandisetId, assetId) {
   clearElectrodePoints();
-  const subjects = dandisetElectrodes[dandisetId];
-  if (!subjects) return;
-  const coords = subjects[subjectDir];
+  const assetCoords = await fetchElectrodes(dandisetId);
+  if (!assetCoords) return;
+  const coords = assetCoords[assetId];
   if (!coords || coords.length === 0) return;
 
   // Detect coordinate unit: Allen CCF is in micrometers (max ~13200).
@@ -1334,9 +1470,11 @@ function updateRegionPanel(structureId) {
         html += `<div class="dandiset-list-header">Dandisets <span class="dandiset-list-hint">click to view in 3D</span></div>`;
         for (const did of pageDandisets) {
           const regionCount = (dandisetToStructures[did] || []).length;
+          const hasElectrodes = dandisetsWithElectrodes.has(did);
           html += `
             <div class="dandiset-card" data-dandiset-id="${did}">
               <div class="dandiset-card-top">
+                ${hasElectrodes ? '<span class="electrode-indicator" title="Has electrode coordinates"></span>' : ''}
                 <span class="dandiset-card-id">${did}</span>
                 <span class="dandiset-card-count">${regionCount} region${regionCount !== 1 ? 's' : ''}</span>
                 <a class="dandiset-card-ext" href="https://dandiarchive.org/dandiset/${did}" target="_blank" rel="noopener" title="Open on DANDI Archive">&#8599;</a>
@@ -1748,9 +1886,10 @@ document.getElementById('subject-filter-clear').addEventListener('click', () => 
     if (hadRegionFilter) {
       updateDandisetPanel(selectedDandiset, structureIds);
     }
-    // Deselect subject card, select "All Subjects"
+    // Deselect subject card and session rows, select "All Subjects"
     const panel = document.getElementById('region-panel');
     panel.querySelectorAll('.asset-card').forEach(c => c.classList.remove('asset-card-selected'));
+    panel.querySelectorAll('.session-row').forEach(r => r.classList.remove('session-row-selected'));
     const allCard = panel.querySelector('.asset-card[data-all]');
     if (allCard) allCard.classList.add('asset-card-selected');
   }
@@ -1804,7 +1943,7 @@ async function applyHashState() {
         }
       }
       if (params.subject) {
-        selectSubjectByDir(did, params.subject);
+        selectSubjectByDir(did, params.subject, params.session || null);
       }
     }
   }

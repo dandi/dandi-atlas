@@ -569,13 +569,14 @@ body {
 .dandiset-card-top {
   display: flex;
   align-items: center;
+  gap: 6px;
   width: 100%;
 }
 
 .dandiset-card-count {
   color: var(--text-secondary);
   font-size: 11px;
-  margin-left: 10px;
+  margin-left: 4px;
   flex: 1;
 }
 
@@ -855,6 +856,81 @@ body {
   color: var(--accent-hover);
   background: rgba(83, 168, 182, 0.2);
   border-color: var(--accent);
+}
+
+/* Multi-session expandable subject cards */
+.subject-group {
+  margin-bottom: 6px;
+}
+
+.subject-group .asset-card {
+  margin-bottom: 0;
+}
+
+.subject-card-expandable {
+  border-radius: 8px;
+}
+
+.subject-group.expanded .subject-card-expandable {
+  border-bottom-left-radius: 0;
+  border-bottom-right-radius: 0;
+}
+
+.expand-arrow {
+  font-size: 9px;
+  color: var(--text-secondary);
+  transition: transform 0.15s;
+  flex-shrink: 0;
+  width: 12px;
+  text-align: center;
+}
+
+.expand-arrow.expanded {
+  transform: rotate(90deg);
+}
+
+.session-list.hidden {
+  display: none;
+}
+
+.session-list {
+  border-left: 1px solid rgba(83, 168, 182, 0.15);
+  border-right: 1px solid rgba(83, 168, 182, 0.15);
+  border-bottom: 1px solid rgba(83, 168, 182, 0.15);
+  border-bottom-left-radius: 8px;
+  border-bottom-right-radius: 8px;
+  overflow: hidden;
+}
+
+.session-row {
+  display: flex;
+  align-items: center;
+  padding: 5px 12px 5px 28px;
+  gap: 8px;
+  cursor: pointer;
+  background: rgba(83, 168, 182, 0.04);
+  border-top: 1px solid rgba(83, 168, 182, 0.08);
+  transition: background 0.15s;
+}
+
+.session-row:hover {
+  background: rgba(83, 168, 182, 0.12);
+}
+
+.session-row-selected {
+  background: rgba(83, 168, 182, 0.2);
+  border-left: 2px solid var(--accent);
+  padding-left: 26px;
+}
+
+.session-row-label {
+  flex: 1;
+  font-family: 'SF Mono', 'Menlo', 'Monaco', monospace;
+  font-size: 11px;
+  color: var(--text-primary);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 /* Pagination */
