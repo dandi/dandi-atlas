@@ -14,7 +14,7 @@ from pathlib import Path
 import trimesh
 
 PROJECT_ROOT = Path(__file__).resolve().parent.parent
-MESHES_DIR = PROJECT_ROOT / "data" / "meshes"
+MESHES_DIR = PROJECT_ROOT / "data" / "atlases" / "allen_ccf" / "meshes"
 
 
 def convert_obj_to_glb(obj_path: Path) -> bool:

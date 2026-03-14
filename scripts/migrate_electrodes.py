@@ -8,7 +8,7 @@ per dandiset into data/electrodes/{dandiset_id}.json, then removes the old file.
 import json
 from pathlib import Path
 
-DATA_DIR = Path(__file__).resolve().parent.parent / "data"
+DATA_DIR = Path(__file__).resolve().parent.parent / "data" / "atlases" / "allen_ccf"
 OLD_FILE = DATA_DIR / "dandiset_electrodes.json"
 ELECTRODES_DIR = DATA_DIR / "electrodes"
 ELECTRODE_MANIFEST_FILE = DATA_DIR / "dandisets_with_electrodes.json"

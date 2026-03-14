@@ -24,7 +24,7 @@ from label_anatomy import (
 )
 
 LABEL_CACHE = ANALYZE_DIR / LABEL_CACHE_FILE
-OUTPUT = Path(__file__).resolve().parent.parent / "data" / "dandiset_assets.json"
+OUTPUT = Path(__file__).resolve().parent.parent / "data" / "atlases" / "allen_ccf" / "dandiset_assets.json"
 FILTER_IDS = {997, 8}
 
 

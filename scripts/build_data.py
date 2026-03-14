@@ -13,7 +13,7 @@ import urllib.request
 from pathlib import Path
 
 PROJECT_ROOT = Path(__file__).parent.parent
-DATA_DIR = PROJECT_ROOT / "data"
+DATA_DIR = PROJECT_ROOT / "data" / "atlases" / "allen_ccf"
 MESHES_DIR = DATA_DIR / "meshes"
 
 LABEL_RESULTS_PATH = Path(

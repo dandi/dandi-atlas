@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>3D Allen CCF Brain Atlas — DANDI Explorer</title>
+  <title>3D Brain Atlas — DANDI Explorer</title>
   <link rel="stylesheet" href="style.css?v=5">
 </head>
 <body>
@@ -11,6 +11,10 @@
   <aside id="sidebar-left" class="sidebar">
     <div class="sidebar-header">
       <h2>Brain Regions</h2>
+      <select id="atlas-selector" class="atlas-selector">
+        <option value="allen_ccf">Allen CCF (Mouse)</option>
+        <option value="d99">D99 v2.0 (Macaque)</option>
+      </select>
       <input type="text" id="search-box" placeholder="Search regions..." autocomplete="off">
     </div>
     <div id="dandiset-filter-bar" class="dandiset-filter-bar hidden">

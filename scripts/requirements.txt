@@ -1,5 +1,7 @@
 h5py
+nibabel
 remfile
 requests
+scikit-image
 trimesh
 tqdm
