@@ -14,7 +14,7 @@ LABEL_CACHE = Path(os.environ.get(
     "LABEL_CACHE",
     os.path.expanduser("~/dev/sandbox/analyze-locations/label_cache.jsonl"),
 ))
-OUTPUT = Path(__file__).resolve().parent.parent / "data" / "dandiset_assets.json"
+OUTPUT = Path(__file__).resolve().parent.parent / "data" / "atlases" / "allen_ccf" / "dandiset_assets.json"
 
 FILTER_IDS = {997, 8}  # root, grey (not useful to display)
 

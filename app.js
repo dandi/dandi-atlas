@@ -13,7 +13,65 @@ let selectedId = null;
 let hoveredId = null;
 let loadingCount = 0;
 let brainCenter = new THREE.Vector3();
-const CAM_DIST = 18000;
+
+// ── Atlas Configuration ────────────────────────────────────────────────────
+const ATLAS_CONFIGS = {
+  allen_ccf: {
+    name: "Allen CCF (Mouse)",
+    dataPrefix: "data/atlases/allen_ccf/",
+    camDist: 18000,
+    cameraUp: [0, -1, 0],
+    nearPlane: 1,
+    farPlane: 100000,
+    electrodeSize: 150,
+    coordSystem: 'allen',
+    attribution: 'Atlas: Allen Institute CCF',
+    attributionUrl: 'https://atlas.brain-map.org/',
+    regionLinkTemplate: 'https://atlas.brain-map.org/atlas#atlas=2&structure={id}',
+  },
+  d99: {
+    name: "D99 v2.0 (Macaque)",
+    dataPrefix: "data/atlases/d99/",
+    camDist: 200,
+    cameraUp: [0, 0, 1],
+    nearPlane: 0.1,
+    farPlane: 1000,
+    electrodeSize: 3,
+    coordSystem: 'ras',
+    attribution: 'Atlas: D99 v2 (Saleem & Logothetis)',
+    attributionUrl: 'https://afni.nimh.nih.gov/pub/dist/doc/htmldoc/nonhuman/macaque_tempatl/atlas_d99v2.html',
+    regionLinkTemplate: null,
+  },
+  nmt: {
+    name: "NMT v2.0 sym (Macaque)",
+    dataPrefix: "data/atlases/nmt/",
+    camDist: 200,
+    cameraUp: [0, 0, 1],
+    nearPlane: 0.1,
+    farPlane: 1000,
+    electrodeSize: 3,
+    coordSystem: 'ras',
+    attribution: 'Atlas: NMT v2 (Jung et al. 2021)',
+    attributionUrl: 'https://afni.nimh.nih.gov/pub/dist/doc/htmldoc/nonhuman/macaque_tempatl/template_nmtv2.html',
+    regionLinkTemplate: null,
+  },
+  mebrains: {
+    name: "MEBRAINS (Macaque)",
+    dataPrefix: "data/atlases/mebrains/",
+    camDist: 200,
+    cameraUp: [0, 0, 1],
+    nearPlane: 0.1,
+    farPlane: 1000,
+    electrodeSize: 3,
+    coordSystem: 'ras',
+    attribution: 'Atlas: MEBRAINS (EBRAINS)',
+    attributionUrl: 'https://ebrains.eu/tools/mebrains',
+    regionLinkTemplate: null,
+  },
+};
+
+let activeAtlasKey = 'allen_ccf';
+let activeAtlas = ATLAS_CONFIGS.allen_ccf;
 
 // Sets for quick lookups
 let dataStructureIds = new Set();
@@ -31,17 +89,115 @@ let dandisetSubjectCounts = null; // { directSubjects, totalSubjects } when a da
 let hiddenRegionIds = new Set();  // regions toggled off by user in dandiset/subject view
 let dandisetsWithElectrodes = new Set();  // dandiset IDs that have electrode coordinate data
 
+// ── Atlas Loading ──────────────────────────────────────────────────────────
+async function loadAtlas(atlasKey) {
+  activeAtlasKey = atlasKey;
+  activeAtlas = ATLAS_CONFIGS[atlasKey];
+
+  showLoading();
+  updateLoadingText('Fetching data...');
+
+  // Clear existing state
+  clearElectrodePoints();
+  selectedId = null;
+  hoveredId = null;
+  selectedDandiset = null;
+  dandisetElectrodes = {};
+  dandisetRegionFilter = null;
+  dandisetSubjectCounts = null;
+  hiddenRegionIds = new Set();
+  idToStructure = {};
+  dandisetToStructures = {};
+
+  // Remove existing meshes from scene
+  for (const [id, mesh] of Object.entries(meshObjects)) {
+    scene.remove(mesh);
+    mesh.geometry.dispose();
+    if (mesh.material.dispose) mesh.material.dispose();
+  }
+  meshObjects = {};
+  failedMeshIds.clear();
+
+  const [graphResp, regionsResp, manifestResp, assetsResp, electrodeManifestResp] = await Promise.all([
+    fetch(`${activeAtlas.dataPrefix}structure_graph.json`).then(r => r.json()),
+    fetch(`${activeAtlas.dataPrefix}dandi_regions.json`).then(r => r.json()),
+    fetch(`${activeAtlas.dataPrefix}mesh_manifest.json`).then(r => r.json()),
+    fetch(`${activeAtlas.dataPrefix}dandiset_assets.json`).then(r => r.json()),
+    fetch(`${activeAtlas.dataPrefix}dandisets_with_electrodes.json`).then(r => r.json()).catch(() => []),
+  ]);
+
+  structureGraph = graphResp;
+  dandiRegions = regionsResp;
+  meshManifest = manifestResp;
+  dandisetAssets = assetsResp;
+
+  dandisetsWithElectrodes = new Set(electrodeManifestResp);
+  dataStructureIds = new Set(meshManifest.data_structures);
+  ancestorStructureIds = new Set(meshManifest.ancestor_structures);
+  noMeshIds = new Set(meshManifest.no_mesh || []);
+
+  // Build flat lookup from the tree
+  flattenTree(structureGraph);
+
+  // Build reverse lookup: dandiset -> structure IDs (direct only)
+  for (const [sid, region] of Object.entries(dandiRegions)) {
+    for (const did of region.dandisets) {
+      if (!dandisetToStructures[did]) dandisetToStructures[did] = [];
+      dandisetToStructures[did].push(parseInt(sid));
+    }
+  }
+
+  // Reconfigure camera for this atlas
+  camera.near = activeAtlas.nearPlane;
+  camera.far = activeAtlas.farPlane;
+  camera.up.set(...activeAtlas.cameraUp);
+  camera.updateProjectionMatrix();
+
+  // Update attribution
+  const attrEl = document.querySelector('.ccf-attribution');
+  if (attrEl) {
+    attrEl.textContent = activeAtlas.attribution;
+    attrEl.href = activeAtlas.attributionUrl;
+  }
+
+  buildHierarchyTree();
+
+  updateLoadingText('Loading brain meshes...');
+  await loadInitialMeshes();
+
+  hideLoading();
+
+  // Select root
+  const rootNode = structureGraph[0];
+  if (rootNode) selectRegion(rootNode.id, { expandTree: true, pushState: false });
+
+  // Fetch dandiset titles in background
+  fetchDandisetTitles();
+}
+
 // ── Initialization ─────────────────────────────────────────────────────────
 async function init() {
+  // Check URL parameter for atlas selection
+  const urlParams = new URLSearchParams(window.location.search);
+  const atlasParam = urlParams.get('atlas');
+  if (atlasParam && ATLAS_CONFIGS[atlasParam]) {
+    activeAtlasKey = atlasParam;
+    activeAtlas = ATLAS_CONFIGS[atlasParam];
+  }
+
+  // Set dropdown to match
+  const selector = document.getElementById('atlas-selector');
+  if (selector) selector.value = activeAtlasKey;
+
   updateLoadingText('Fetching data...');
 
   const [graphResp, regionsResp, manifestResp, assetsResp, lastUpdatedResp, electrodeManifestResp] = await Promise.all([
-    fetch('data/structure_graph.json').then(r => r.json()),
-    fetch('data/dandi_regions.json').then(r => r.json()),
-    fetch('data/mesh_manifest.json').then(r => r.json()),
-    fetch('data/dandiset_assets.json').then(r => r.json()),
+    fetch(`${activeAtlas.dataPrefix}structure_graph.json`).then(r => r.json()),
+    fetch(`${activeAtlas.dataPrefix}dandi_regions.json`).then(r => r.json()),
+    fetch(`${activeAtlas.dataPrefix}mesh_manifest.json`).then(r => r.json()),
+    fetch(`${activeAtlas.dataPrefix}dandiset_assets.json`).then(r => r.json()),
     fetch('data/last_updated.json').then(r => r.json()).catch(() => null),
-    fetch('data/dandisets_with_electrodes.json').then(r => r.json()).catch(() => []),
+    fetch(`${activeAtlas.dataPrefix}dandisets_with_electrodes.json`).then(r => r.json()).catch(() => []),
   ]);
 
   structureGraph = graphResp;
@@ -73,6 +229,13 @@ async function init() {
     }
   }
 
+  // Update attribution
+  const attrEl = document.querySelector('.ccf-attribution');
+  if (attrEl) {
+    attrEl.textContent = activeAtlas.attribution;
+    attrEl.href = activeAtlas.attributionUrl;
+  }
+
   updateLoadingText('Setting up 3D scene...');
   setupScene();
   buildHierarchyTree();
@@ -95,6 +258,21 @@ async function init() {
 
   // Fetch dandiset titles in background (non-blocking)
   fetchDandisetTitles();
+
+  // Atlas selector event
+  if (selector) {
+    selector.addEventListener('change', (e) => {
+      const newAtlas = e.target.value;
+      if (newAtlas !== activeAtlasKey) {
+        // Update URL parameter
+        const url = new URL(window.location);
+        url.searchParams.set('atlas', newAtlas);
+        url.hash = '';
+        window.history.replaceState({}, '', url);
+        loadAtlas(newAtlas);
+      }
+    });
+  }
 }
 
 function flattenTree(nodes) {
@@ -156,11 +334,11 @@ function setupScene() {
   camera = new THREE.PerspectiveCamera(
     45,
     viewer.clientWidth / viewer.clientHeight,
-    1,
-    100000
+    activeAtlas.nearPlane,
+    activeAtlas.farPlane
   );
-  camera.position.set(0, 0, 20000);
-  camera.up.set(0, -1, 0);  // Allen CCF: Y increases ventrally, so flip up
+  camera.position.set(0, 0, activeAtlas.camDist);
+  camera.up.set(...activeAtlas.cameraUp);
 
   controls = new OrbitControls(camera, canvas);
   controls.enableDamping = true;
@@ -202,7 +380,7 @@ const failedMeshIds = new Set();
 
 function loadMesh(structureId) {
   return new Promise((resolve) => {
-    const path = `data/meshes/${structureId}.glb`;
+    const path = `${activeAtlas.dataPrefix}meshes/${structureId}.glb`;
     gltfLoader.load(
       path,
       (gltf) => {
@@ -288,7 +466,7 @@ function loadMesh(structureId) {
 
 async function ensureMeshLoaded(structureId) {
   if (meshObjects[structureId]) return meshObjects[structureId];
-  if (failedMeshIds.has(structureId)) return null;
+  if (failedMeshIds.has(structureId) || noMeshIds.has(structureId)) return null;
   return loadMesh(structureId);
 }
 
@@ -301,8 +479,8 @@ async function loadInitialMeshes() {
     (root.children || []).map(c => c.id)
   );
 
-  // Load data structures in batches
-  const allToLoad = [...meshManifest.data_structures];
+  // Load data structures in batches (skip those without meshes)
+  const allToLoad = meshManifest.data_structures.filter(id => !noMeshIds.has(id));
   const batchSize = 20;
   for (let i = 0; i < allToLoad.length; i += batchSize) {
     const batch = allToLoad.slice(i, i + batchSize);
@@ -315,7 +493,7 @@ async function loadInitialMeshes() {
     const box = new THREE.Box3().setFromObject(meshObjects[meshManifest.root_id]);
     brainCenter = box.getCenter(new THREE.Vector3());
     controls.target.copy(brainCenter);
-    camera.position.set(brainCenter.x, brainCenter.y, brainCenter.z + CAM_DIST);
+    camera.position.set(brainCenter.x, brainCenter.y, brainCenter.z + activeAtlas.camDist);
     controls.update();
   }
 }
@@ -1312,7 +1490,7 @@ function selectSubjectByDir(dandisetId, subjectDir, sessionAssetId) {
 async function fetchElectrodes(dandisetId) {
   if (dandisetElectrodes[dandisetId]) return dandisetElectrodes[dandisetId];
   try {
-    const resp = await fetch(`data/electrodes/${dandisetId}.json`);
+    const resp = await fetch(`${activeAtlas.dataPrefix}electrodes/${dandisetId}.json`);
     if (!resp.ok) return null;
     const data = await resp.json();
     dandisetElectrodes[dandisetId] = data;
@@ -1327,16 +1505,18 @@ async function showElectrodePoints(dandisetId, assetId) {
   const coords = assetCoords[assetId];
   if (!coords || coords.length === 0) return;
 
-  // Detect coordinate unit: Allen CCF is in micrometers (max ~13200).
-  // Some NWB files store coords in 10µm voxel units (max ~1320).
+  // Detect coordinate unit for Allen CCF (micrometers vs 10um voxels).
+  // D99 coordinates are already in mm matching the meshes, no scaling needed.
   let scale = 1;
-  let maxVal = 0;
-  for (const c of coords) {
-    for (let j = 0; j < 3; j++) {
-      if (Math.abs(c[j]) > maxVal) maxVal = Math.abs(c[j]);
+  if (activeAtlas.coordSystem === 'allen') {
+    let maxVal = 0;
+    for (const c of coords) {
+      for (let j = 0; j < 3; j++) {
+        if (Math.abs(c[j]) > maxVal) maxVal = Math.abs(c[j]);
+      }
     }
+    if (maxVal > 100 && maxVal < 1500) scale = 10;
   }
-  if (maxVal > 100 && maxVal < 1500) scale = 10;
 
   const geometry = new THREE.BufferGeometry();
   const positions = new Float32Array(coords.length * 3);
@@ -1350,7 +1530,7 @@ async function showElectrodePoints(dandisetId, assetId) {
   const alphaSlider = document.getElementById('electrode-alpha');
   const material = new THREE.PointsMaterial({
     color: 0xff4466,
-    size: 150,
+    size: activeAtlas.electrodeSize,
     sizeAttenuation: true,
     transparent: true,
     opacity: parseFloat(alphaSlider.value),
@@ -1425,7 +1605,8 @@ function updateRegionPanel(structureId) {
   const name = region ? region.name : s.name;
   const acronym = region ? region.acronym : s.acronym;
   const color = region ? region.color_hex_triplet : (s.color_hex_triplet || 'aaaaaa');
-  const atlasUrl = `https://atlas.brain-map.org/atlas#atlas=2&structure=${structureId}`;
+  const atlasLinkTemplate = activeAtlas.regionLinkTemplate;
+  const atlasUrl = atlasLinkTemplate ? atlasLinkTemplate.replace('{id}', structureId) : null;
 
   // Merge all dandisets (direct + sub-region) into one deduplicated list
   let allDandisets = [];
@@ -1445,9 +1626,12 @@ function updateRegionPanel(structureId) {
     const end = Math.min(start + PAGE_SIZE, allDandisets.length);
     const pageDandisets = allDandisets.slice(start, end);
 
+    const extLink = atlasUrl
+      ? ` <a class="region-ext-link" href="${atlasUrl}" target="_blank" rel="noopener" title="View on atlas">&#8599;</a>`
+      : '';
     let html = `
       <div class="region-header">
-        <div class="region-name">${name} <a class="region-ext-link" href="${atlasUrl}" target="_blank" rel="noopener" title="View on Allen Brain Atlas">&#8599;</a></div>
+        <div class="region-name">${name}${extLink}</div>
         <div class="region-acronym">${acronym}</div>
         <div class="region-color-bar" style="background: #${color}"></div>
       </div>
@@ -1772,6 +1956,10 @@ function updateLoadingText(text) {
   if (el) el.textContent = text;
 }
 
+function showLoading() {
+  document.getElementById('loading-overlay').classList.remove('hidden');
+}
+
 function hideLoading() {
   document.getElementById('loading-overlay').classList.add('hidden');
 }
@@ -1784,16 +1972,30 @@ function animate() {
 }
 
 // ── Orientation Buttons ────────────────────────────────────────────────────
-// Allen CCF OBJ coords: X = anterior-posterior, Y = dorsal(low)-ventral(high), Z = left-right
 function setView(view) {
   const c = brainCenter;
-  switch (view) {
-    case 'dorsal':    camera.position.set(c.x, c.y - CAM_DIST, c.z); camera.up.set(-1, 0, 0); break;
-    case 'ventral':   camera.position.set(c.x, c.y + CAM_DIST, c.z); camera.up.set(1, 0, 0);  break;
-    case 'anterior':  camera.position.set(c.x - CAM_DIST, c.y, c.z); camera.up.set(0, -1, 0); break;
-    case 'posterior': camera.position.set(c.x + CAM_DIST, c.y, c.z); camera.up.set(0, -1, 0); break;
-    case 'left':      camera.position.set(c.x, c.y, c.z - CAM_DIST); camera.up.set(0, -1, 0); break;
-    case 'right':     camera.position.set(c.x, c.y, c.z + CAM_DIST); camera.up.set(0, -1, 0); break;
+  const d = activeAtlas.camDist;
+
+  if (activeAtlas.coordSystem === 'ras') {
+    // RAS: X=Right, Y=Anterior, Z=Superior
+    switch (view) {
+      case 'dorsal':    camera.position.set(c.x, c.y, c.z + d); camera.up.set(0, 1, 0); break;
+      case 'ventral':   camera.position.set(c.x, c.y, c.z - d); camera.up.set(0, -1, 0); break;
+      case 'anterior':  camera.position.set(c.x, c.y + d, c.z); camera.up.set(0, 0, 1); break;
+      case 'posterior': camera.position.set(c.x, c.y - d, c.z); camera.up.set(0, 0, 1); break;
+      case 'left':      camera.position.set(c.x - d, c.y, c.z); camera.up.set(0, 0, 1); break;
+      case 'right':     camera.position.set(c.x + d, c.y, c.z); camera.up.set(0, 0, 1); break;
+    }
+  } else {
+    // Allen CCF: X = anterior-posterior, Y = dorsal(low)-ventral(high), Z = left-right
+    switch (view) {
+      case 'dorsal':    camera.position.set(c.x, c.y - d, c.z); camera.up.set(-1, 0, 0); break;
+      case 'ventral':   camera.position.set(c.x, c.y + d, c.z); camera.up.set(1, 0, 0);  break;
+      case 'anterior':  camera.position.set(c.x - d, c.y, c.z); camera.up.set(0, -1, 0); break;
+      case 'posterior': camera.position.set(c.x + d, c.y, c.z); camera.up.set(0, -1, 0); break;
+      case 'left':      camera.position.set(c.x, c.y, c.z - d); camera.up.set(0, -1, 0); break;
+      case 'right':     camera.position.set(c.x, c.y, c.z + d); camera.up.set(0, -1, 0); break;
+    }
   }
   controls.target.copy(c);
   controls.update();

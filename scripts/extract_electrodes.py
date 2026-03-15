@@ -23,7 +23,7 @@ from tqdm import tqdm
 DANDI_API = "https://api.dandiarchive.org/api"
 
 SCRIPT_DIR = Path(__file__).resolve().parent
-DATA_DIR = SCRIPT_DIR.parent / "data"
+DATA_DIR = SCRIPT_DIR.parent / "data" / "atlases" / "allen_ccf"
 ASSETS_FILE = DATA_DIR / "dandiset_assets.json"
 OUTPUT_FILE = DATA_DIR / "dandiset_electrodes.json"
 ELECTRODE_MANIFEST_FILE = DATA_DIR / "dandisets_with_electrodes.json"

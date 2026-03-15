@@ -45,13 +45,13 @@ from dandi_helpers import (
 )
 
 PROJECT_ROOT = Path(__file__).resolve().parent.parent
-DATA_DIR = PROJECT_ROOT / "data"
+DATA_DIR = PROJECT_ROOT / "data" / "atlases" / "allen_ccf"
 MESHES_DIR = DATA_DIR / "meshes"
 SCRIPT_DIR = Path(__file__).resolve().parent
 
 LABEL_CACHE_FILE = SCRIPT_DIR / "label_cache.jsonl"
 ELECTRODE_CACHE_FILE = SCRIPT_DIR / "electrode_cache.jsonl"
-LAST_UPDATED_FILE = DATA_DIR / "last_updated.json"
+LAST_UPDATED_FILE = PROJECT_ROOT / "data" / "last_updated.json"
 
 
 # ---------------------------------------------------------------------------
