@@ -13,3 +13,5 @@ __pycache__/
 scripts/label_cache.jsonl
 scripts/electrode_cache.jsonl
 scripts/d99_electrode_cache.jsonl
+scripts/nmt_electrode_cache.jsonl
+scripts/mebrains_electrode_cache.jsonl

@@ -41,7 +41,33 @@ const ATLAS_CONFIGS = {
     attribution: 'Atlas: D99 v2 (Saleem & Logothetis)',
     attributionUrl: 'https://afni.nimh.nih.gov/pub/dist/doc/htmldoc/nonhuman/macaque_tempatl/atlas_d99v2.html',
     regionLinkTemplate: null,
-  }
+  },
+  nmt: {
+    name: "NMT v2.0 sym (Macaque)",
+    dataPrefix: "data/atlases/nmt/",
+    camDist: 200,
+    cameraUp: [0, 0, 1],
+    nearPlane: 0.1,
+    farPlane: 1000,
+    electrodeSize: 3,
+    coordSystem: 'ras',
+    attribution: 'Atlas: NMT v2 (Jung et al. 2021)',
+    attributionUrl: 'https://afni.nimh.nih.gov/pub/dist/doc/htmldoc/nonhuman/macaque_tempatl/template_nmtv2.html',
+    regionLinkTemplate: null,
+  },
+  mebrains: {
+    name: "MEBRAINS (Macaque)",
+    dataPrefix: "data/atlases/mebrains/",
+    camDist: 200,
+    cameraUp: [0, 0, 1],
+    nearPlane: 0.1,
+    farPlane: 1000,
+    electrodeSize: 3,
+    coordSystem: 'ras',
+    attribution: 'Atlas: MEBRAINS (EBRAINS)',
+    attributionUrl: 'https://ebrains.eu/tools/mebrains',
+    regionLinkTemplate: null,
+  },
 };
 
 let activeAtlasKey = 'allen_ccf';
