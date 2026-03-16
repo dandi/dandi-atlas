@@ -125,7 +125,8 @@
     "dandisets": [
       "000017",
       "000458",
-      "001051"
+      "001051",
+      "DEMO-FOV"
     ],
     "total_file_count": 548,
     "total_dandiset_count": 8,
@@ -138,7 +139,8 @@
       "001051",
       "001260",
       "001326"
-    ]
+    ],
+    "n_dandisets": 4
   },
   "502": {
     "acronym": "SUB",
@@ -196,7 +198,8 @@
       "000728",
       "000871",
       "001051",
-      "001701"
+      "001701",
+      "DEMO-FOV"
     ],
     "total_file_count": 2920,
     "total_dandiset_count": 22,
@@ -223,7 +226,8 @@
       "001051",
       "001420",
       "001701"
-    ]
+    ],
+    "n_dandisets": 18
   },
   "382": {
     "acronym": "CA1",
@@ -341,7 +345,8 @@
       "000728",
       "000871",
       "001051",
-      "001701"
+      "001701",
+      "DEMO-FOV"
     ],
     "total_file_count": 1876,
     "total_dandiset_count": 16,
@@ -362,7 +367,8 @@
       "000871",
       "001051",
       "001701"
-    ]
+    ],
+    "n_dandisets": 13
   },
   "533": {
     "acronym": "VISpm",
@@ -381,7 +387,8 @@
       "000617",
       "000728",
       "000871",
-      "001051"
+      "001051",
+      "DEMO-FOV"
     ],
     "total_file_count": 1492,
     "total_dandiset_count": 14,
@@ -400,7 +407,8 @@
       "000728",
       "000871",
       "001051"
-    ]
+    ],
+    "n_dandisets": 12
   },
   "218": {
     "acronym": "LP",
@@ -561,7 +569,8 @@
       "000617",
       "000728",
       "000871",
-      "001051"
+      "001051",
+      "DEMO-FOV"
     ],
     "total_file_count": 1112,
     "total_dandiset_count": 13,
@@ -579,7 +588,8 @@
       "000728",
       "000871",
       "001051"
-    ]
+    ],
+    "n_dandisets": 11
   },
   "170": {
     "acronym": "LGd",
@@ -691,7 +701,8 @@
       "000017",
       "000458",
       "000579",
-      "001051"
+      "001051",
+      "DEMO-FOV"
     ],
     "total_file_count": 144,
     "total_dandiset_count": 7,
@@ -703,7 +714,8 @@
       "000690",
       "001051",
       "001260"
-    ]
+    ],
+    "n_dandisets": 5
   },
   "718": {
     "acronym": "VPL",
@@ -794,7 +806,8 @@
     "dandisets": [
       "000017",
       "000458",
-      "001051"
+      "001051",
+      "DEMO-FOV"
     ],
     "total_file_count": 172,
     "total_dandiset_count": 7,
@@ -806,7 +819,8 @@
       "001051",
       "001260",
       "001326"
-    ]
+    ],
+    "n_dandisets": 4
   },
   "247": {
     "acronym": "AUD",
@@ -1209,7 +1223,8 @@
       "000402",
       "000458",
       "000728",
-      "001051"
+      "001051",
+      "DEMO-FOV"
     ],
     "total_file_count": 950,
     "total_dandiset_count": 14,
@@ -1228,7 +1243,8 @@
       "000690",
       "000728",
       "001051"
-    ]
+    ],
+    "n_dandisets": 10
   },
   "250": {
     "acronym": "LSc",
@@ -1262,7 +1278,8 @@
     "dandisets": [
       "000017",
       "000458",
-      "001051"
+      "001051",
+      "DEMO-FOV"
     ],
     "total_file_count": 251,
     "total_dandiset_count": 7,
@@ -1274,7 +1291,8 @@
       "001051",
       "001260",
       "001326"
-    ]
+    ],
+    "n_dandisets": 4
   },
   "15": {
     "acronym": "PT",
@@ -1557,7 +1575,8 @@
     "dandiset_count": 2,
     "dandisets": [
       "000017",
-      "001051"
+      "001051",
+      "DEMO-FOV"
     ],
     "total_file_count": 18,
     "total_dandiset_count": 4,
@@ -1566,7 +1585,8 @@
       "001051",
       "001260",
       "001326"
-    ]
+    ],
+    "n_dandisets": 3
   },
   "403": {
     "acronym": "MEA",
@@ -2109,7 +2129,8 @@
       "000402",
       "000458",
       "000728",
-      "001051"
+      "001051",
+      "DEMO-FOV"
     ],
     "total_file_count": 948,
     "total_dandiset_count": 14,
@@ -2128,7 +2149,8 @@
       "000728",
       "001051",
       "001260"
-    ]
+    ],
+    "n_dandisets": 10
   },
   "81": {
     "acronym": "VL",
@@ -2612,7 +2634,8 @@
     "dandisets": [
       "000021",
       "000022",
-      "001051"
+      "001051",
+      "DEMO-FOV"
     ],
     "total_file_count": 55,
     "total_dandiset_count": 5,
@@ -2622,7 +2645,8 @@
       "000690",
       "001051",
       "001260"
-    ]
+    ],
+    "n_dandisets": 4
   },
   "1088": {
     "acronym": "MGm",
@@ -7620,13 +7644,15 @@
     "file_count": 3,
     "dandiset_count": 1,
     "dandisets": [
-      "000409"
+      "000409",
+      "DEMO-FOV"
     ],
     "total_file_count": 3,
     "total_dandiset_count": 1,
     "total_dandisets": [
       "000409"
-    ]
+    ],
+    "n_dandisets": 2
   },
   "977": {
     "acronym": "ECT6a",
@@ -8529,7 +8555,8 @@
     "dandiset_count": 2,
     "dandisets": [
       "000458",
-      "001051"
+      "001051",
+      "DEMO-FOV"
     ],
     "total_file_count": 340,
     "total_dandiset_count": 9,
@@ -8543,7 +8570,8 @@
       "001326",
       "001420",
       "001701"
-    ]
+    ],
+    "n_dandisets": 3
   },
   "329": {
     "acronym": "SSp-bfd",
@@ -8552,7 +8580,8 @@
     "file_count": 24,
     "dandiset_count": 1,
     "dandisets": [
-      "000458"
+      "000458",
+      "DEMO-FOV"
     ],
     "total_file_count": 397,
     "total_dandiset_count": 5,
@@ -8562,7 +8591,8 @@
       "000563",
       "000690",
       "001260"
-    ]
+    ],
+    "n_dandisets": 2
   },
   "337": {
     "acronym": "SSp-ll",
@@ -8571,7 +8601,8 @@
     "file_count": 24,
     "dandiset_count": 1,
     "dandisets": [
-      "000458"
+      "000458",
+      "DEMO-FOV"
     ],
     "total_file_count": 28,
     "total_dandiset_count": 3,
@@ -8579,7 +8610,8 @@
       "000458",
       "001260",
       "001326"
-    ]
+    ],
+    "n_dandisets": 2
   },
   "956": {
     "acronym": "fa",
@@ -8631,7 +8663,8 @@
     "dandiset_count": 2,
     "dandisets": [
       "000458",
-      "001051"
+      "001051",
+      "DEMO-FOV"
     ],
     "total_file_count": 227,
     "total_dandiset_count": 7,
@@ -8643,7 +8676,8 @@
       "001051",
       "001260",
       "001326"
-    ]
+    ],
+    "n_dandisets": 3
   },
   "48": {
     "acronym": "ACAv",
@@ -8674,7 +8708,8 @@
     "file_count": 13,
     "dandiset_count": 1,
     "dandisets": [
-      "000458"
+      "000458",
+      "DEMO-FOV"
     ],
     "total_file_count": 83,
     "total_dandiset_count": 4,
@@ -8683,7 +8718,8 @@
       "000458",
       "001260",
       "001701"
-    ]
+    ],
+    "n_dandisets": 2
   },
   "597": {
     "acronym": "TTd",
@@ -10350,7 +10386,8 @@
     "file_count": 7,
     "dandiset_count": 1,
     "dandisets": [
-      "001051"
+      "001051",
+      "DEMO-FOV"
     ],
     "total_file_count": 40,
     "total_dandiset_count": 5,
@@ -10360,7 +10397,8 @@
       "001051",
       "001260",
       "001326"
-    ]
+    ],
+    "n_dandisets": 2
   },
   "879": {
     "acronym": "RSPd",
@@ -10369,7 +10407,8 @@
     "file_count": 122,
     "dandiset_count": 1,
     "dandisets": [
-      "001051"
+      "001051",
+      "DEMO-FOV"
     ],
     "total_file_count": 409,
     "total_dandiset_count": 7,
@@ -10381,7 +10420,8 @@
       "001326",
       "001420",
       "001701"
-    ]
+    ],
+    "n_dandisets": 2
   },
   "886": {
     "acronym": "RSPv",
@@ -10390,7 +10430,8 @@
     "file_count": 90,
     "dandiset_count": 1,
     "dandisets": [
-      "001051"
+      "001051",
+      "DEMO-FOV"
     ],
     "total_file_count": 294,
     "total_dandiset_count": 5,
@@ -10400,7 +10441,8 @@
       "000690",
       "001051",
       "001326"
-    ]
+    ],
+    "n_dandisets": 2
   },
   "926": {
     "acronym": "ENTm",
@@ -10427,7 +10469,8 @@
     "file_count": 4,
     "dandiset_count": 1,
     "dandisets": [
-      "001051"
+      "001051",
+      "DEMO-FOV"
     ],
     "total_file_count": 67,
     "total_dandiset_count": 3,
@@ -10435,7 +10478,8 @@
       "000690",
       "001051",
       "001701"
-    ]
+    ],
+    "n_dandisets": 2
   },
   "541": {
     "acronym": "TEa",
@@ -10444,14 +10488,16 @@
     "file_count": 2,
     "dandiset_count": 1,
     "dandisets": [
-      "001051"
+      "001051",
+      "DEMO-FOV"
     ],
     "total_file_count": 8,
     "total_dandiset_count": 2,
     "total_dandisets": [
       "001051",
       "001260"
-    ]
+    ],
+    "n_dandisets": 2
   },
   "1096": {
     "acronym": "AMd",
@@ -11458,14 +11504,16 @@
     "file_count": 102,
     "dandiset_count": 1,
     "dandisets": [
-      "001701"
+      "001701",
+      "DEMO-FOV"
     ],
     "total_file_count": 304,
     "total_dandiset_count": 2,
     "total_dandisets": [
       "000690",
       "001701"
-    ]
+    ],
+    "n_dandisets": 2
   },
   "269": {
     "acronym": "VISpl2/3",
@@ -13419,14 +13467,17 @@
     "color_hex_triplet": "188064",
     "file_count": 0,
     "dandiset_count": 0,
-    "dandisets": [],
+    "dandisets": [
+      "DEMO-FOV"
+    ],
     "total_file_count": 16,
     "total_dandiset_count": 3,
     "total_dandisets": [
       "000563",
       "001260",
       "001326"
-    ]
+    ],
+    "n_dandisets": 1
   },
   "480149202": {
     "acronym": "VISrll",
@@ -13487,13 +13538,16 @@
     "color_hex_triplet": "188064",
     "file_count": 0,
     "dandiset_count": 0,
-    "dandisets": [],
+    "dandisets": [
+      "DEMO-FOV"
+    ],
     "total_file_count": 10,
     "total_dandiset_count": 2,
     "total_dandisets": [
       "001260",
       "001326"
-    ]
+    ],
+    "n_dandisets": 1
   },
   "21": {
     "acronym": "lotg",
@@ -13514,12 +13568,15 @@
     "color_hex_triplet": "019399",
     "file_count": 0,
     "dandiset_count": 0,
-    "dandisets": [],
+    "dandisets": [
+      "DEMO-FOV"
+    ],
     "total_file_count": 15,
     "total_dandiset_count": 1,
     "total_dandisets": [
       "001260"
-    ]
+    ],
+    "n_dandisets": 1
   },
   "1002": {
     "acronym": "AUDp",
@@ -13527,12 +13584,15 @@
     "color_hex_triplet": "019399",
     "file_count": 0,
     "dandiset_count": 0,
-    "dandisets": [],
+    "dandisets": [
+      "DEMO-FOV"
+    ],
     "total_file_count": 4,
     "total_dandiset_count": 1,
     "total_dandisets": [
       "001260"
-    ]
+    ],
+    "n_dandisets": 1
   },
   "1027": {
     "acronym": "AUDpo",
@@ -13540,12 +13600,15 @@
     "color_hex_triplet": "019399",
     "file_count": 0,
     "dandiset_count": 0,
-    "dandisets": [],
+    "dandisets": [
+      "DEMO-FOV"
+    ],
     "total_file_count": 12,
     "total_dandiset_count": 1,
     "total_dandisets": [
       "001260"
-    ]
+    ],
+    "n_dandisets": 1
   },
   "353": {
     "acronym": "SSp-n",
@@ -13553,12 +13616,15 @@
     "color_hex_triplet": "188064",
     "file_count": 0,
     "dandiset_count": 0,
-    "dandisets": [],
+    "dandisets": [
+      "DEMO-FOV"
+    ],
     "total_file_count": 4,
     "total_dandiset_count": 1,
     "total_dandisets": [
       "001260"
-    ]
+    ],
+    "n_dandisets": 1
   },
   "619": {
     "acronym": "NLOT",
