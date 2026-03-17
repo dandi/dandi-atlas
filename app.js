@@ -21,6 +21,7 @@ const ATLAS_CONFIGS = {
     dataPrefix: "data/atlases/allen_ccf/",
     camDist: 18000,
     cameraUp: [0, -1, 0],
+    camOffset: [0, 0, 1],  // Z=Right in PIR, lateral view
     nearPlane: 1,
     farPlane: 100000,
     electrodeSize: 150,
@@ -34,6 +35,7 @@ const ATLAS_CONFIGS = {
     dataPrefix: "data/atlases/d99/",
     camDist: 200,
     cameraUp: [0, 0, 1],
+    camOffset: [1, 0, 0],  // X=Right in RAS, lateral view
     nearPlane: 0.1,
     farPlane: 1000,
     electrodeSize: 3,
@@ -47,6 +49,7 @@ const ATLAS_CONFIGS = {
     dataPrefix: "data/atlases/nmt/",
     camDist: 200,
     cameraUp: [0, 0, 1],
+    camOffset: [1, 0, 0],  // X=Right in RAS, lateral view
     nearPlane: 0.1,
     farPlane: 1000,
     electrodeSize: 3,
@@ -60,6 +63,7 @@ const ATLAS_CONFIGS = {
     dataPrefix: "data/atlases/mebrains/",
     camDist: 200,
     cameraUp: [0, 0, 1],
+    camOffset: [1, 0, 0],  // X=Right in RAS, lateral view
     nearPlane: 0.1,
     farPlane: 1000,
     electrodeSize: 3,
@@ -493,7 +497,12 @@ async function loadInitialMeshes() {
     const box = new THREE.Box3().setFromObject(meshObjects[meshManifest.root_id]);
     brainCenter = box.getCenter(new THREE.Vector3());
     controls.target.copy(brainCenter);
-    camera.position.set(brainCenter.x, brainCenter.y, brainCenter.z + activeAtlas.camDist);
+    const off = activeAtlas.camOffset;
+    camera.position.set(
+      brainCenter.x + off[0] * activeAtlas.camDist,
+      brainCenter.y + off[1] * activeAtlas.camDist,
+      brainCenter.z + off[2] * activeAtlas.camDist
+    );
     controls.update();
   }
 }
