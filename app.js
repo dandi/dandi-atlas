@@ -1613,6 +1613,7 @@ async function showElectrodePoints(dandisetId, assetId) {
     sizeAttenuation: true,
     transparent: true,
     opacity: parseFloat(alphaSlider.value),
+    depthTest: false,
   });
 
   electrodePoints = new THREE.Points(geometry, material);
