@@ -632,7 +632,16 @@ function getDescendantIds(structureId) {
 }
 
 function applyDimmed(mesh) {
-  mesh.visible = false;
+  const orig = mesh.userData.originalMaterial;
+  if (orig) {
+    const mat = orig.clone();
+    mat.opacity = Math.min(orig.opacity, 0.08) * regionAlpha;
+    mat.transparent = true;
+    mat.depthWrite = false;
+    mat.needsUpdate = true;
+    mesh.material = mat;
+  }
+  mesh.visible = true;
   mesh.userData.isDimmed = true;
 }
 
@@ -821,8 +830,7 @@ async function selectDandiset(dandisetId, { pushState = true } = {}) {
     }
   }
 
-  // Apply isolation: show active regions, hide everything else (including root)
-  activeSet.delete(meshManifest.root_id);
+  // Apply isolation: show active regions, dim everything else
   for (const [idStr, mesh] of Object.entries(meshObjects)) {
     const id = parseInt(idStr);
     if (activeSet.has(id)) {
@@ -1422,7 +1430,6 @@ async function isolateStructureIds(structureIds) {
     }
   }
 
-  activeSet.delete(meshManifest.root_id);
   for (const [idStr, mesh] of Object.entries(meshObjects)) {
     const id = parseInt(idStr);
     if (activeSet.has(id)) {
