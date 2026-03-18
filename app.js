@@ -14,6 +14,20 @@ let hoveredId = null;
 let loadingCount = 0;
 let brainCenter = new THREE.Vector3();
 
+// ── Helpers ────────────────────────────────────────────────────────────────
+function recreateOrbitControls(target) {
+  if (controls) controls.dispose();
+  controls = new OrbitControls(camera, renderer.domElement);
+  controls.enableDamping = true;
+  controls.dampingFactor = 0.1;
+  controls.rotateSpeed = 0.8;
+  controls.zoomSpeed = 1.2;
+  if (target) {
+    controls.target.copy(target);
+    controls.update();
+  }
+}
+
 // ── Atlas Configuration ────────────────────────────────────────────────────
 const ATLAS_CONFIGS = {
   allen_ccf: {
@@ -348,11 +362,7 @@ function setupScene() {
   camera.position.set(0, 0, activeAtlas.coordSystem === 'allen' ? 20000 : activeAtlas.camDist);
   camera.up.set(...activeAtlas.cameraUp);
 
-  controls = new OrbitControls(camera, canvas);
-  controls.enableDamping = true;
-  controls.dampingFactor = 0.1;
-  controls.rotateSpeed = 0.8;
-  controls.zoomSpeed = 1.2;
+  recreateOrbitControls();
 
   // Lighting
   const ambient = new THREE.AmbientLight(0xffffff, 0.6);
@@ -536,15 +546,7 @@ async function loadInitialMeshes() {
     // Always recreate OrbitControls so it caches a fresh quaternion
     // from the current up vector. Without this, switching atlases
     // leaves the old atlas's quaternion baked into the controls.
-    const canvas = renderer.domElement;
-    controls.dispose();
-    controls = new OrbitControls(camera, canvas);
-    controls.enableDamping = true;
-    controls.dampingFactor = 0.1;
-    controls.rotateSpeed = 0.8;
-    controls.zoomSpeed = 1.2;
-    controls.target.copy(brainCenter);
-    controls.update();
+    recreateOrbitControls(brainCenter);
   }
 }
 
@@ -2078,8 +2080,9 @@ function setView(view) {
       case 'right':     camera.position.set(c.x, c.y, c.z + d); camera.up.set(0, -1, 0); break;
     }
   }
-  controls.target.copy(c);
-  controls.update();
+  // Recreate OrbitControls so it caches a fresh quaternion matching
+  // the new camera.up. Without this, mouse orbit uses the stale axis.
+  recreateOrbitControls(c);
 }
 
 document.getElementById('orient-buttons').addEventListener('click', (e) => {
