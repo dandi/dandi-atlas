@@ -599,15 +599,69 @@ def generate_meshes(nifti_file, meshes_dir, id_to_structure):
         if generated > 0 and generated % 50 == 0:
             print(f"  Generated {generated} meshes...")
 
-    # Add synthetic nodes to no_mesh (they have no volume data)
+    # Generate parent meshes by merging child voxel masks
+    # Collect leaf label IDs for each synthetic parent node
+    parent_to_leaves = {}
+    for node_id, node in id_to_structure.items():
+        if node_id >= CATEGORY_ID_START or node_id in (ROOT_ID, OUTSIDE_ID):
+            continue
+        # This is a leaf region (has a label in the volume)
+        parent_id = node.get("parent_structure_id")
+        while parent_id is not None and parent_id >= CATEGORY_ID_START:
+            if parent_id not in parent_to_leaves:
+                parent_to_leaves[parent_id] = []
+            parent_to_leaves[parent_id].append(node_id)
+            # Also add to grandparent
+            parent_node = id_to_structure.get(parent_id)
+            parent_id = parent_node.get("parent_structure_id") if parent_node else None
+
+    parent_generated = 0
+    for parent_id, leaf_ids in sorted(parent_to_leaves.items()):
+        glb_path = meshes_dir / f"{parent_id}.glb"
+        if glb_path.exists():
+            skipped_existing += 1
+            continue
+
+        # Merge all child voxel masks
+        merged_mask = np.zeros_like(atlas_data, dtype=bool)
+        for leaf_id in leaf_ids:
+            merged_mask |= (atlas_data == leaf_id)
+
+        voxel_count = np.sum(merged_mask)
+        if voxel_count < MIN_VOXELS:
+            skipped_small += 1
+            no_mesh.append(parent_id)
+            continue
+
+        try:
+            verts, faces, _, _ = marching_cubes(merged_mask, level=0.5)
+            verts_homogeneous = np.column_stack([verts, np.ones(len(verts))])
+            verts_world = (affine @ verts_homogeneous.T).T[:, :3]
+            verts_world[:, 0] *= -1
+            faces = faces[:, ::-1]
+            mesh = trimesh.Trimesh(vertices=verts_world, faces=faces)
+            if len(mesh.faces) > TARGET_FACES:
+                mesh = mesh.simplify_quadric_decimation(face_count=TARGET_FACES)
+            mesh.export(str(glb_path), file_type="glb")
+            parent_generated += 1
+        except Exception as exc:
+            print(f"  Failed parent mesh for {parent_id}: {exc}")
+            no_mesh.append(parent_id)
+
+    print(f"  Parent meshes generated: {parent_generated}")
+
+    # Only OUTSIDE_ID goes to no_mesh (category nodes now have meshes)
     no_mesh.append(OUTSIDE_ID)
+    # Add any category nodes that still have no mesh file
     for node_id in id_to_structure:
         if node_id >= CATEGORY_ID_START:
-            no_mesh.append(node_id)
+            if not (meshes_dir / f"{node_id}.glb").exists():
+                no_mesh.append(node_id)
 
     print(
-        f"Meshes: {generated} generated, {skipped_existing} existing, "
-        f"{skipped_small} too small, {len(no_mesh)} no mesh"
+        f"Meshes: {generated} leaf + {parent_generated} parent generated, "
+        f"{skipped_existing} existing, {skipped_small} too small, "
+        f"{len(no_mesh)} no mesh"
     )
     return sorted(set(no_mesh))
 
@@ -933,7 +987,11 @@ def main():
     # Generate meshes
     if args.skip_meshes:
         print("Skipping mesh generation")
-        no_mesh = [OUTSIDE_ID] + [nid for nid in id_to_structure if nid >= CATEGORY_ID_START]
+        # Only mark nodes as no_mesh if they don't have a mesh file on disk
+        no_mesh = [OUTSIDE_ID]
+        for nid in id_to_structure:
+            if nid >= CATEGORY_ID_START and not (meshes_dir / f"{nid}.glb").exists():
+                no_mesh.append(nid)
     else:
         print("Generating meshes from NIfTI volume...")
         no_mesh = generate_meshes(config["nifti"], meshes_dir, id_to_structure)
