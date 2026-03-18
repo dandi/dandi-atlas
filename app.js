@@ -341,7 +341,7 @@ function setupScene() {
     activeAtlas.nearPlane,
     activeAtlas.farPlane
   );
-  camera.position.set(0, 0, activeAtlas.camDist);
+  camera.position.set(0, 0, activeAtlas.coordSystem === 'allen' ? 20000 : activeAtlas.camDist);
   camera.up.set(...activeAtlas.cameraUp);
 
   controls = new OrbitControls(camera, canvas);
@@ -426,8 +426,18 @@ function loadMesh(structureId) {
             opacity,
             side: THREE.DoubleSide,
           });
+        } else if (activeAtlas.coordSystem === 'allen') {
+          // CCF: wireframe context (original behavior)
+          material = new THREE.MeshPhongMaterial({
+            color,
+            transparent: true,
+            opacity: 0.05,
+            wireframe: true,
+            side: THREE.DoubleSide,
+            depthWrite: false,
+          });
         } else {
-          // No data — low-opacity solid for anatomical context
+          // Macaque: low-opacity solid for anatomical context
           material = new THREE.MeshPhongMaterial({
             color,
             transparent: true,
@@ -477,23 +487,27 @@ async function loadInitialMeshes() {
   // Load root brain outline first
   await loadMesh(meshManifest.root_id);
 
-  // Discover all available mesh files, then load them all for anatomical context
-  const meshDir = `${activeAtlas.dataPrefix}meshes/`;
-  let allMeshIds;
-  try {
-    const resp = await fetch(meshDir);
-    const html = await resp.text();
-    // Parse directory listing for .glb files
-    const matches = html.matchAll(/href="(\d+)\.glb"/g);
-    allMeshIds = [...matches].map(m => parseInt(m[1]));
-  } catch {
-    // Fallback to data_structures only if directory listing fails
-    allMeshIds = [...meshManifest.data_structures];
+  // Determine which meshes to load
+  let allToLoad;
+  if (activeAtlas.coordSystem === 'allen') {
+    // CCF: only load data structures (original behavior)
+    allToLoad = [...meshManifest.data_structures];
+  } else {
+    // Macaque: discover all mesh files for full anatomical context
+    let allMeshIds;
+    try {
+      const meshDir = `${activeAtlas.dataPrefix}meshes/`;
+      const resp = await fetch(meshDir);
+      const html = await resp.text();
+      const matches = html.matchAll(/href="(\d+)\.glb"/g);
+      allMeshIds = [...matches].map(m => parseInt(m[1]));
+    } catch {
+      allMeshIds = [...meshManifest.data_structures];
+    }
+    allToLoad = allMeshIds.filter(id =>
+      id !== meshManifest.root_id && !noMeshIds.has(id)
+    );
   }
-
-  const allToLoad = allMeshIds.filter(id =>
-    id !== meshManifest.root_id && !noMeshIds.has(id)
-  );
   const batchSize = 20;
   for (let i = 0; i < allToLoad.length; i += batchSize) {
     const batch = allToLoad.slice(i, i + batchSize);
@@ -505,24 +519,33 @@ async function loadInitialMeshes() {
   if (meshObjects[meshManifest.root_id]) {
     const box = new THREE.Box3().setFromObject(meshObjects[meshManifest.root_id]);
     brainCenter = box.getCenter(new THREE.Vector3());
-    const off = activeAtlas.camOffset;
-    camera.position.set(
-      brainCenter.x + off[0] * activeAtlas.camDist,
-      brainCenter.y + off[1] * activeAtlas.camDist,
-      brainCenter.z + off[2] * activeAtlas.camDist
-    );
-    camera.up.set(...activeAtlas.cameraUp);
 
-    // Recreate OrbitControls so its internal quaternion matches the current up vector
-    const canvas = renderer.domElement;
-    controls.dispose();
-    controls = new OrbitControls(camera, canvas);
-    controls.enableDamping = true;
-    controls.dampingFactor = 0.1;
-    controls.rotateSpeed = 0.8;
-    controls.zoomSpeed = 1.2;
-    controls.target.copy(brainCenter);
-    controls.update();
+    if (activeAtlas.coordSystem === 'allen') {
+      // CCF: original camera setup (no OrbitControls recreation needed)
+      controls.target.copy(brainCenter);
+      camera.position.set(brainCenter.x, brainCenter.y, brainCenter.z + activeAtlas.camDist);
+      controls.update();
+    } else {
+      // Macaque: position along camOffset axis and recreate OrbitControls
+      // to avoid gimbal lock from the degenerate initial position
+      const off = activeAtlas.camOffset;
+      camera.position.set(
+        brainCenter.x + off[0] * activeAtlas.camDist,
+        brainCenter.y + off[1] * activeAtlas.camDist,
+        brainCenter.z + off[2] * activeAtlas.camDist
+      );
+      camera.up.set(...activeAtlas.cameraUp);
+
+      const canvas = renderer.domElement;
+      controls.dispose();
+      controls = new OrbitControls(camera, canvas);
+      controls.enableDamping = true;
+      controls.dampingFactor = 0.1;
+      controls.rotateSpeed = 0.8;
+      controls.zoomSpeed = 1.2;
+      controls.target.copy(brainCenter);
+      controls.update();
+    }
   }
 }
 
@@ -632,17 +655,25 @@ function getDescendantIds(structureId) {
 }
 
 function applyDimmed(mesh) {
-  const orig = mesh.userData.originalMaterial;
-  if (orig) {
-    const mat = orig.clone();
-    mat.opacity = Math.min(orig.opacity, 0.08) * regionAlpha;
-    mat.transparent = true;
-    mat.depthWrite = false;
-    mat.needsUpdate = true;
-    mesh.material = mat;
+  if (activeAtlas.coordSystem === 'allen') {
+    // CCF: hide completely (original behavior)
+    mesh.visible = false;
+    mesh.userData.isDimmed = true;
+  } else {
+    // Macaque: neutral gray ghost for anatomical context
+    const orig = mesh.userData.originalMaterial;
+    if (orig) {
+      const mat = orig.clone();
+      mat.color.set(0x888888);
+      mat.opacity = 0.08 * regionAlpha;
+      mat.transparent = true;
+      mat.depthWrite = false;
+      mat.needsUpdate = true;
+      mesh.material = mat;
+    }
+    mesh.visible = true;
+    mesh.userData.isDimmed = true;
   }
-  mesh.visible = true;
-  mesh.userData.isDimmed = true;
 }
 
 function restoreOriginal(mesh) {
@@ -830,7 +861,8 @@ async function selectDandiset(dandisetId, { pushState = true } = {}) {
     }
   }
 
-  // Apply isolation: show active regions, dim everything else
+  // Apply isolation: show active regions, dim/hide everything else
+  if (activeAtlas.coordSystem === 'allen') activeSet.delete(meshManifest.root_id);
   for (const [idStr, mesh] of Object.entries(meshObjects)) {
     const id = parseInt(idStr);
     if (activeSet.has(id)) {
@@ -1430,6 +1462,7 @@ async function isolateStructureIds(structureIds) {
     }
   }
 
+  if (activeAtlas.coordSystem === 'allen') activeSet.delete(meshManifest.root_id);
   for (const [idStr, mesh] of Object.entries(meshObjects)) {
     const id = parseInt(idStr);
     if (activeSet.has(id)) {
