@@ -674,7 +674,7 @@ function getDescendantIds(structureId) {
 }
 
 function applyDimmed(mesh) {
-  if (backgroundAlpha === 0) {
+  if (!mesh.userData.isRoot || backgroundAlpha === 0) {
     mesh.visible = false;
   } else {
     const orig = mesh.userData.originalMaterial;
@@ -684,9 +684,12 @@ function applyDimmed(mesh) {
       mat.opacity = backgroundAlpha;
       mat.transparent = true;
       mat.depthWrite = false;
+      mat.depthTest = false;
       mat.needsUpdate = true;
       mesh.material = mat;
     }
+    mesh.renderOrder = -1;
+    mesh.scale.setScalar(1);
     mesh.visible = true;
   }
   mesh.userData.isDimmed = true;
@@ -784,6 +787,8 @@ function showRootOnly() {
       mat.depthWrite = regionAlpha >= 1;
       mat.needsUpdate = true;
       mesh.material = mat;
+      mesh.scale.setScalar(1);
+      mesh.renderOrder = 0;
       mesh.visible = true;
       mesh.userData.isDimmed = false;
     } else {
