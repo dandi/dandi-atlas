@@ -45,6 +45,12 @@
         <label for="electrode-alpha">Electrodes</label>
         <input type="range" id="electrode-alpha" min="0" max="1" step="0.05" value="1">
       </div>
+      <div class="viewer-control-row">
+        <label for="fov-alpha">FOV</label>
+        <input type="range" id="fov-alpha" min="0" max="1" step="0.05" value="0.8">
+        <button id="fov-toggle" title="Toggle imaging plane FOV overlay">Show</button>
+        <button id="landmarks-toggle" title="Toggle landmark spheres">Landmarks</button>
+      </div>
     </div>
     <a href="https://atlas.brain-map.org/" target="_blank" rel="noopener" class="ccf-attribution">Atlas: Allen Institute CCF</a>
     <div id="region-toggles-overlay" class="region-toggles-overlay hidden"></div>

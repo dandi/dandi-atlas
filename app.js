@@ -25,6 +25,8 @@ let dandisetAssets = {};        // dandiset_id -> [{path, asset_id, regions}]
 let selectedDandiset = null;
 let dandisetElectrodes = {};  // cache: dandiset_id -> {asset_id: [[x,y,z], ...]}
 let electrodePoints = null;   // THREE.Points object
+let fovPoints = null;         // THREE.Points object for imaging FOV overlay
+let fovLandmarks = null;      // THREE.Group for landmark spheres + labels
 let regionAlpha = 1;          // global opacity multiplier for brain meshes
 let dandisetRegionFilter = null; // structure_id when filtering subjects by region within a dandiset
 let dandisetSubjectCounts = null; // { directSubjects, totalSubjects } when a dandiset is selected
@@ -1371,6 +1373,122 @@ function clearElectrodePoints() {
   document.getElementById('electrode-control-row').classList.add('hidden');
 }
 
+async function showFovPoints() {
+  clearFovPoints();
+  let data;
+  try {
+    const resp = await fetch('data/electrodes/DEMO-FOV.json');
+    if (!resp.ok) return;
+    data = await resp.json();
+  } catch { return; }
+
+  const coords = data['demo-fov-pixels'];
+  if (!coords || coords.length === 0) return;
+  const colorData = data['demo-fov-colors'];
+
+  const geometry = new THREE.BufferGeometry();
+  const positions = new Float32Array(coords.length * 3);
+  for (let i = 0; i < coords.length; i++) {
+    positions[i * 3]     = coords[i][0];
+    positions[i * 3 + 1] = coords[i][1];
+    positions[i * 3 + 2] = coords[i][2];
+  }
+  geometry.setAttribute('position', new THREE.BufferAttribute(positions, 3));
+
+  if (colorData && colorData.length === coords.length) {
+    const colors = new Float32Array(coords.length * 3);
+    for (let i = 0; i < coords.length; i++) {
+      colors[i * 3]     = colorData[i][0];
+      colors[i * 3 + 1] = colorData[i][1];
+      colors[i * 3 + 2] = colorData[i][2];
+    }
+    geometry.setAttribute('color', new THREE.BufferAttribute(colors, 3));
+  }
+
+  const alphaSlider = document.getElementById('fov-alpha');
+  fovPoints = new THREE.Points(geometry, new THREE.PointsMaterial({
+    vertexColors: colorData != null,
+    color: colorData ? 0xffffff : 0x00ccff,
+    size: 80,
+    sizeAttenuation: true,
+    transparent: true,
+    opacity: parseFloat(alphaSlider.value),
+  }));
+  scene.add(fovPoints);
+}
+
+function clearFovPoints() {
+  if (fovPoints) {
+    scene.remove(fovPoints);
+    fovPoints.geometry.dispose();
+    fovPoints.material.dispose();
+    fovPoints = null;
+  }
+}
+
+function makeLabelSprite(text) {
+  const canvas = document.createElement('canvas');
+  canvas.width = 256; canvas.height = 64;
+  const ctx = canvas.getContext('2d');
+  ctx.fillStyle = 'rgba(0,0,0,0.6)';
+  ctx.roundRect(4, 4, canvas.width - 8, canvas.height - 8, 8);
+  ctx.fill();
+  ctx.fillStyle = '#ffffff';
+  ctx.font = 'bold 28px sans-serif';
+  ctx.textAlign = 'center';
+  ctx.textBaseline = 'middle';
+  ctx.fillText(text, canvas.width / 2, canvas.height / 2);
+  const tex = new THREE.CanvasTexture(canvas);
+  const mat = new THREE.SpriteMaterial({ map: tex, transparent: true, depthTest: false });
+  const sprite = new THREE.Sprite(mat);
+  sprite.scale.set(1200, 300, 1);
+  return sprite;
+}
+
+async function showFovLandmarks() {
+  clearFovLandmarks();
+  let data;
+  try {
+    const resp = await fetch('data/electrodes/DEMO-FOV.json');
+    if (!resp.ok) return;
+    data = await resp.json();
+  } catch { return; }
+
+  const landmarks = data['demo-fov-landmarks'];
+  if (!landmarks || landmarks.length === 0) return;
+
+  fovLandmarks = new THREE.Group();
+  const sphereGeo = new THREE.SphereGeometry(200, 16, 16);
+  for (const lm of landmarks) {
+    const [x, y, z] = lm.xyz;
+    const color = new THREE.Color(lm.color);
+    const mesh = new THREE.Mesh(sphereGeo, new THREE.MeshPhongMaterial({ color, depthTest: false }));
+    mesh.position.set(x, y, z);
+    mesh.renderOrder = 999;
+    fovLandmarks.add(mesh);
+
+    const sprite = makeLabelSprite(lm.label);
+    sprite.position.set(x, y - 400, z);
+    sprite.renderOrder = 1000;
+    fovLandmarks.add(sprite);
+  }
+  scene.add(fovLandmarks);
+}
+
+function clearFovLandmarks() {
+  if (fovLandmarks) {
+    fovLandmarks.traverse(obj => {
+      if (obj.geometry) obj.geometry.dispose();
+      if (obj.material) {
+        if (obj.material.map) obj.material.map.dispose();
+        obj.material.dispose();
+      }
+    });
+    scene.remove(fovLandmarks);
+    fovLandmarks = null;
+  }
+}
+
 function selectRegion(structureId, { expandTree = true, pushState = true } = {}) {
   // Deselect previous
   if (selectedId !== null) {
@@ -1862,6 +1980,41 @@ document.getElementById('region-alpha').addEventListener('input', (e) => {
       mesh.material.opacity = orig.opacity * regionAlpha;
       mesh.material.transparent = mesh.material.opacity < 1;
       mesh.material.needsUpdate = true;
+    }
+  }
+});
+
+// ── FOV Overlay Controls ─────────────────────────────────────────────────────
+document.getElementById('fov-toggle').addEventListener('click', () => {
+  const btn = document.getElementById('fov-toggle');
+  if (fovPoints) {
+    clearFovPoints();
+    btn.textContent = 'Show';
+  } else {
+    showFovPoints();
+    btn.textContent = 'Hide';
+  }
+});
+
+document.getElementById('landmarks-toggle').addEventListener('click', () => {
+  const btn = document.getElementById('landmarks-toggle');
+  if (fovLandmarks) {
+    clearFovLandmarks();
+    btn.textContent = 'Landmarks';
+  } else {
+    showFovLandmarks();
+    btn.textContent = 'Hide Landmarks';
+  }
+});
+
+document.getElementById('fov-alpha').addEventListener('input', (e) => {
+  const val = parseFloat(e.target.value);
+  if (fovPoints) {
+    if (val === 0) {
+      scene.remove(fovPoints);
+    } else {
+      if (!fovPoints.parent) scene.add(fovPoints);
+      fovPoints.material.opacity = val;
     }
   }
 });
