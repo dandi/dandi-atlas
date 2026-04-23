@@ -411,7 +411,10 @@ function loadMesh(structureId) {
         // Get color and style based on whether this structure has data
         const isRoot = structureId === meshManifest.root_id;
         const region = dandiRegions[String(structureId)];
-        const hasData = !!region;  // has direct or descendant data
+        // Root is never treated as a data region even if a stale
+        // dandi_regions.json carries a zero-count entry for it — that was
+        // visible in NMT as a "0 dandisets" tooltip on hover of the outline.
+        const hasData = !isRoot && !!region;
         const s = idToStructure[structureId];
 
         let color = 0xaaaaaa;
@@ -559,10 +562,13 @@ function onMouseMove(event) {
 
   raycaster.setFromCamera(mouse, camera);
 
-  // Only pick visible data meshes; for macaque also include root so clicking
-  // the outline resets to overview.
+  // Pick visible data meshes. Root is also pickable but only when it's not
+  // in the dimmed outline state — i.e. at the init (atlas) view only. That
+  // gates the root tooltip to the init view and prevents the stale
+  // "0 dandisets" flash that stale dandi_regions entries would otherwise
+  // cause on hover of the silhouette during a selection.
   const pickable = Object.values(meshObjects).filter(
-    m => m.visible && (m.userData.isData || (m.userData.isRoot && activeAtlas.coordSystem !== 'allen'))
+    m => m.visible && (m.userData.isData || (m.userData.isRoot && !m.userData.isDimmed))
   );
   const intersects = raycaster.intersectObjects(pickable, false);
 
@@ -579,14 +585,18 @@ function onMouseMove(event) {
       highlightMesh(sid);
     }
 
-    // Update tooltip
+    // Update tooltip. For root, use the aggregate counts (total across all
+    // descendants) since root itself has 0 direct annotations.
     const region = dandiRegions[String(sid)];
     if (region) {
+      const isRoot = hit.userData.isRoot;
+      const dsCount = isRoot ? (region.total_dandiset_count || 0) : region.dandiset_count;
+      const fileCount = isRoot ? (region.total_file_count || 0) : region.file_count;
       tooltip.classList.remove('hidden');
       tooltip.innerHTML = `
         <div class="tooltip-name">${region.name}</div>
         <div class="tooltip-acronym">${region.acronym}</div>
-        <div class="tooltip-info">${region.dandiset_count} dandiset${region.dandiset_count !== 1 ? 's' : ''} &middot; ${region.file_count} files</div>
+        <div class="tooltip-info">${dsCount} dandiset${dsCount !== 1 ? 's' : ''} &middot; ${fileCount} files</div>
       `;
       tooltip.style.left = (event.clientX - renderer.domElement.getBoundingClientRect().left + 15) + 'px';
       tooltip.style.top = (event.clientY - renderer.domElement.getBoundingClientRect().top + 15) + 'px';
@@ -632,18 +642,12 @@ function onClick(event) {
 
   raycaster.setFromCamera(mouse, camera);
 
-  const pickable = Object.values(meshObjects).filter(
-    m => m.visible && (m.userData.isData || (m.userData.isRoot && activeAtlas.coordSystem !== 'allen'))
-  );
+  const pickable = Object.values(meshObjects).filter(m => m.userData.isData && m.visible);
   const intersects = raycaster.intersectObjects(pickable, false);
 
   if (intersects.length > 0) {
-    const hit = intersects[0].object;
-    const sid = hit.userData.structureId;
-    if (hit.userData.isRoot) {
-      if (selectedDandiset) clearDandisetFilter();
-      selectRegion(meshManifest.root_id);
-    } else if (selectedDandiset) {
+    const sid = intersects[0].object.userData.structureId;
+    if (selectedDandiset) {
       filterDandisetPanelByRegion(sid);
     } else {
       selectRegion(sid);
@@ -664,67 +668,59 @@ function getDescendantIds(structureId) {
 
 function applyDimmed(mesh) {
   if (activeAtlas.coordSystem === 'allen') {
-    // CCF: hide completely (original behavior)
+    // CCF: hide completely.
     mesh.visible = false;
     mesh.userData.isDimmed = true;
-  } else {
-    // Macaque visibility policy: hide every non-root mesh. Root becomes a
-    // translucent silhouette via the depthTest=false outline trick so users
-    // keep spatial orientation without paying the overdraw cost of 380+
-    // overlapping transparent context meshes.
-    //
-    // At dandiset selection, the Selected set is each dandiset data region's
-    // exact `brain_region_id` mesh — no hierarchy rollup. If a future
-    // dandiset annotates at mixed levels (e.g. some sessions at M1, some at
-    // motor_cortex), a descendant could be visually hidden inside an opaque
-    // ancestor. Revisit the policy when that happens. See
-    // obsidian_docs/3d_visualization/atlas_visibility_and_opacity_policy.md
-    if (mesh.userData.isRoot) {
-      if (!mesh.userData.outlineMaterial) {
-        const orig = mesh.userData.originalMaterial;
-        const color = orig.color ? orig.color.clone() : new THREE.Color(0xcccccc);
-        mesh.userData.outlineMaterial = new THREE.ShaderMaterial({
-          uniforms: {
-            uColor: { value: color },
-            uRimPower: { value: 2.5 },
-            uRimStrength: { value: 0.9 },
-          },
-          vertexShader: `
-            varying vec3 vNormal;
-            varying vec3 vViewDir;
-            void main() {
-              vec4 mvPosition = modelViewMatrix * vec4(position, 1.0);
-              vNormal = normalize(normalMatrix * normal);
-              vViewDir = normalize(-mvPosition.xyz);
-              gl_Position = projectionMatrix * mvPosition;
-            }
-          `,
-          fragmentShader: `
-            uniform vec3 uColor;
-            uniform float uRimPower;
-            uniform float uRimStrength;
-            varying vec3 vNormal;
-            varying vec3 vViewDir;
-            void main() {
-              float facing = abs(dot(normalize(vNormal), vViewDir));
-              float rim = pow(1.0 - facing, uRimPower);
-              gl_FragColor = vec4(uColor, rim * uRimStrength);
-            }
-          `,
-          transparent: true,
-          depthTest: true,
-          depthWrite: false,
-          side: THREE.FrontSide,
-        });
-      }
-      mesh.material = mesh.userData.outlineMaterial;
-      mesh.renderOrder = -1;
-      mesh.visible = true;
-    } else {
-      mesh.visible = false;
-    }
-    mesh.userData.isDimmed = true;
+    return;
   }
+  // Macaque: non-root meshes hide. Root becomes a fresnel-rim silhouette so
+  // the selected region has a spatial context without the "fog" that a
+  // flat-alpha outline produced.
+  if (mesh.userData.isRoot) {
+    if (!mesh.userData.outlineMaterial) {
+      const orig = mesh.userData.originalMaterial;
+      const color = orig.color ? orig.color.clone() : new THREE.Color(0xcccccc);
+      mesh.userData.outlineMaterial = new THREE.ShaderMaterial({
+        uniforms: {
+          uColor: { value: color },
+          uRimPower: { value: 2.5 },
+          uRimStrength: { value: 0.9 },
+        },
+        vertexShader: `
+          varying vec3 vNormal;
+          varying vec3 vViewDir;
+          void main() {
+            vec4 mvPosition = modelViewMatrix * vec4(position, 1.0);
+            vNormal = normalize(normalMatrix * normal);
+            vViewDir = normalize(-mvPosition.xyz);
+            gl_Position = projectionMatrix * mvPosition;
+          }
+        `,
+        fragmentShader: `
+          uniform vec3 uColor;
+          uniform float uRimPower;
+          uniform float uRimStrength;
+          varying vec3 vNormal;
+          varying vec3 vViewDir;
+          void main() {
+            float facing = abs(dot(normalize(vNormal), vViewDir));
+            float rim = pow(1.0 - facing, uRimPower);
+            gl_FragColor = vec4(uColor, rim * uRimStrength);
+          }
+        `,
+        transparent: true,
+        depthTest: true,
+        depthWrite: false,
+        side: THREE.FrontSide,
+      });
+    }
+    mesh.material = mesh.userData.outlineMaterial;
+    mesh.renderOrder = -1;
+    mesh.visible = true;
+  } else {
+    mesh.visible = false;
+  }
+  mesh.userData.isDimmed = true;
 }
 
 function restoreOriginal(mesh) {
@@ -741,19 +737,14 @@ function restoreOriginal(mesh) {
 function applyActive(mesh) {
   const orig = mesh.userData.originalMaterial;
   const mat = orig.clone();
+  mat.opacity = regionAlpha;
+  mat.transparent = regionAlpha < 1;
+  mat.depthWrite = regionAlpha >= 1;
   if (mesh.userData.isRoot && activeAtlas.coordSystem !== 'allen') {
-    // Macaque: when root is THE active mesh (init view, no selection), render
-    // it as a solid brain shape at full alpha. Reset any outline-mode flags
-    // that applyDimmed may have set previously.
-    mat.opacity = regionAlpha;
-    mat.transparent = regionAlpha < 1;
-    mat.depthWrite = regionAlpha >= 1;
+    // Macaque init view: reset any outline-mode flags applyDimmed may have
+    // left on the mesh so root renders as a solid brain.
     mat.depthTest = true;
     mesh.renderOrder = 0;
-  } else {
-    mat.opacity = regionAlpha;
-    mat.transparent = regionAlpha < 1;
-    mat.depthWrite = regionAlpha >= 1;
   }
   mat.needsUpdate = true;
   mesh.material = mat;
@@ -1010,11 +1001,17 @@ function clearDandisetFilter() {
     el.classList.remove('dandiset-active');
   });
 
-  // Restore 3D view
-  showAllRegions();
+  // Restore 3D view to init state. Allen keeps showAllRegions (restores the
+  // wireframe-context frosted-brain init look); macaque routes through
+  // selectRegion(root) so only root is visible.
   selectedDandiset = null;
   selectedId = null;
   dandisetSubjectCounts = null;
+  if (activeAtlas.coordSystem === 'allen') {
+    showAllRegions();
+  } else if (meshManifest && meshManifest.root_id != null) {
+    selectRegion(meshManifest.root_id, { pushState: false, expandTree: false });
+  }
 
   // Clear URL hash
   history.pushState(null, '', window.location.pathname);
@@ -2243,7 +2240,7 @@ function setHash(hash) {
 async function applyHashState() {
   const hash = location.hash.slice(1); // remove '#'
   if (!hash) {
-    // No hash — show default view
+    // No hash — show default (init) view.
     if (selectedId !== null || selectedDandiset !== null) {
       selectedId = null;
       selectedDandiset = null;
@@ -2253,7 +2250,16 @@ async function applyHashState() {
       clearElectrodePoints();
       const prevEl = document.querySelector('.tree-node-content.selected');
       if (prevEl) prevEl.classList.remove('selected');
-      showAllRegions();
+      // Allen: restore all loaded data-region meshes to their original
+      // wireframe-context opacity (the "frosted brain" init look).
+      // Macaque: route through selectRegion(root) so only root is visible,
+      // matching startup. showAllRegions on macaque would leak previously
+      // loaded region meshes into the init view.
+      if (activeAtlas.coordSystem === 'allen') {
+        showAllRegions();
+      } else if (meshManifest && meshManifest.root_id != null) {
+        selectRegion(meshManifest.root_id, { pushState: false, expandTree: false });
+      }
       updateTreeBadges();
       // Clear dandiset filter bar
       document.getElementById('dandiset-filter-bar').classList.add('hidden');

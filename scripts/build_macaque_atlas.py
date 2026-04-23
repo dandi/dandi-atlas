@@ -2024,15 +2024,18 @@ def main():
         )
     else:
         print("Generating meshes from NIfTI volume...")
-        root_pial_surfaces = None
-        if args.atlas == "mebrains":
-            lh_pial, rh_pial = ensure_mebrains_pial_cache()
-            if lh_pial is not None and rh_pial is not None:
-                root_pial_surfaces = [lh_pial, rh_pial]
+        # MEBRAINS ships its pial as two separate LH / RH FreeSurfer shells
+        # with an open midline. Using them as the root leaves every medial-wall
+        # parcellation label (e.g. PEc, PEl, Opt, medial motor areas) falling
+        # into that gap, visually protruding from the outline. Marching cubes
+        # on MEBRAINS_T1.nii.gz gives a single watertight shell that wraps
+        # both hemispheres and the midline, with a smoother dihedral
+        # distribution than the pial. See debug_output/mebrains_root_analysis
+        # for the full containment / smoothness comparison.
         no_mesh = generate_meshes(
             config["nifti"], meshes_dir, id_to_structure,
             template_nifti=config.get("template_nifti"),
-            root_pial_surfaces=root_pial_surfaces,
+            root_pial_surfaces=None,
         )
 
     # DANDI data
