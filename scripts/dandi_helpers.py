@@ -419,6 +419,7 @@ def extract_session(path):
     if not match:
         return None
     session = match.group(1)
+    session = re.sub(r"\.nwb$", "", session)
     session = re.sub(r"-processed-only$", "", session)
     return session
 
