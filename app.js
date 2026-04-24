@@ -39,6 +39,7 @@ const ATLAS_CONFIGS = {
     nearPlane: 1,
     farPlane: 100000,
     electrodeSize: 150,
+    electrodePickThreshold: 180,
     rootOpacity: 0.06,
     coordSystem: 'allen',
     attribution: 'Atlas: Allen Institute CCF',
@@ -54,6 +55,7 @@ const ATLAS_CONFIGS = {
     nearPlane: 0.1,
     farPlane: 1000,
     electrodeSize: 3,
+    electrodePickThreshold: 4,
     rootOpacity: 0.3,
     coordSystem: 'ras',
     attribution: 'Atlas: D99 v2 (Saleem & Logothetis)',
@@ -69,6 +71,7 @@ const ATLAS_CONFIGS = {
     nearPlane: 0.1,
     farPlane: 1000,
     electrodeSize: 3,
+    electrodePickThreshold: 4,
     rootOpacity: 0.3,
     coordSystem: 'ras',
     attribution: 'Atlas: NMT v2 (Jung et al. 2021)',
@@ -84,12 +87,24 @@ const ATLAS_CONFIGS = {
     nearPlane: 0.1,
     farPlane: 1000,
     electrodeSize: 3,
+    electrodePickThreshold: 4,
     rootOpacity: 0.25,
     coordSystem: 'ras',
     attribution: 'Atlas: MEBRAINS (EBRAINS)',
     attributionUrl: 'https://ebrains.eu/tools/mebrains',
     regionLinkTemplate: null,
   },
+};
+
+// Short label shown before electrode coordinates in the hover tooltip.
+// Each atlas has its own coordinate frame (Allen uses CCF µm in PIR;
+// macaque atlases use native RAS mm), so the tooltip should not lie by
+// calling everything "CCF".
+const ATLAS_COORD_LABELS = {
+  allen_ccf: 'CCF',
+  d99: 'D99',
+  nmt: 'NMT',
+  mebrains: 'MEBRAINS',
 };
 
 let activeAtlasKey = 'allen_ccf';
@@ -125,6 +140,11 @@ const SESSION_ELECTRODE_COLORS = [
 async function loadAtlas(atlasKey) {
   activeAtlasKey = atlasKey;
   activeAtlas = ATLAS_CONFIGS[atlasKey];
+
+  // Re-tune the electrode picking tolerance for the new atlas's world scale
+  // (µm vs mm). Without this the old threshold carries over and hovers pick
+  // incorrectly on the new atlas.
+  if (raycaster) raycaster.params.Points.threshold = activeAtlas.electrodePickThreshold;
 
   showLoading();
   updateLoadingText('Fetching data...');
@@ -384,9 +404,12 @@ function setupScene() {
   dirLight2.position.set(-10000, -5000, -10000);
   scene.add(dirLight2);
 
-  // Raycaster for picking
+  // Raycaster for picking. Points threshold is the world-space distance
+  // tolerance for Three.js to register an electrode as "hit" by the ray,
+  // so it must match the scale of the atlas (µm for Allen, mm for macaque).
+  // The value is read from activeAtlas on each atlas switch in loadAtlas.
   raycaster = new THREE.Raycaster();
-  raycaster.params.Points.threshold = 180;
+  raycaster.params.Points.threshold = activeAtlas.electrodePickThreshold;
   mouse = new THREE.Vector2();
 
   // Events
@@ -595,7 +618,7 @@ function onMouseMove(event) {
           <div class="tooltip-name">Electrode ${point.index + 1}</div>
           <div class="tooltip-acronym">${escapeHtml(point.sessionLabel)}</div>
           <div class="tooltip-info">${escapeHtml(point.subjectLabel)} &middot; ${escapeHtml(point.assetLabel)}</div>
-          <div class="tooltip-info">CCF: ${formatCoord(point.coord[0])}, ${formatCoord(point.coord[1])}, ${formatCoord(point.coord[2])}</div>
+          <div class="tooltip-info">${ATLAS_COORD_LABELS[activeAtlasKey] || activeAtlasKey}: ${formatCoord(point.coord[0])}, ${formatCoord(point.coord[1])}, ${formatCoord(point.coord[2])}</div>
         `;
         tooltip.style.left = (event.clientX - rect.left + 15) + 'px';
         tooltip.style.top = (event.clientY - rect.top + 15) + 'px';
