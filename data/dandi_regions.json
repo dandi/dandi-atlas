@@ -1,4 +1,79 @@
 {
+  "329": {
+    "acronym": "SSp-bfd",
+    "name": "Primary somatosensory area, barrel field",
+    "color_hex_triplet": "188064",
+    "file_count": 48,
+    "dandiset_count": 2,
+    "dandisets": [
+      "000458",
+      "001791"
+    ],
+    "total_file_count": 421,
+    "total_dandiset_count": 6,
+    "total_dandisets": [
+      "000409",
+      "000458",
+      "000563",
+      "000690",
+      "001260",
+      "001791"
+    ]
+  },
+  "385": {
+    "acronym": "VISp",
+    "name": "Primary visual area",
+    "color_hex_triplet": "08858C",
+    "file_count": 2167,
+    "dandiset_count": 18,
+    "dandisets": [
+      "000017",
+      "000021",
+      "000022",
+      "000037",
+      "000039",
+      "000049",
+      "000050",
+      "000150",
+      "000402",
+      "000458",
+      "000488",
+      "000535",
+      "000617",
+      "000728",
+      "000871",
+      "001051",
+      "001701",
+      "001791"
+    ],
+    "total_file_count": 2922,
+    "total_dandiset_count": 23,
+    "total_dandisets": [
+      "000017",
+      "000021",
+      "000022",
+      "000037",
+      "000039",
+      "000049",
+      "000050",
+      "000150",
+      "000248",
+      "000253",
+      "000402",
+      "000458",
+      "000488",
+      "000535",
+      "000563",
+      "000617",
+      "000690",
+      "000728",
+      "000871",
+      "001051",
+      "001420",
+      "001701",
+      "001791"
+    ]
+  },
   "31": {
     "acronym": "ACA",
     "name": "Anterior cingulate area",
@@ -171,58 +246,6 @@
       "000690",
       "001051",
       "001326"
-    ]
-  },
-  "385": {
-    "acronym": "VISp",
-    "name": "Primary visual area",
-    "color_hex_triplet": "08858C",
-    "file_count": 2165,
-    "dandiset_count": 17,
-    "dandisets": [
-      "000017",
-      "000021",
-      "000022",
-      "000037",
-      "000039",
-      "000049",
-      "000050",
-      "000150",
-      "000402",
-      "000458",
-      "000488",
-      "000535",
-      "000617",
-      "000728",
-      "000871",
-      "001051",
-      "001701"
-    ],
-    "total_file_count": 2920,
-    "total_dandiset_count": 22,
-    "total_dandisets": [
-      "000017",
-      "000021",
-      "000022",
-      "000037",
-      "000039",
-      "000049",
-      "000050",
-      "000150",
-      "000248",
-      "000253",
-      "000402",
-      "000458",
-      "000488",
-      "000535",
-      "000563",
-      "000617",
-      "000690",
-      "000728",
-      "000871",
-      "001051",
-      "001420",
-      "001701"
     ]
   },
   "382": {
@@ -834,8 +857,8 @@
       "000017",
       "001051"
     ],
-    "total_file_count": 735,
-    "total_dandiset_count": 9,
+    "total_file_count": 759,
+    "total_dandiset_count": 10,
     "total_dandisets": [
       "000017",
       "000409",
@@ -845,7 +868,8 @@
       "001051",
       "001260",
       "001326",
-      "001701"
+      "001701",
+      "001791"
     ]
   },
   "672": {
@@ -2320,8 +2344,8 @@
       "000021",
       "000022"
     ],
-    "total_file_count": 8830,
-    "total_dandiset_count": 23,
+    "total_file_count": 8832,
+    "total_dandiset_count": 24,
     "total_dandisets": [
       "000017",
       "000021",
@@ -2345,7 +2369,8 @@
       "001051",
       "001260",
       "001420",
-      "001701"
+      "001701",
+      "001791"
     ]
   },
   "480149258": {
@@ -8545,25 +8570,6 @@
       "001701"
     ]
   },
-  "329": {
-    "acronym": "SSp-bfd",
-    "name": "Primary somatosensory area, barrel field",
-    "color_hex_triplet": "188064",
-    "file_count": 24,
-    "dandiset_count": 1,
-    "dandisets": [
-      "000458"
-    ],
-    "total_file_count": 397,
-    "total_dandiset_count": 5,
-    "total_dandisets": [
-      "000409",
-      "000458",
-      "000563",
-      "000690",
-      "001260"
-    ]
-  },
   "337": {
     "acronym": "SSp-ll",
     "name": "Primary somatosensory area, lower limb",
@@ -11527,6 +11533,28 @@
       "001701"
     ]
   },
+  "453": {
+    "acronym": "SS",
+    "name": "Somatosensory areas",
+    "color_hex_triplet": "188064",
+    "file_count": 0,
+    "dandiset_count": 0,
+    "dandisets": [],
+    "total_file_count": 777,
+    "total_dandiset_count": 10,
+    "total_dandisets": [
+      "000017",
+      "000409",
+      "000458",
+      "000563",
+      "000690",
+      "001051",
+      "001260",
+      "001326",
+      "001701",
+      "001791"
+    ]
+  },
   "315": {
     "acronym": "Isocortex",
     "name": "Isocortex",
@@ -11534,8 +11562,8 @@
     "file_count": 0,
     "dandiset_count": 0,
     "dandisets": [],
-    "total_file_count": 13546,
-    "total_dandiset_count": 27,
+    "total_file_count": 13572,
+    "total_dandiset_count": 28,
     "total_dandisets": [
       "000017",
       "000021",
@@ -11563,7 +11591,8 @@
       "001260",
       "001326",
       "001420",
-      "001701"
+      "001701",
+      "001791"
     ]
   },
   "695": {
@@ -11573,8 +11602,8 @@
     "file_count": 0,
     "dandiset_count": 0,
     "dandisets": [],
-    "total_file_count": 20504,
-    "total_dandiset_count": 41,
+    "total_file_count": 20530,
+    "total_dandiset_count": 42,
     "total_dandisets": [
       "000017",
       "000021",
@@ -11616,7 +11645,8 @@
       "001430",
       "001676",
       "001701",
-      "001710"
+      "001710",
+      "001791"
     ]
   },
   "688": {
@@ -11626,8 +11656,8 @@
     "file_count": 0,
     "dandiset_count": 0,
     "dandisets": [],
-    "total_file_count": 20597,
-    "total_dandiset_count": 41,
+    "total_file_count": 20623,
+    "total_dandiset_count": 42,
     "total_dandisets": [
       "000017",
       "000021",
@@ -11669,7 +11699,8 @@
       "001430",
       "001676",
       "001701",
-      "001710"
+      "001710",
+      "001791"
     ]
   },
   "567": {
@@ -11679,8 +11710,8 @@
     "file_count": 0,
     "dandiset_count": 0,
     "dandisets": [],
-    "total_file_count": 22035,
-    "total_dandiset_count": 42,
+    "total_file_count": 22061,
+    "total_dandiset_count": 43,
     "total_dandisets": [
       "000017",
       "000021",
@@ -11723,7 +11754,8 @@
       "001430",
       "001676",
       "001701",
-      "001710"
+      "001710",
+      "001791"
     ]
   },
   "8": {
@@ -11733,8 +11765,8 @@
     "file_count": 0,
     "dandiset_count": 0,
     "dandisets": [],
-    "total_file_count": 30062,
-    "total_dandiset_count": 43,
+    "total_file_count": 30088,
+    "total_dandiset_count": 44,
     "total_dandisets": [
       "000017",
       "000021",
@@ -11778,7 +11810,8 @@
       "001430",
       "001676",
       "001701",
-      "001710"
+      "001710",
+      "001791"
     ]
   },
   "997": {
@@ -11788,8 +11821,8 @@
     "file_count": 0,
     "dandiset_count": 0,
     "dandisets": [],
-    "total_file_count": 33630,
-    "total_dandiset_count": 45,
+    "total_file_count": 33656,
+    "total_dandiset_count": 46,
     "total_dandisets": [
       "000017",
       "000021",
@@ -11835,7 +11868,8 @@
       "001605",
       "001676",
       "001701",
-      "001710"
+      "001710",
+      "001791"
     ]
   },
   "1080": {
@@ -12254,27 +12288,6 @@
       "001051",
       "001260",
       "001326"
-    ]
-  },
-  "453": {
-    "acronym": "SS",
-    "name": "Somatosensory areas",
-    "color_hex_triplet": "188064",
-    "file_count": 0,
-    "dandiset_count": 0,
-    "dandisets": [],
-    "total_file_count": 753,
-    "total_dandiset_count": 9,
-    "total_dandisets": [
-      "000017",
-      "000409",
-      "000458",
-      "000563",
-      "000690",
-      "001051",
-      "001260",
-      "001326",
-      "001701"
     ]
   },
   "485": {
