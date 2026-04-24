@@ -202,6 +202,11 @@ const failedMeshIds = new Set();
 
 function loadMesh(structureId) {
   return new Promise((resolve) => {
+    if (meshObjects[structureId]) {
+      resolve(meshObjects[structureId]);
+      return;
+    }
+
     const path = `data/meshes/${structureId}.glb`;
     gltfLoader.load(
       path,
@@ -302,7 +307,7 @@ async function loadInitialMeshes() {
   );
 
   // Load data structures in batches
-  const allToLoad = [...meshManifest.data_structures];
+  const allToLoad = meshManifest.data_structures.filter(id => id !== meshManifest.root_id);
   const batchSize = 20;
   for (let i = 0; i < allToLoad.length; i += batchSize) {
     const batch = allToLoad.slice(i, i + batchSize);
@@ -487,12 +492,19 @@ function isolateRegion(structureId) {
 }
 
 function applyIsolation(selectedStructureId, activeIds, fallbackId) {
-  // Only show the selected (or fallback) mesh; hide everything else
+  // Show the selected (or fallback) mesh, keep the root as glass context,
+  // and hide the rest.
   const showId = meshObjects[selectedStructureId] ? selectedStructureId : fallbackId;
   for (const [idStr, mesh] of Object.entries(meshObjects)) {
     const id = parseInt(idStr);
     if (id === showId) {
-      applyActive(mesh);
+      if (id === meshManifest.root_id) {
+        restoreOriginal(mesh);
+      } else {
+        applyActive(mesh);
+      }
+    } else if (id === meshManifest.root_id) {
+      restoreOriginal(mesh);
     } else {
       applyDimmed(mesh);
     }
@@ -615,11 +627,13 @@ async function selectDandiset(dandisetId, { pushState = true } = {}) {
     }
   }
 
-  // Apply isolation: show active regions, hide everything else (including root)
+  // Apply isolation: show active regions, keep root as context, hide everything else
   activeSet.delete(meshManifest.root_id);
   for (const [idStr, mesh] of Object.entries(meshObjects)) {
     const id = parseInt(idStr);
-    if (activeSet.has(id)) {
+    if (id === meshManifest.root_id) {
+      restoreOriginal(mesh);
+    } else if (activeSet.has(id)) {
       const regions = meshToRegions.get(id) || [id];
       const allHidden = regions.every(rid => hiddenRegionIds.has(rid));
       if (!allHidden) {
@@ -1219,7 +1233,9 @@ async function isolateStructureIds(structureIds) {
   activeSet.delete(meshManifest.root_id);
   for (const [idStr, mesh] of Object.entries(meshObjects)) {
     const id = parseInt(idStr);
-    if (activeSet.has(id)) {
+    if (id === meshManifest.root_id) {
+      restoreOriginal(mesh);
+    } else if (activeSet.has(id)) {
       // Show mesh only if at least one of its represented regions is not hidden
       const regions = meshToRegions.get(id) || [id];
       const allHidden = regions.every(rid => hiddenRegionIds.has(rid));
