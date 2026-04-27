@@ -233,7 +233,7 @@ async function loadAtlas(atlasKey) {
 
 // ── Initialization ─────────────────────────────────────────────────────────
 async function init() {
-  // Check URL parameter for atlas selection
+  // Read URL parameter for initial atlas; falls through to module-level default if absent or invalid.
   const urlParams = new URLSearchParams(window.location.search);
   const atlasParam = urlParams.get('atlas');
   if (atlasParam && ATLAS_CONFIGS[atlasParam]) {
@@ -241,86 +241,24 @@ async function init() {
     activeAtlas = ATLAS_CONFIGS[atlasParam];
   }
 
-  // Set dropdown to match
+  // Set dropdown to match the chosen atlas.
   const selector = document.getElementById('atlas-selector');
   if (selector) selector.value = activeAtlasKey;
 
-  updateLoadingText('Fetching data...');
-
-  const [graphResp, regionsResp, manifestResp, assetsResp, lastUpdatedResp, electrodeManifestResp] = await Promise.all([
-    fetch(`${activeAtlas.dataPrefix}structure_graph.json`).then(r => r.json()),
-    fetch(`${activeAtlas.dataPrefix}dandi_regions.json`).then(r => r.json()),
-    fetch(`${activeAtlas.dataPrefix}mesh_manifest.json`).then(r => r.json()),
-    fetch(`${activeAtlas.dataPrefix}dandiset_assets.json`).then(r => r.json()),
-    fetch('data/last_updated.json').then(r => r.json()).catch(() => null),
-    fetch(`${activeAtlas.dataPrefix}dandisets_with_electrodes.json`).then(r => r.json()).catch(() => []),
-  ]);
-
-  structureGraph = graphResp;
-  dandiRegions = regionsResp;
-  meshManifest = manifestResp;
-  dandisetAssets = assetsResp;
-
-  // Show last-updated timestamp
-  if (lastUpdatedResp && lastUpdatedResp.timestamp) {
-    const date = new Date(lastUpdatedResp.timestamp);
-    const formatted = date.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
-    const el = document.getElementById('last-updated');
-    if (el) el.textContent = `Data updated ${formatted}`;
-  }
-
-  dandisetsWithElectrodes = new Set(electrodeManifestResp);
-  dataStructureIds = new Set(meshManifest.data_structures);
-  ancestorStructureIds = new Set(meshManifest.ancestor_structures);
-  noMeshIds = new Set(meshManifest.no_mesh || []);
-
-  // Build flat lookup from the tree
-  flattenTree(structureGraph);
-
-  // Build reverse lookup: dandiset -> structure IDs (direct only)
-  for (const [sid, region] of Object.entries(dandiRegions)) {
-    for (const did of region.dandisets) {
-      if (!dandisetToStructures[did]) dandisetToStructures[did] = [];
-      dandisetToStructures[did].push(parseInt(sid));
-    }
-  }
-
-  // Update attribution
-  const attrEl = document.querySelector('.ccf-attribution');
-  if (attrEl) {
-    attrEl.textContent = activeAtlas.attribution;
-    attrEl.href = activeAtlas.attributionUrl;
-  }
-
+  // Page-lifetime infrastructure: one-time setup that persists across atlas switches.
   updateLoadingText('Setting up 3D scene...');
   setupScene();
-  buildHierarchyTree();
   setupSearch();
-
-  updateLoadingText('Loading brain meshes...');
-  await loadInitialMeshes();
-
-  hideLoading();
   animate();
 
-  // Restore view from URL hash, or default to root selection
-  if (!location.hash.slice(1)) {
-    const rootNode = structureGraph[0];
-    if (rootNode) selectRegion(rootNode.id, { expandTree: true, pushState: false });
-  } else {
-    applyHashState();
-  }
+  // URL navigation listener (browser back/forward, hash edits).
   window.addEventListener('hashchange', () => applyHashState());
 
-  // Fetch dandiset titles in background (non-blocking)
-  fetchDandisetTitles();
-
-  // Atlas selector event
+  // Atlas selector change handler.
   if (selector) {
     selector.addEventListener('change', (e) => {
       const newAtlas = e.target.value;
       if (newAtlas !== activeAtlasKey) {
-        // Update URL parameter
         const url = new URL(window.location);
         url.searchParams.set('atlas', newAtlas);
         url.hash = '';
@@ -328,6 +266,30 @@ async function init() {
         loadAtlas(newAtlas);
       }
     });
+  }
+
+  // Fetch atlas-independent metadata (last-updated timestamp). Fire-and-forget;
+  // not awaited so it doesn't delay the main load path.
+  fetch('data/last_updated.json').then(r => r.json()).catch(() => null).then(resp => {
+    if (resp && resp.timestamp) {
+      const date = new Date(resp.timestamp);
+      const formatted = date.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
+      const el = document.getElementById('last-updated');
+      if (el) el.textContent = `Data updated ${formatted}`;
+    }
+  });
+
+  // Delegate atlas data loading to loadAtlas — single source of truth for
+  // fetching atlas JSON, building lookups, loading meshes, and applying the
+  // initial root selection. loadAtlas hides the loading overlay when done.
+  await loadAtlas(activeAtlasKey);
+
+  // Deep-link restore: if the URL has a hash (region/dandiset/session deep
+  // link), override loadAtlas's default root selection. The user briefly sees
+  // the root view between loadAtlas's hideLoading and applyHashState's
+  // selection, but only on deep-link loads — direct page loads end at root.
+  if (location.hash.slice(1)) {
+    applyHashState();
   }
 }
 
