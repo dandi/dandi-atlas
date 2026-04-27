@@ -219,7 +219,7 @@ async function loadAtlas(atlasKey) {
 
   // Select root BEFORE hiding the loading overlay so the user never sees
   // the undimmed "speckled brain" state between the last mesh load and
-  // applyIsolation. Late-arriving ancestor meshes (triggered by
+  // applyMeshTreatments. Late-arriving ancestor meshes (triggered by
   // isolateRegion's own toLoad queue) dim themselves via loadMesh's
   // post-add isolation check.
   const rootNode = structureGraph[0];
@@ -517,11 +517,11 @@ function loadMesh(structureId) {
         meshObjects[structureId] = mesh;
 
         // When meshes load asynchronously mid-selection, apply the same
-        // isolation treatment applyIsolation would have applied so late
-        // arrivals don't flash in visible. getDescendantIds(selectedId)
-        // contains the whole tree when root is selected, so the old
-        // activeIds-miss check never fired there — that produced the
-        // speckled-brain bug when switching atlases on slow connections.
+        // isolation treatment applyMeshTreatments would have applied so late
+        // arrivals don't flash in visible. (This is per-mesh logic that
+        // mirrors applyMeshTreatments's per-mesh dispatch but runs only on
+        // the one newly-loaded mesh; could be unified into a shared
+        // treatMesh primitive in a future refactor.)
         if (selectedId !== null) {
           const isAllen = activeAtlas.coordSystem === 'allen';
           const isRoot = structureId === meshManifest.root_id;
@@ -868,46 +868,72 @@ function findNearestAncestorWithMesh(structureId) {
 }
 
 function isolateRegion(structureId) {
-  const activeIds = getDescendantIds(structureId);
+  // Resolve the mesh ID to spotlight: the structure itself if its mesh is loaded,
+  // otherwise the nearest ancestor that has a loaded mesh.
+  const targetId = meshObjects[structureId] ? structureId : findNearestAncestorWithMesh(structureId);
+  const activeSet = targetId != null ? new Set([targetId]) : new Set();
 
-  // If the selected structure has no loaded mesh, show nearest ancestor that does
-  let fallbackId = null;
-  if (!meshObjects[structureId]) {
-    fallbackId = findNearestAncestorWithMesh(structureId);
-    if (fallbackId) activeIds.add(fallbackId);
-  }
-
-  // Load any descendant meshes that aren't loaded yet
+  // Speculatively pre-load descendant meshes so navigation into the subtree is
+  // instant. Note: descendants are NOT made visible in region view (only the
+  // clicked mesh is — see applyMeshTreatments). The pre-load is a cache warm,
+  // not a visibility decision.
+  const subtreeIds = getDescendantIds(structureId);
+  if (targetId != null) subtreeIds.add(targetId);
   const toLoad = [];
-  for (const id of activeIds) {
+  for (const id of subtreeIds) {
     if (!meshObjects[id] && (dataStructureIds.has(id) || ancestorStructureIds.has(id))) {
       toLoad.push(ensureMeshLoaded(id));
     }
   }
-  Promise.all(toLoad).then(() => applyIsolation(structureId, activeIds, fallbackId));
+  Promise.all(toLoad).then(() => applyMeshTreatments(activeSet));
 
   // Apply immediately to already-loaded meshes
-  applyIsolation(structureId, activeIds, fallbackId);
+  applyMeshTreatments(activeSet);
 }
 
-function applyIsolation(selectedStructureId, activeIds, fallbackId) {
-  // Show the selected (or fallback) mesh. For the root, treatment depends on
-  // atlas: Allen uses `restoreOriginal` so root renders as the translucent
-  // "glass" context (upstream behavior); macaque uses `applyActive` so root
-  // renders as a solid opaque brain at the init view, and falls through to
-  // `applyDimmed` (fresnel rim) when something else is selected.
-  const showId = meshObjects[selectedStructureId] ? selectedStructureId : fallbackId;
+// Scene-level visibility orchestrator. Iterates every loaded mesh and
+// dispatches each to the appropriate per-mesh primitive (applyActive,
+// applyDimmed, restoreOriginal) based on the active set and the current
+// atlas. This single function is called by every view that changes
+// scene state — region view, dandiset view, session view, tree-filter
+// view — so the visibility policy lives in exactly one place.
+//
+// activeIds: Set of structure IDs that should be treated as "active"
+// (rendered with applyActive). For region view this is a singleton; for
+// dandiset/session views it's the set of regions covered by the
+// dandiset/session. For the atlas init view it contains just the root.
+//
+// isMeshHidden: optional callback (meshId) => boolean. If provided and
+// returns true for a given mesh, the mesh is dimmed even if it's in
+// activeIds. Used by the dandiset/session view to honor per-region hide
+// toggles in the right panel.
+//
+// Treatment dispatch:
+// - Allen root: always glass via restoreOriginal, regardless of selection.
+// - Macaque root in activeIds (atlas init view only): solid opaque via applyActive.
+// - Macaque root not in activeIds: fresnel rim via applyDimmed.
+// - Active data mesh (and not user-hidden): applyActive.
+// - Active data mesh that is user-hidden: applyDimmed.
+// - Non-active mesh: applyDimmed (hidden on Allen, hidden on macaque non-root too).
+function applyMeshTreatments(activeIds, isMeshHidden = null) {
   const isAllen = activeAtlas.coordSystem === 'allen';
+  const rootId = meshManifest.root_id;
   for (const [idStr, mesh] of Object.entries(meshObjects)) {
     const id = parseInt(idStr);
-    if (id === showId) {
-      if (id === meshManifest.root_id && isAllen) {
-        restoreOriginal(mesh);
-      } else {
-        applyActive(mesh);
-      }
-    } else if (id === meshManifest.root_id && isAllen) {
+
+    // Allen root is always glass, regardless of whether it's in the active set.
+    if (id === rootId && isAllen) {
       restoreOriginal(mesh);
+      continue;
+    }
+
+    let active = activeIds.has(id);
+    if (active && isMeshHidden && isMeshHidden(id)) {
+      active = false;
+    }
+
+    if (active) {
+      applyActive(mesh);
     } else {
       applyDimmed(mesh);
     }
@@ -1030,32 +1056,13 @@ async function selectDandiset(dandisetId, { pushState = true } = {}) {
     }
   }
 
-  // Apply isolation: show active regions, dim/hide everything else.
-  // Root treatment is atlas-specific: Allen keeps it as translucent "glass"
-  // context (restoreOriginal); macaque routes through applyDimmed so it
-  // renders as a fresnel rim outline instead of a solid fog.
-  const isAllen = activeAtlas.coordSystem === 'allen';
-  if (isAllen) activeSet.delete(meshManifest.root_id);
-  for (const [idStr, mesh] of Object.entries(meshObjects)) {
-    const id = parseInt(idStr);
-    if (id === meshManifest.root_id) {
-      if (isAllen) {
-        restoreOriginal(mesh);
-      } else {
-        applyDimmed(mesh);
-      }
-    } else if (activeSet.has(id)) {
-      const regions = meshToRegions.get(id) || [id];
-      const allHidden = regions.every(rid => hiddenRegionIds.has(rid));
-      if (!allHidden) {
-        applyActive(mesh);
-      } else {
-        applyDimmed(mesh);
-      }
-    } else {
-      applyDimmed(mesh);
-    }
-  }
+  // Apply scene visibility: active regions get applyActive, root gets
+  // atlas-appropriate treatment, everything else is hidden. Honors per-region
+  // hide toggles via the isMeshHidden callback.
+  applyMeshTreatments(activeSet, (meshId) => {
+    const regions = meshToRegions.get(meshId) || [meshId];
+    return regions.every(rid => hiddenRegionIds.has(rid));
+  });
 
   // Update right panel to show dandiset info
   updateDandisetPanel(dandisetId, structureIds);
