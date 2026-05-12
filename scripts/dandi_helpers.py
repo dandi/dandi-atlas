@@ -89,6 +89,55 @@ def check_species_mouse(dandiset_id):
     return False
 
 
+# NCBI taxonomy IDs for macaque species commonly seen in DANDI. Sourced from
+# https://www.ncbi.nlm.nih.gov/taxonomy. The genus-level filter on "Macaca" in
+# the species name is the robust catch-all; this set is used for a faster
+# identifier-based check before falling back to the name match.
+MACAQUE_TAXON_IDS = {
+    "9544",   # Macaca mulatta (rhesus)
+    "9541",   # Macaca fascicularis (cynomolgus / crab-eating)
+    "9545",   # Macaca nemestrina (pig-tailed)
+    "9548",   # Macaca radiata (bonnet)
+    "9542",   # Macaca fuscata (Japanese)
+    "9546",   # Macaca arctoides (stump-tailed)
+    "9536",   # Macaca silenus (lion-tailed)
+    "54600",  # Macaca thibetana (Tibetan)
+}
+
+
+def get_dandiset_species(dandiset_id):
+    """Return the assetsSummary.species list for a dandiset (possibly empty).
+
+    Each entry is a dict with at least `name` and `identifier` keys (e.g.
+    {"name": "Macaca mulatta - Rhesus monkey",
+     "identifier": "http://purl.obolibrary.org/obo/NCBITaxon_9544"}).
+    """
+    url = f"{DANDI_API}/dandisets/{dandiset_id}/versions/draft/"
+    resp = _request_with_retry(requests.get, url, timeout=30)
+    if resp.status_code != 200:
+        return []
+    data = resp.json()
+    assets_summary = data.get("metadata", data).get("assetsSummary", {})
+    return assets_summary.get("species", []) or []
+
+
+def check_species_macaque(dandiset_id):
+    """Check if a dandiset's assetsSummary.species includes any Macaca species.
+
+    Matches on either an NCBI taxon identifier in MACAQUE_TAXON_IDS or a
+    substring "Macaca" in the species `name` field, so it catches both
+    formally-typed species records and free-text entries.
+    """
+    for sp in get_dandiset_species(dandiset_id):
+        identifier = sp.get("identifier", "") or ""
+        name = sp.get("name", "") or ""
+        if any(tid in identifier for tid in MACAQUE_TAXON_IDS):
+            return True
+        if "macaca" in name.lower():
+            return True
+    return False
+
+
 def get_nwb_assets_paged(dandiset_id, version="draft", max_assets=None):
     """Yield NWB asset dicts for a dandiset, with pagination."""
     url = (

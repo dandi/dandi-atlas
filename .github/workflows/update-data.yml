@@ -40,6 +40,9 @@ jobs:
           path: |
             scripts/label_cache.jsonl
             scripts/electrode_cache.jsonl
+            scripts/d99_electrode_cache.jsonl
+            scripts/nmt_electrode_cache.jsonl
+            scripts/mebrains_electrode_cache.jsonl
           key: data-cache-${{ github.run_id }}
           restore-keys: data-cache-
 
@@ -52,8 +55,23 @@ jobs:
             echo "mode=incremental" >> $GITHUB_OUTPUT
           fi
 
-      - name: Run update
+      - name: Update Allen CCF data
         run: python scripts/update_data.py --mode ${{ steps.mode.outputs.mode }} --workers 4
+        env:
+          PYTHONUNBUFFERED: "1"
+
+      - name: Update macaque atlas data (D99)
+        run: python scripts/update_macaque_data.py --atlas d99 --mode ${{ steps.mode.outputs.mode }}
+        env:
+          PYTHONUNBUFFERED: "1"
+
+      - name: Update macaque atlas data (NMT)
+        run: python scripts/update_macaque_data.py --atlas nmt --mode ${{ steps.mode.outputs.mode }}
+        env:
+          PYTHONUNBUFFERED: "1"
+
+      - name: Update macaque atlas data (MEBRAINS)
+        run: python scripts/update_macaque_data.py --atlas mebrains --mode ${{ steps.mode.outputs.mode }}
         env:
           PYTHONUNBUFFERED: "1"
 

@@ -3,5 +3,22 @@
   "mode": "incremental",
   "dandisets_checked": 0,
   "dandisets_updated": 0,
-  "assets_processed": 0
+  "assets_processed": 0,
+  "per_atlas": {
+    "d99": {
+      "timestamp": "2026-04-28T00:04:19.179108+00:00",
+      "mode": "incremental",
+      "asset_count": 447
+    },
+    "nmt": {
+      "timestamp": "2026-04-28T00:16:56.267343+00:00",
+      "mode": "incremental",
+      "asset_count": 447
+    },
+    "mebrains": {
+      "timestamp": "2026-04-28T00:16:15.085279+00:00",
+      "mode": "incremental",
+      "asset_count": 447
+    }
+  }
 }
