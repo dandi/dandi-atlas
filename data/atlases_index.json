@@ -5,8 +5,8 @@
       "name": "Allen CCF v3",
       "species": "Mouse",
       "preview": "data/atlases/allen_ccf/atlas_card_allen_ccf.png",
-      "dandiset_count": 46,
-      "file_count": 33656,
+      "dandiset_count": 47,
+      "file_count": 35087,
       "regions_with_data": 592
     },
     {
@@ -14,8 +14,8 @@
       "name": "D99 v2.0",
       "species": "Macaque",
       "preview": "data/atlases/d99/atlas_card_d99.png",
-      "dandiset_count": 6,
-      "file_count": 600,
+      "dandiset_count": 5,
+      "file_count": 1043,
       "regions_with_data": 6
     },
     {
@@ -23,18 +23,18 @@
       "name": "NMT v2.0 sym",
       "species": "Macaque",
       "preview": "data/atlases/nmt/atlas_card_nmt.png",
-      "dandiset_count": 17,
-      "file_count": 764,
-      "regions_with_data": 5
+      "dandiset_count": 16,
+      "file_count": 1400,
+      "regions_with_data": 7
     },
     {
       "key": "mebrains",
       "name": "MEBRAINS",
       "species": "Macaque",
       "preview": "data/atlases/mebrains/atlas_card_mebrains.png",
-      "dandiset_count": 1,
-      "file_count": 447,
-      "regions_with_data": 1
+      "dandiset_count": 2,
+      "file_count": 458,
+      "regions_with_data": 2
     }
   ]
 }
