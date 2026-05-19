@@ -84,6 +84,15 @@ def main():
              "dandisets before running the full sweep.",
     )
     parser.add_argument(
+        "--sweep-max-assets",
+        type=int,
+        default=1000,
+        help="Skip swept dandisets with more than this many NWB assets "
+             "(default 1000). Very large dandisets tend to be auto-generated "
+             "low-quality dumps that dominate sweep wall time. Pass a large "
+             "number (e.g. 100000) or 0 to disable.",
+    )
+    parser.add_argument(
         "--local-nwb",
         type=Path,
         help="Read locations from local NWB files in this directory instead of "
@@ -173,6 +182,7 @@ def main():
             config, name_to_id, abbrev_to_id, id_to_structure, parent_map,
             exclude_ids=set(dandiset_assets),
             limit=args.sweep_limit,
+            max_assets_per_dandiset=args.sweep_max_assets if args.sweep_max_assets > 0 else None,
         )
         dandiset_assets.update(sweep_assets)
         print(f"  Sweep added {len(sweep_assets)} new dandiset(s)")

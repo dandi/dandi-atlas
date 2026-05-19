@@ -662,7 +662,7 @@ def _is_rat_metadata(dandiset_metadata):
 
 
 def fetch_rat_dandi_sweep(config, name_to_id, abbrev_to_id, id_to_structure, parent_map,
-                          exclude_ids=(), limit=None):
+                          exclude_ids=(), limit=None, max_assets_per_dandiset=1000):
     """Discover all public rat dandisets via iter_all_dandisets() and return
     per-asset region records resolved against the WHS-SD vocabulary.
 
@@ -675,6 +675,11 @@ def fetch_rat_dandi_sweep(config, name_to_id, abbrev_to_id, id_to_structure, par
     DANDI listing (via _is_rat_metadata), so the discovery pass costs ~one
     paginated API call total. Dandisets in `exclude_ids` (typically the
     explicit DANDISET_IDS the caller already handled) are skipped.
+
+    Dandisets with more than `max_assets_per_dandiset` NWB assets are skipped
+    entirely (just the cheap asset listing, never the streams). These tend to
+    be auto-generated low-quality dumps (e.g. 001836's 2494 NWBs all carry
+    location="None") and dominate sweep wall time. Pass None to disable.
 
     When `limit` is set, the discovery scan short-circuits as soon as `limit`
     rat dandisets have been found, and only those are streamed. Useful for
@@ -716,6 +721,12 @@ def fetch_rat_dandi_sweep(config, name_to_id, abbrev_to_id, id_to_structure, par
             tqdm.write(f"  [rat-sweep] failed to list {dandiset_id}: {exc}")
             continue
         if not assets:
+            continue
+        if max_assets_per_dandiset is not None and len(assets) > max_assets_per_dandiset:
+            tqdm.write(
+                f"  [rat-sweep] {dandiset_id}: skipping ({len(assets)} assets > "
+                f"max {max_assets_per_dandiset}); raise --sweep-max-assets to include."
+            )
             continue
         records, skipped_no_loc = _process_dandiset_assets(
             dandiset_id, assets, cache, cache_file,
