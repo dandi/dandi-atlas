@@ -79,9 +79,10 @@ def main():
         "--sweep-limit",
         type=int,
         default=None,
-        help="Stop the sweep after discovering this many rat dandisets. "
-             "Useful for smoke-testing the streaming pass on a handful of "
-             "dandisets before running the full sweep.",
+        help="Stop the sweep after this many rat dandisets have been "
+             "processed (post-asset-cap, i.e. actually streamed). "
+             "Useful for smoke-testing the streaming pass before running "
+             "the full sweep.",
     )
     parser.add_argument(
         "--sweep-max-assets",

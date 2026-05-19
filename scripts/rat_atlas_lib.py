@@ -24,6 +24,7 @@ from tqdm import tqdm
 
 from dandi_helpers import (
     RAT_TAXON_IDS,
+    TRIVIAL_LOCATIONS,
     build_dandi_regions,
     check_species_rat,
     extract_session,
@@ -31,6 +32,14 @@ from dandi_helpers import (
     get_nwb_assets_paged,
     iter_all_dandisets,
 )
+
+
+def _is_trivial_location(location_string):
+    """True for placeholder strings like 'None', 'unknown', '' that some NWB
+    files use when no anatomical location is annotated. Such strings shouldn't
+    count toward a dandiset's "workable" status or pollute unmatched_locations.
+    """
+    return location_string.strip().lower() in TRIVIAL_LOCATIONS
 from macaque_atlas_lib import (
     MIN_VOXELS,
     OUTSIDE_ID,
@@ -70,6 +79,15 @@ EMBARGOED_DANDISETS = {"001699"}
 WHS_LOCATION_ALIASES = {
     "postsubiculum": "Presubiculum",
     "hippocampal area ca1": "Cornu ammonis 1",
+    # 001642 (Ito & Doya 2015): striatal subregion abbreviations. WHS-SD v4
+    # lacks the dorsolateral/dorsomedial distinction, so DLS and DMS both
+    # collapse to the parent Caudate putamen. VS maps to the closest single
+    # WHS-SD region for ventral striatum (NAc is the discrete core+shell;
+    # VSR-u is the broader ventral striatal sheet that better matches
+    # microwire-bundle "ventral striatum" placements).
+    "dls": "Caudate putamen",
+    "dms": "Caudate putamen",
+    "vs": "Ventral striatal region, unspecified",
 }
 
 ATLAS_CONFIGS = {
@@ -79,6 +97,7 @@ ATLAS_CONFIGS = {
         "template_nifti": WHS_DATA / "WHS_SD_rat_T2star_v1.01.nii.gz",
         "output_dir": PROJECT_ROOT / "data/atlases/whs_sd",
         "cache_file": SCRIPTS_DIR / "whs_sd_electrode_cache.jsonl",
+        "sweep_cache_file": SCRIPTS_DIR / "whs_sd_sweep_cache.jsonl",
         "root_name": "WHS-SD v4 (Rat)",
     },
 }
@@ -402,6 +421,29 @@ def _append_cache(cache_file, entry):
         f.write(json.dumps(entry) + "\n")
 
 
+def _load_sweep_cache(sweep_cache_file):
+    """Load the per-dandiset sweep verdict cache.
+
+    Returns {(dandiset_id, modified): verdict_entry}. The `modified` timestamp
+    invalidates the entry when the dandiset is updated on DANDI — newer
+    listings show a fresh modified value and miss the cache, triggering a
+    re-evaluation.
+    """
+    cache = {}
+    if sweep_cache_file.exists():
+        with open(sweep_cache_file, "r") as f:
+            for line in f:
+                entry = json.loads(line)
+                key = (entry["dandiset_id"], entry["modified"])
+                cache[key] = entry
+    return cache
+
+
+def _append_sweep_cache(sweep_cache_file, entry):
+    with open(sweep_cache_file, "a") as f:
+        f.write(json.dumps(entry) + "\n")
+
+
 def _select_local_nwb_files(local_dir):
     """Pick one NWB file per session from a local directory.
 
@@ -556,14 +598,17 @@ def _process_dandiset_assets(dandiset_id, assets, cache, cache_file,
 
     records = []
     skipped_no_loc = 0
+    has_workable_locations = False
     for asset in assets:
         asset_id = asset["asset_id"]
         path = asset["path"]
         result = results.get(asset_id, {})
-        locations = result.get("locations") or []
+        locations = [loc for loc in (result.get("locations") or [])
+                     if not _is_trivial_location(loc)]
         if not locations:
             skipped_no_loc += 1
             continue
+        has_workable_locations = True
 
         regions = []
         seen_ids = set()
@@ -587,7 +632,7 @@ def _process_dandiset_assets(dandiset_id, assets, cache, cache_file,
             "session": extract_session(path),
         })
 
-    return records, skipped_no_loc
+    return records, skipped_no_loc, has_workable_locations
 
 
 def fetch_rat_dandi_data(config, name_to_id, abbrev_to_id, id_to_structure, parent_map,
@@ -618,7 +663,7 @@ def fetch_rat_dandi_data(config, name_to_id, abbrev_to_id, id_to_structure, pare
     for dandiset_id in outer_bar:
         outer_bar.set_postfix(dandiset=dandiset_id)
         assets = list(get_nwb_assets_paged(dandiset_id))
-        records, skipped_no_loc = _process_dandiset_assets(
+        records, skipped_no_loc, _ = _process_dandiset_assets(
             dandiset_id, assets, cache, cache_file,
             name_to_id, abbrev_to_id, id_to_structure,
         )
@@ -681,9 +726,11 @@ def fetch_rat_dandi_sweep(config, name_to_id, abbrev_to_id, id_to_structure, par
     be auto-generated low-quality dumps (e.g. 001836's 2494 NWBs all carry
     location="None") and dominate sweep wall time. Pass None to disable.
 
-    When `limit` is set, the discovery scan short-circuits as soon as `limit`
-    rat dandisets have been found, and only those are streamed. Useful for
-    smoke tests before committing to a full multi-hour sweep.
+    When `limit` is set, the sweep stops after `limit` rat dandisets have been
+    *processed* (i.e. survived the asset-cap filter and entered streaming).
+    Dandisets dropped by the asset cap don't count toward the limit, so a
+    smoke test with --sweep-limit 3 always tries 3 streams, even if larger
+    candidates need to be skipped over to get there.
 
     Returns {dandiset_id: [asset_record, ...]} in the same shape as
     fetch_rat_dandi_data[0], suitable for `dict.update()` merging.
@@ -691,57 +738,98 @@ def fetch_rat_dandi_sweep(config, name_to_id, abbrev_to_id, id_to_structure, par
     exclude_ids = set(exclude_ids)
     cache_file = config["cache_file"]
     cache = _load_cache(cache_file)
-    print(f"  Cache has {len(cache)} entries")
+    sweep_cache_file = config["sweep_cache_file"]
+    sweep_cache = _load_sweep_cache(sweep_cache_file)
+    print(f"  Asset cache has {len(cache)} entries; "
+          f"sweep verdict cache has {len(sweep_cache)} entries")
 
-    rat_dandiset_ids = []
+    out = {}
+    processed = 0
+    skipped_by_verdict = 0
     scan_bar = tqdm(iter_all_dandisets(), desc="Scanning DANDI", unit="dandiset")
     for dandiset_metadata in scan_bar:
         dandiset_id = dandiset_metadata.get("identifier")
+        modified = dandiset_metadata.get("modified", "")
         if not dandiset_id or dandiset_id in exclude_ids:
             continue
-        if _is_rat_metadata(dandiset_metadata):
-            rat_dandiset_ids.append(dandiset_id)
-            scan_bar.set_postfix(rat_found=len(rat_dandiset_ids))
-            if limit is not None and len(rat_dandiset_ids) >= limit:
-                break
-    scan_bar.close()
-    if limit is not None:
-        print(f"  [rat-sweep] discovered {len(rat_dandiset_ids)} rat dandisets "
-              f"(stopped early; --sweep-limit={limit})")
-    else:
-        print(f"  [rat-sweep] discovered {len(rat_dandiset_ids)} candidate rat dandisets")
-
-    out = {}
-    outer_bar = tqdm(rat_dandiset_ids, desc="Rat sweep", unit="dandiset")
-    for dandiset_id in outer_bar:
-        outer_bar.set_postfix(dandiset=dandiset_id)
+        sweep_key = (dandiset_id, modified)
+        cached_verdict = sweep_cache.get(sweep_key)
+        if cached_verdict and cached_verdict["verdict"] in ("not_rat", "oversized", "no_workable"):
+            skipped_by_verdict += 1
+            continue
+        if not _is_rat_metadata(dandiset_metadata):
+            _append_sweep_cache(sweep_cache_file, {
+                "dandiset_id": dandiset_id, "modified": modified,
+                "verdict": "not_rat",
+            })
+            continue
         try:
             assets = list(get_nwb_assets_paged(dandiset_id))
         except Exception as exc:
             tqdm.write(f"  [rat-sweep] failed to list {dandiset_id}: {exc}")
             continue
         if not assets:
+            _append_sweep_cache(sweep_cache_file, {
+                "dandiset_id": dandiset_id, "modified": modified,
+                "verdict": "no_workable", "asset_count": 0,
+            })
             continue
         if max_assets_per_dandiset is not None and len(assets) > max_assets_per_dandiset:
             tqdm.write(
                 f"  [rat-sweep] {dandiset_id}: skipping ({len(assets)} assets > "
                 f"max {max_assets_per_dandiset}); raise --sweep-max-assets to include."
             )
+            _append_sweep_cache(sweep_cache_file, {
+                "dandiset_id": dandiset_id, "modified": modified,
+                "verdict": "oversized", "asset_count": len(assets),
+            })
             continue
-        records, skipped_no_loc = _process_dandiset_assets(
+        scan_bar.set_postfix(dandiset=dandiset_id, workable=processed)
+        records, _, has_workable_locations = _process_dandiset_assets(
             dandiset_id, assets, cache, cache_file,
             name_to_id, abbrev_to_id, id_to_structure,
         )
-        if not records:
+        if not has_workable_locations:
+            tqdm.write(
+                f"  [rat-sweep] {dandiset_id}: {len(assets)} assets, "
+                f"no usable location strings (all blank/None/unknown) — not workable"
+            )
+            _append_sweep_cache(sweep_cache_file, {
+                "dandiset_id": dandiset_id, "modified": modified,
+                "verdict": "no_workable", "asset_count": len(assets),
+            })
             continue
-        if not any(record["regions"] for record in records):
-            continue
-        out[dandiset_id] = records
-        tqdm.write(
-            f"  [rat-sweep] {dandiset_id}: {len(assets)} assets, "
-            f"{len(records)} with location data"
-            + (f" (skipped {skipped_no_loc} without locations)" if skipped_no_loc else "")
-        )
-    outer_bar.close()
+        processed += 1
+        _append_sweep_cache(sweep_cache_file, {
+            "dandiset_id": dandiset_id, "modified": modified,
+            "verdict": "workable", "asset_count": len(assets),
+        })
+        if records and any(record["regions"] for record in records):
+            out[dandiset_id] = records
+            tqdm.write(
+                f"  [rat-sweep] {dandiset_id}: {len(assets)} assets, "
+                f"{len(records)} with location data — added"
+            )
+        else:
+            sample_unmatched = []
+            for record in records:
+                for loc in record.get("unmatched_locations", []):
+                    if loc not in sample_unmatched:
+                        sample_unmatched.append(loc)
+                        if len(sample_unmatched) >= 10:
+                            break
+                if len(sample_unmatched) >= 10:
+                    break
+            tqdm.write(
+                f"  [rat-sweep] {dandiset_id}: {len(assets)} assets, "
+                f"locations present but none resolved to WHS-SD vocabulary"
+                f" (workable, not added). Sample unmatched: {sample_unmatched}"
+            )
+        if limit is not None and processed >= limit:
+            break
+    scan_bar.close()
+    print(f"  [rat-sweep] {processed} workable rat dandiset(s) found, "
+          f"{len(out)} added to the atlas"
+          + (f"; skipped {skipped_by_verdict} via cached verdict" if skipped_by_verdict else ""))
 
     return out

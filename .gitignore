@@ -16,6 +16,7 @@ scripts/d99_electrode_cache.jsonl
 scripts/nmt_electrode_cache.jsonl
 scripts/mebrains_electrode_cache.jsonl
 scripts/whs_sd_electrode_cache.jsonl
+scripts/whs_sd_sweep_cache.jsonl
 scripts/*_electrode_cache.jsonl.bak
 scripts/macaque_locations_cache.jsonl
 scripts/siibra_mebrains_palette.json

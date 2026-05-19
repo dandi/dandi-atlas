@@ -32,6 +32,10 @@ MESH_URL_TEMPLATE = (
 TRIVIAL_LOCATIONS = {
     "unknown", "none", "", " ", "n/a", "void", "unspecific",
     "na", "not applicable", "other", "nan",
+    # Reference-electrode placements that some NWBs put in `location`.
+    # "Skull" / "ground" / "reference" are not brain regions; they describe
+    # where a reference wire was screwed in, not what was recorded from.
+    "skull", "ground", "gnd", "reference", "ref",
 }
 
 FILTER_IDS = {997, 8}  # root, grey — not useful to display
