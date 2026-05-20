@@ -192,6 +192,15 @@ body {
   flex-shrink: 0;
 }
 
+.tree-checkbox {
+  width: 13px;
+  height: 13px;
+  margin: 0 6px 0 2px;
+  flex-shrink: 0;
+  cursor: pointer;
+  accent-color: var(--accent);
+}
+
 .tree-label {
   flex: 1;
   white-space: nowrap;
@@ -658,6 +667,100 @@ body {
 
 .dandiset-external-link:hover {
   background: rgba(83, 168, 182, 0.3);
+}
+
+.dandiset-back-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  margin-bottom: 12px;
+  padding: 6px 12px;
+  background: transparent;
+  border: 1px solid var(--border-color);
+  border-radius: 6px;
+  color: var(--text-secondary);
+  font-size: 13px;
+  font-family: inherit;
+  cursor: pointer;
+  transition: color 0.15s, background 0.15s, border-color 0.15s;
+}
+
+.dandiset-back-btn:hover {
+  color: var(--accent-hover);
+  background: rgba(83, 168, 182, 0.15);
+  border-color: var(--accent);
+}
+
+/* Multi-region right-panel view */
+.multi-region-header {
+  margin-bottom: 12px;
+}
+
+.multi-region-title {
+  font-size: 16px;
+  font-weight: 700;
+  color: var(--text-primary);
+}
+
+.multi-region-card-stack {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  margin-bottom: 16px;
+}
+
+.multi-region-card {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 8px 10px;
+  background: rgba(83, 168, 182, 0.08);
+  border: 1px solid rgba(83, 168, 182, 0.15);
+  border-radius: 6px;
+}
+
+.multi-region-card-dot {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+
+.multi-region-card-text {
+  flex: 1;
+  min-width: 0;
+}
+
+.multi-region-card-name {
+  color: var(--text-primary);
+  font-size: 13px;
+  font-weight: 600;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.multi-region-card-acronym {
+  color: var(--accent);
+  font-size: 12px;
+  margin-top: 1px;
+}
+
+.multi-region-card-remove {
+  background: transparent;
+  border: none;
+  color: var(--text-secondary);
+  font-size: 18px;
+  line-height: 1;
+  cursor: pointer;
+  padding: 2px 6px;
+  border-radius: 4px;
+  transition: color 0.15s, background 0.15s;
+}
+
+.multi-region-card-remove:hover {
+  color: var(--text-primary);
+  background: rgba(255, 255, 255, 0.08);
 }
 
 /* Region cards (in dandiset view) */
