@@ -1,0 +1,2514 @@
+{
+  "1": {
+    "match_quality": "confirmed",
+    "uberon_id": "UBERON:0022425",
+    "uberon_iri": "http://purl.obolibrary.org/obo/UBERON_0022425",
+    "uberon_label": "anterior corona radiata",
+    "whs_id": 1,
+    "whs_name": "corticofugal tract and corona radiata"
+  },
+  "10": {
+    "match_quality": "override",
+    "uberon_id": "UBERON:0003027",
+    "uberon_iri": "http://purl.obolibrary.org/obo/UBERON_0003027",
+    "uberon_label": "cingulate cortex",
+    "whs_id": 10,
+    "whs_name": "Cingulate area 2"
+  },
+  "100": {
+    "match_quality": "exact",
+    "uberon_id": "UBERON:0002191",
+    "uberon_iri": "http://purl.obolibrary.org/obo/UBERON_0002191",
+    "uberon_label": "subiculum",
+    "whs_id": 100,
+    "whs_name": "Subiculum"
+  },
+  "1000": {
+    "match_quality": "exact",
+    "uberon_id": "UBERON:0000955",
+    "uberon_iri": "http://purl.obolibrary.org/obo/UBERON_0000955",
+    "uberon_label": "brain",
+    "whs_id": 1000,
+    "whs_name": "Brain"
+  },
+  "1001": {
+    "match_quality": "exact",
+    "uberon_id": "UBERON:0002316",
+    "uberon_iri": "http://purl.obolibrary.org/obo/UBERON_0002316",
+    "uberon_label": "white matter",
+    "whs_id": 1001,
+    "whs_name": "White matter"
+  },
+  "1002": {
+    "match_quality": "exact",
+    "uberon_id": "UBERON:0000935",
+    "uberon_iri": "http://purl.obolibrary.org/obo/UBERON_0000935",
+    "uberon_label": "anterior commissure",
+    "whs_id": 1002,
+    "whs_name": "Anterior commissure"
+  },
+  "1003": {
+    "match_quality": "override-unmapped",
+    "uberon_id": null,
+    "uberon_iri": null,
+    "uberon_label": null,
+    "whs_id": 1003,
+    "whs_name": "Hippocampal white matter"
+  },
+  "1004": {
+    "match_quality": "override-unmapped",
+    "uberon_id": null,
+    "uberon_iri": null,
+    "uberon_label": null,
+    "whs_id": 1004,
+    "whs_name": "Corticofugal pathways"
+  },
+  "1005": {
+    "match_quality": "exact",
+    "uberon_id": "UBERON:0003002",
+    "uberon_iri": "http://purl.obolibrary.org/obo/UBERON_0003002",
+    "uberon_label": "medial lemniscus",
+    "whs_id": 1005,
+    "whs_name": "Medial lemniscus"
+  },
+  "1006": {
+    "match_quality": "confirmed",
+    "uberon_id": "UBERON:0025261",
+    "uberon_iri": "http://purl.obolibrary.org/obo/UBERON_0025261",
+    "uberon_label": "thalamic fiber tract",
+    "whs_id": 1006,
+    "whs_name": "Thalamic tracts"
+  },
+  "1007": {
+    "match_quality": "exact",
+    "uberon_id": "UBERON:0001647",
+    "uberon_iri": "http://purl.obolibrary.org/obo/UBERON_0001647",
+    "uberon_label": "facial nerve",
+    "whs_id": 1007,
+    "whs_name": "Facial nerve"
+  },
+  "1008": {
+    "match_quality": "override-unmapped",
+    "uberon_id": null,
+    "uberon_iri": null,
+    "uberon_label": null,
+    "whs_id": 1008,
+    "whs_name": "Optic fiber system and supraoptic decussation"
+  },
+  "1009": {
+    "match_quality": "override-unmapped",
+    "uberon_id": null,
+    "uberon_iri": null,
+    "uberon_label": null,
+    "whs_id": 1009,
+    "whs_name": "White matter of the tectum"
+  },
+  "1010": {
+    "match_quality": "confirmed",
+    "uberon_id": "UBERON:0024045",
+    "uberon_iri": "http://purl.obolibrary.org/obo/UBERON_0024045",
+    "uberon_label": "white matter of the cerebellar cortex",
+    "whs_id": 1010,
+    "whs_name": "Cerebellar and precerebellar white matter"
+  },
+  "1011": {
+    "match_quality": "confirmed",
+    "uberon_id": "UBERON:0014891",
+    "uberon_iri": "http://purl.obolibrary.org/obo/UBERON_0014891",
+    "uberon_label": "brainstem white matter",
+    "whs_id": 1011,
+    "whs_name": "White matter of the brainstem"
+  },
+  "1012": {
+    "match_quality": "exact",
+    "uberon_id": "UBERON:0002953",
+    "uberon_iri": "http://purl.obolibrary.org/obo/UBERON_0002953",
+    "uberon_label": "lateral lemniscus",
+    "whs_id": 1012,
+    "whs_name": "Lateral lemniscus"
+  },
+  "1013": {
+    "match_quality": "exact",
+    "uberon_id": "UBERON:0002020",
+    "uberon_iri": "http://purl.obolibrary.org/obo/UBERON_0002020",
+    "uberon_label": "gray matter",
+    "whs_id": 1013,
+    "whs_name": "Gray matter"
+  },
+  "1015": {
+    "match_quality": "exact",
+    "uberon_id": "UBERON:0000956",
+    "uberon_iri": "http://purl.obolibrary.org/obo/UBERON_0000956",
+    "uberon_label": "cerebral cortex",
+    "whs_id": 1015,
+    "whs_name": "Cerebral cortex"
+  },
+  "1018": {
+    "match_quality": "exact",
+    "uberon_id": "UBERON:0003027",
+    "uberon_iri": "http://purl.obolibrary.org/obo/UBERON_0003027",
+    "uberon_label": "cingulate cortex",
+    "whs_id": 1018,
+    "whs_name": "Cingulate cortex"
+  },
+  "1019": {
+    "match_quality": "exact",
+    "uberon_id": "UBERON:0001393",
+    "uberon_iri": "http://purl.obolibrary.org/obo/UBERON_0001393",
+    "uberon_label": "auditory cortex",
+    "whs_id": 1019,
+    "whs_name": "Auditory cortex"
+  },
+  "1020": {
+    "match_quality": "exact",
+    "uberon_id": "UBERON:0002264",
+    "uberon_iri": "http://purl.obolibrary.org/obo/UBERON_0002264",
+    "uberon_label": "olfactory bulb",
+    "whs_id": 1020,
+    "whs_name": "Olfactory bulb"
+  },
+  "1021": {
+    "match_quality": "exact",
+    "uberon_id": "UBERON:0002421",
+    "uberon_iri": "http://purl.obolibrary.org/obo/UBERON_0002421",
+    "uberon_label": "hippocampal formation",
+    "whs_id": 1021,
+    "whs_name": "Hippocampal formation"
+  },
+  "1022": {
+    "match_quality": "exact",
+    "uberon_id": "UBERON:0001954",
+    "uberon_iri": "http://purl.obolibrary.org/obo/UBERON_0001954",
+    "uberon_label": "Ammon's horn",
+    "whs_id": 1022,
+    "whs_name": "Cornu Ammonis"
+  },
+  "1023": {
+    "match_quality": "confirmed",
+    "uberon_id": "UBERON:0002973",
+    "uberon_iri": "http://purl.obolibrary.org/obo/UBERON_0002973",
+    "uberon_label": "parahippocampal gyrus",
+    "whs_id": 1023,
+    "whs_name": "Parahippocampal region"
+  },
+  "1024": {
+    "match_quality": "exact",
+    "uberon_id": "UBERON:0006083",
+    "uberon_iri": "http://purl.obolibrary.org/obo/UBERON_0006083",
+    "uberon_label": "perirhinal cortex",
+    "whs_id": 1024,
+    "whs_name": "Perirhinal cortex"
+  },
+  "1025": {
+    "match_quality": "exact",
+    "uberon_id": "UBERON:0002728",
+    "uberon_iri": "http://purl.obolibrary.org/obo/UBERON_0002728",
+    "uberon_label": "entorhinal cortex",
+    "whs_id": 1025,
+    "whs_name": "Entorhinal cortex"
+  },
+  "1028": {
+    "match_quality": "exact",
+    "uberon_id": "UBERON:0006514",
+    "uberon_iri": "http://purl.obolibrary.org/obo/UBERON_0006514",
+    "uberon_label": "pallidum",
+    "whs_id": 1028,
+    "whs_name": "Pallidum"
+  },
+  "1032": {
+    "match_quality": "override-unmapped",
+    "uberon_id": null,
+    "uberon_iri": null,
+    "uberon_label": null,
+    "whs_id": 1032,
+    "whs_name": "Medial geniculate complex of the dorsal thalamus"
+  },
+  "1033": {
+    "match_quality": "confirmed",
+    "uberon_id": "UBERON:0001903",
+    "uberon_iri": "http://purl.obolibrary.org/obo/UBERON_0001903",
+    "uberon_label": "thalamic reticular nucleus",
+    "whs_id": 1033,
+    "whs_name": "Reticular (pre)thalamic nucleus"
+  },
+  "1034": {
+    "match_quality": "exact",
+    "uberon_id": "UBERON:0001898",
+    "uberon_iri": "http://purl.obolibrary.org/obo/UBERON_0001898",
+    "uberon_label": "hypothalamus",
+    "whs_id": 1034,
+    "whs_name": "Hypothalamus"
+  },
+  "1035": {
+    "match_quality": "exact",
+    "uberon_id": "UBERON:0001891",
+    "uberon_iri": "http://purl.obolibrary.org/obo/UBERON_0001891",
+    "uberon_label": "midbrain",
+    "whs_id": 1035,
+    "whs_name": "Midbrain"
+  },
+  "1036": {
+    "match_quality": "exact",
+    "uberon_id": "UBERON:0002314",
+    "uberon_iri": "http://purl.obolibrary.org/obo/UBERON_0002314",
+    "uberon_label": "midbrain tectum",
+    "whs_id": 1036,
+    "whs_name": "Tectum"
+  },
+  "1037": {
+    "match_quality": "exact",
+    "uberon_id": "UBERON:0001946",
+    "uberon_iri": "http://purl.obolibrary.org/obo/UBERON_0001946",
+    "uberon_label": "inferior colliculus",
+    "whs_id": 1037,
+    "whs_name": "Inferior colliculus"
+  },
+  "1038": {
+    "match_quality": "exact",
+    "uberon_id": "UBERON:0001945",
+    "uberon_iri": "http://purl.obolibrary.org/obo/UBERON_0001945",
+    "uberon_label": "superior colliculus",
+    "whs_id": 1038,
+    "whs_name": "Superior colliculus"
+  },
+  "1039": {
+    "match_quality": "exact",
+    "uberon_id": "UBERON:0024151",
+    "uberon_iri": "http://purl.obolibrary.org/obo/UBERON_0024151",
+    "uberon_label": "tegmentum",
+    "whs_id": 1039,
+    "whs_name": "Tegmentum"
+  },
+  "1043": {
+    "match_quality": "confirmed",
+    "uberon_id": "UBERON:0002828",
+    "uberon_iri": "http://purl.obolibrary.org/obo/UBERON_0002828",
+    "uberon_label": "ventral cochlear nucleus",
+    "whs_id": 1043,
+    "whs_name": "Cochlear nucleus, ventral part"
+  },
+  "1044": {
+    "match_quality": "confirmed",
+    "uberon_id": "UBERON:0002829",
+    "uberon_iri": "http://purl.obolibrary.org/obo/UBERON_0002829",
+    "uberon_label": "dorsal cochlear nucleus",
+    "whs_id": 1044,
+    "whs_name": "Cochlear nucleus, dorsal part"
+  },
+  "1045": {
+    "match_quality": "exact",
+    "uberon_id": "UBERON:0002128",
+    "uberon_iri": "http://purl.obolibrary.org/obo/UBERON_0002128",
+    "uberon_label": "superior olivary complex",
+    "whs_id": 1045,
+    "whs_name": "Superior olivary complex"
+  },
+  "1046": {
+    "match_quality": "confirmed",
+    "uberon_id": "UBERON:0006840",
+    "uberon_iri": "http://purl.obolibrary.org/obo/UBERON_0006840",
+    "uberon_label": "nucleus of lateral lemniscus",
+    "whs_id": 1046,
+    "whs_name": "Nuclei of the lateral lemniscus"
+  },
+  "1047": {
+    "match_quality": "exact",
+    "uberon_id": "UBERON:0002037",
+    "uberon_iri": "http://purl.obolibrary.org/obo/UBERON_0002037",
+    "uberon_label": "cerebellum",
+    "whs_id": 1047,
+    "whs_name": "Cerebellum"
+  },
+  "1048": {
+    "match_quality": "exact",
+    "uberon_id": "UBERON:0005281",
+    "uberon_iri": "http://purl.obolibrary.org/obo/UBERON_0005281",
+    "uberon_label": "ventricular system of central nervous system",
+    "whs_id": 1048,
+    "whs_name": "Ventricular system"
+  },
+  "1049": {
+    "match_quality": "exact",
+    "uberon_id": "UBERON:0001846",
+    "uberon_iri": "http://purl.obolibrary.org/obo/UBERON_0001846",
+    "uberon_label": "internal ear",
+    "whs_id": 1049,
+    "whs_name": "Inner ear"
+  },
+  "1050": {
+    "match_quality": "override-unmapped",
+    "uberon_id": null,
+    "uberon_iri": null,
+    "uberon_label": null,
+    "whs_id": 1050,
+    "whs_name": "Olfactory white matter"
+  },
+  "1051": {
+    "match_quality": "exact",
+    "uberon_id": "UBERON:0014533",
+    "uberon_iri": "http://purl.obolibrary.org/obo/UBERON_0014533",
+    "uberon_label": "medullary lamina of thalamus",
+    "whs_id": 1051,
+    "whs_name": "External medullary lamina"
+  },
+  "1052": {
+    "match_quality": "exact",
+    "uberon_id": "UBERON:0001893",
+    "uberon_iri": "http://purl.obolibrary.org/obo/UBERON_0001893",
+    "uberon_label": "telencephalon",
+    "whs_id": 1052,
+    "whs_name": "Telencephalon"
+  },
+  "1053": {
+    "match_quality": "confirmed",
+    "uberon_id": "UBERON:0000203",
+    "uberon_iri": "http://purl.obolibrary.org/obo/UBERON_0000203",
+    "uberon_label": "pallium",
+    "whs_id": 1053,
+    "whs_name": "Laminated pallium"
+  },
+  "1055": {
+    "match_quality": "exact",
+    "uberon_id": "UBERON:0003876",
+    "uberon_iri": "http://purl.obolibrary.org/obo/UBERON_0003876",
+    "uberon_label": "hippocampal field",
+    "whs_id": 1055,
+    "whs_name": "Hippocampal region"
+  },
+  "1056": {
+    "match_quality": "exact",
+    "uberon_id": "UBERON:0004725",
+    "uberon_iri": "http://purl.obolibrary.org/obo/UBERON_0004725",
+    "uberon_label": "piriform cortex",
+    "whs_id": 1056,
+    "whs_name": "Piriform cortex"
+  },
+  "1057": {
+    "match_quality": "exact",
+    "uberon_id": "UBERON:0002967",
+    "uberon_iri": "http://purl.obolibrary.org/obo/UBERON_0002967",
+    "uberon_label": "cingulate gyrus",
+    "whs_id": 1057,
+    "whs_name": "Cingulate region"
+  },
+  "1058": {
+    "match_quality": "exact",
+    "uberon_id": "UBERON:0013531",
+    "uberon_iri": "http://purl.obolibrary.org/obo/UBERON_0013531",
+    "uberon_label": "retrosplenial region",
+    "whs_id": 1058,
+    "whs_name": "Retrosplenial cortex"
+  },
+  "1059": {
+    "match_quality": "exact",
+    "uberon_id": "UBERON:0002022",
+    "uberon_iri": "http://purl.obolibrary.org/obo/UBERON_0002022",
+    "uberon_label": "insula",
+    "whs_id": 1059,
+    "whs_name": "Insular region"
+  },
+  "1060": {
+    "match_quality": "exact",
+    "uberon_id": "UBERON:0034893",
+    "uberon_iri": "http://purl.obolibrary.org/obo/UBERON_0034893",
+    "uberon_label": "agranular insular cortex",
+    "whs_id": 1060,
+    "whs_name": "Agranular insular cortex"
+  },
+  "1061": {
+    "match_quality": "exact",
+    "uberon_id": "UBERON:0016525",
+    "uberon_iri": "http://purl.obolibrary.org/obo/UBERON_0016525",
+    "uberon_label": "frontal lobe",
+    "whs_id": 1061,
+    "whs_name": "Frontal region"
+  },
+  "1062": {
+    "match_quality": "exact",
+    "uberon_id": "UBERON:0004167",
+    "uberon_iri": "http://purl.obolibrary.org/obo/UBERON_0004167",
+    "uberon_label": "orbitofrontal cortex",
+    "whs_id": 1062,
+    "whs_name": "Orbitofrontal cortex"
+  },
+  "1063": {
+    "match_quality": "override-unmapped",
+    "uberon_id": null,
+    "uberon_iri": null,
+    "uberon_label": null,
+    "whs_id": 1063,
+    "whs_name": "Mediofrontal cortex"
+  },
+  "1064": {
+    "match_quality": "exact",
+    "uberon_id": "UBERON:0001384",
+    "uberon_iri": "http://purl.obolibrary.org/obo/UBERON_0001384",
+    "uberon_label": "primary motor cortex",
+    "whs_id": 1064,
+    "whs_name": "Motor cortex"
+  },
+  "1065": {
+    "match_quality": "exact",
+    "uberon_id": "UBERON:0001872",
+    "uberon_iri": "http://purl.obolibrary.org/obo/UBERON_0001872",
+    "uberon_label": "parietal lobe",
+    "whs_id": 1065,
+    "whs_name": "Parietal region"
+  },
+  "1066": {
+    "match_quality": "exact",
+    "uberon_id": "UBERON:0008930",
+    "uberon_iri": "http://purl.obolibrary.org/obo/UBERON_0008930",
+    "uberon_label": "somatosensory cortex",
+    "whs_id": 1066,
+    "whs_name": "Somatosensory cortex"
+  },
+  "1067": {
+    "match_quality": "exact",
+    "uberon_id": "UBERON:0008933",
+    "uberon_iri": "http://purl.obolibrary.org/obo/UBERON_0008933",
+    "uberon_label": "primary somatosensory cortex",
+    "whs_id": 1067,
+    "whs_name": "Primary somatosensory area"
+  },
+  "1068": {
+    "match_quality": "exact",
+    "uberon_id": "UBERON:0034889",
+    "uberon_iri": "http://purl.obolibrary.org/obo/UBERON_0034889",
+    "uberon_label": "posterior parietal cortex",
+    "whs_id": 1068,
+    "whs_name": "Posterior parietal cortex"
+  },
+  "1069": {
+    "match_quality": "exact",
+    "uberon_id": "UBERON:0005902",
+    "uberon_iri": "http://purl.obolibrary.org/obo/UBERON_0005902",
+    "uberon_label": "occipital region",
+    "whs_id": 1069,
+    "whs_name": "Occipital region"
+  },
+  "1070": {
+    "match_quality": "exact",
+    "uberon_id": "UBERON:0000411",
+    "uberon_iri": "http://purl.obolibrary.org/obo/UBERON_0000411",
+    "uberon_label": "visual cortex",
+    "whs_id": 1070,
+    "whs_name": "Visual cortex"
+  },
+  "1071": {
+    "match_quality": "exact",
+    "uberon_id": "UBERON:0006473",
+    "uberon_iri": "http://purl.obolibrary.org/obo/UBERON_0006473",
+    "uberon_label": "Brodmann (1909) area 18",
+    "whs_id": 1071,
+    "whs_name": "Secondary visual area"
+  },
+  "1072": {
+    "match_quality": "exact",
+    "uberon_id": "UBERON:0003251",
+    "uberon_iri": "http://purl.obolibrary.org/obo/UBERON_0003251",
+    "uberon_label": "temporal part of head",
+    "whs_id": 1072,
+    "whs_name": "Temporal region"
+  },
+  "1073": {
+    "match_quality": "confirmed",
+    "uberon_id": "UBERON:0034752",
+    "uberon_iri": "http://purl.obolibrary.org/obo/UBERON_0034752",
+    "uberon_label": "secondary auditory cortex",
+    "whs_id": 1073,
+    "whs_name": "Secondary auditory area"
+  },
+  "1074": {
+    "match_quality": "confirmed",
+    "uberon_id": "UBERON:0000203",
+    "uberon_iri": "http://purl.obolibrary.org/obo/UBERON_0000203",
+    "uberon_label": "pallium",
+    "whs_id": 1074,
+    "whs_name": "Non-laminated pallium"
+  },
+  "1075": {
+    "match_quality": "exact",
+    "uberon_id": "UBERON:0000204",
+    "uberon_iri": "http://purl.obolibrary.org/obo/UBERON_0000204",
+    "uberon_label": "ventral part of telencephalon",
+    "whs_id": 1075,
+    "whs_name": " Subpallium"
+  },
+  "1076": {
+    "match_quality": "exact",
+    "uberon_id": "UBERON:0002435",
+    "uberon_iri": "http://purl.obolibrary.org/obo/UBERON_0002435",
+    "uberon_label": "striatum",
+    "whs_id": 1076,
+    "whs_name": "Striatum"
+  },
+  "1077": {
+    "match_quality": "exact",
+    "uberon_id": "UBERON:0001882",
+    "uberon_iri": "http://purl.obolibrary.org/obo/UBERON_0001882",
+    "uberon_label": "nucleus accumbens",
+    "whs_id": 1077,
+    "whs_name": "Nucleus accumbens"
+  },
+  "1078": {
+    "match_quality": "confirmed",
+    "uberon_id": "UBERON:0001875",
+    "uberon_iri": "http://purl.obolibrary.org/obo/UBERON_0001875",
+    "uberon_label": "globus pallidus",
+    "whs_id": 1078,
+    "whs_name": "Globus pallidus external"
+  },
+  "1079": {
+    "match_quality": "confirmed",
+    "uberon_id": "UBERON:0002743",
+    "uberon_iri": "http://purl.obolibrary.org/obo/UBERON_0002743",
+    "uberon_label": "basal forebrain",
+    "whs_id": 1079,
+    "whs_name": "Basal forebrain region "
+  },
+  "108": {
+    "match_quality": "exact",
+    "uberon_id": "UBERON:0023928",
+    "uberon_iri": "http://purl.obolibrary.org/obo/UBERON_0023928",
+    "uberon_label": "postrhinal cortex of rodent of Burwell et al 1995",
+    "whs_id": 108,
+    "whs_name": "Postrhinal cortex"
+  },
+  "1080": {
+    "match_quality": "exact",
+    "uberon_id": "UBERON:0001894",
+    "uberon_iri": "http://purl.obolibrary.org/obo/UBERON_0001894",
+    "uberon_label": "diencephalon",
+    "whs_id": 1080,
+    "whs_name": "Diencephalon"
+  },
+  "1081": {
+    "match_quality": "exact",
+    "uberon_id": "UBERON:0001900",
+    "uberon_iri": "http://purl.obolibrary.org/obo/UBERON_0001900",
+    "uberon_label": "ventral thalamus",
+    "whs_id": 1081,
+    "whs_name": "Prethalamus"
+  },
+  "1082": {
+    "match_quality": "exact",
+    "uberon_id": "UBERON:0001907",
+    "uberon_iri": "http://purl.obolibrary.org/obo/UBERON_0001907",
+    "uberon_label": "zona incerta",
+    "whs_id": 1082,
+    "whs_name": "Zona incerta"
+  },
+  "1083": {
+    "match_quality": "exact",
+    "uberon_id": "UBERON:0001899",
+    "uberon_iri": "http://purl.obolibrary.org/obo/UBERON_0001899",
+    "uberon_label": "epithalamus",
+    "whs_id": 1083,
+    "whs_name": "Epithalamus"
+  },
+  "1084": {
+    "match_quality": "exact",
+    "uberon_id": "UBERON:0004703",
+    "uberon_iri": "http://purl.obolibrary.org/obo/UBERON_0004703",
+    "uberon_label": "dorsal thalamus",
+    "whs_id": 1084,
+    "whs_name": "Dorsal thalamus"
+  },
+  "1085": {
+    "match_quality": "confirmed",
+    "uberon_id": "UBERON:0002788",
+    "uberon_iri": "http://purl.obolibrary.org/obo/UBERON_0002788",
+    "uberon_label": "anterior nuclear group",
+    "whs_id": 1085,
+    "whs_name": "Anterior nuclei of the dorsal thalamus"
+  },
+  "1086": {
+    "match_quality": "exact",
+    "uberon_id": "UBERON:0002685",
+    "uberon_iri": "http://purl.obolibrary.org/obo/UBERON_0002685",
+    "uberon_label": "anteroventral nucleus of thalamus",
+    "whs_id": 1086,
+    "whs_name": "Anteroventral thalamic nucleus"
+  },
+  "1087": {
+    "match_quality": "confirmed",
+    "uberon_id": "UBERON:0002705",
+    "uberon_iri": "http://purl.obolibrary.org/obo/UBERON_0002705",
+    "uberon_label": "midline nuclear group",
+    "whs_id": 1087,
+    "whs_name": "Dorsal-caudal midline group of the dorsal thalamus"
+  },
+  "1088": {
+    "match_quality": "confirmed",
+    "uberon_id": "UBERON:0002776",
+    "uberon_iri": "http://purl.obolibrary.org/obo/UBERON_0002776",
+    "uberon_label": "ventral nuclear group",
+    "whs_id": 1088,
+    "whs_name": "Ventral midline group of the dorsal thalamus"
+  },
+  "1089": {
+    "match_quality": "confirmed",
+    "uberon_id": "UBERON:0035113",
+    "uberon_iri": "http://purl.obolibrary.org/obo/UBERON_0035113",
+    "uberon_label": "central part of mediodorsal nucleus of the thalamus",
+    "whs_id": 1089,
+    "whs_name": "Mediodorsal nucleus of the dorsal thalamus"
+  },
+  "109": {
+    "match_quality": "exact",
+    "uberon_id": "UBERON:0001953",
+    "uberon_iri": "http://purl.obolibrary.org/obo/UBERON_0001953",
+    "uberon_label": "presubiculum",
+    "whs_id": 109,
+    "whs_name": "Presubiculum"
+  },
+  "1090": {
+    "match_quality": "confirmed",
+    "uberon_id": "UBERON:0002776",
+    "uberon_iri": "http://purl.obolibrary.org/obo/UBERON_0002776",
+    "uberon_label": "ventral nuclear group",
+    "whs_id": 1090,
+    "whs_name": "Ventral nuclei of the dorsal thalamus"
+  },
+  "1091": {
+    "match_quality": "exact",
+    "uberon_id": "UBERON:0002596",
+    "uberon_iri": "http://purl.obolibrary.org/obo/UBERON_0002596",
+    "uberon_label": "ventral posterior nucleus of thalamus",
+    "whs_id": 1091,
+    "whs_name": "Ventral posterior thalamic nucleus"
+  },
+  "1092": {
+    "match_quality": "exact",
+    "uberon_id": "UBERON:0002733",
+    "uberon_iri": "http://purl.obolibrary.org/obo/UBERON_0002733",
+    "uberon_label": "intralaminar nuclear group",
+    "whs_id": 1092,
+    "whs_name": "Intralaminar nuclei of the dorsal thalamus"
+  },
+  "1093": {
+    "match_quality": "confirmed",
+    "uberon_id": "UBERON:0002709",
+    "uberon_iri": "http://purl.obolibrary.org/obo/UBERON_0002709",
+    "uberon_label": "posterior nuclear complex of thalamus",
+    "whs_id": 1093,
+    "whs_name": "Posterior complex of the dorsal thalamus"
+  },
+  "1094": {
+    "match_quality": "confirmed",
+    "uberon_id": "UBERON:0002983",
+    "uberon_iri": "http://purl.obolibrary.org/obo/UBERON_0002983",
+    "uberon_label": "lateral posterior nucleus of thalamus",
+    "whs_id": 1094,
+    "whs_name": "Lateral posterior (pulvinar) complex of the dorsal thalamus"
+  },
+  "1095": {
+    "match_quality": "confirmed",
+    "uberon_id": "UBERON:0002984",
+    "uberon_iri": "http://purl.obolibrary.org/obo/UBERON_0002984",
+    "uberon_label": "lateral dorsal nucleus",
+    "whs_id": 1095,
+    "whs_name": "Laterodorsal thalamic nuclei of the dorsal thalamus"
+  },
+  "1096": {
+    "match_quality": "exact",
+    "uberon_id": "UBERON:0001944",
+    "uberon_iri": "http://purl.obolibrary.org/obo/UBERON_0001944",
+    "uberon_label": "pretectal region",
+    "whs_id": 1096,
+    "whs_name": "Pretectum"
+  },
+  "1097": {
+    "match_quality": "exact",
+    "uberon_id": "UBERON:0001891",
+    "uberon_iri": "http://purl.obolibrary.org/obo/UBERON_0001891",
+    "uberon_label": "midbrain",
+    "whs_id": 1097,
+    "whs_name": "Mesencephalon"
+  },
+  "1098": {
+    "match_quality": "exact",
+    "uberon_id": "UBERON:0002038",
+    "uberon_iri": "http://purl.obolibrary.org/obo/UBERON_0002038",
+    "uberon_label": "substantia nigra",
+    "whs_id": 1098,
+    "whs_name": "Substantia nigra"
+  },
+  "1099": {
+    "match_quality": "exact",
+    "uberon_id": "UBERON:0002028",
+    "uberon_iri": "http://purl.obolibrary.org/obo/UBERON_0002028",
+    "uberon_label": "hindbrain",
+    "whs_id": 1099,
+    "whs_name": "Rhombencephalon"
+  },
+  "110": {
+    "match_quality": "exact",
+    "uberon_id": "UBERON:0004683",
+    "uberon_iri": "http://purl.obolibrary.org/obo/UBERON_0004683",
+    "uberon_label": "parasubiculum",
+    "whs_id": 110,
+    "whs_name": "Parasubiculum"
+  },
+  "1100": {
+    "match_quality": "exact",
+    "uberon_id": "UBERON:0001895",
+    "uberon_iri": "http://purl.obolibrary.org/obo/UBERON_0001895",
+    "uberon_label": "metencephalon",
+    "whs_id": 1100,
+    "whs_name": "Metencephalon"
+  },
+  "1101": {
+    "match_quality": "exact",
+    "uberon_id": "UBERON:0005290",
+    "uberon_iri": "http://purl.obolibrary.org/obo/UBERON_0005290",
+    "uberon_label": "myelencephalon",
+    "whs_id": 1101,
+    "whs_name": "Myelencephalon"
+  },
+  "112": {
+    "match_quality": "exact",
+    "uberon_id": "UBERON:0006102",
+    "uberon_iri": "http://purl.obolibrary.org/obo/UBERON_0006102",
+    "uberon_label": "Brodmann (1909) area 35",
+    "whs_id": 112,
+    "whs_name": "Perirhinal area 35"
+  },
+  "113": {
+    "match_quality": "confirmed",
+    "uberon_id": "UBERON:0006083",
+    "uberon_iri": "http://purl.obolibrary.org/obo/UBERON_0006083",
+    "uberon_label": "perirhinal cortex",
+    "whs_id": 113,
+    "whs_name": "Perirhinal area 36"
+  },
+  "114": {
+    "match_quality": "exact",
+    "uberon_id": "UBERON:0007224",
+    "uberon_iri": "http://purl.obolibrary.org/obo/UBERON_0007224",
+    "uberon_label": "medial entorhinal cortex",
+    "whs_id": 114,
+    "whs_name": "Medial entorhinal cortex"
+  },
+  "115": {
+    "match_quality": "exact",
+    "uberon_id": "UBERON:0007225",
+    "uberon_iri": "http://purl.obolibrary.org/obo/UBERON_0007225",
+    "uberon_label": "lateral entorhinal cortex",
+    "whs_id": 115,
+    "whs_name": "Lateral entorhinal cortex"
+  },
+  "119": {
+    "match_quality": "exact",
+    "uberon_id": "UBERON:0001862",
+    "uberon_iri": "http://purl.obolibrary.org/obo/UBERON_0001862",
+    "uberon_label": "vestibular labyrinth",
+    "whs_id": 119,
+    "whs_name": "vestibular apparatus"
+  },
+  "120": {
+    "match_quality": "exact",
+    "uberon_id": "UBERON:0001844",
+    "uberon_iri": "http://purl.obolibrary.org/obo/UBERON_0001844",
+    "uberon_label": "cochlea",
+    "whs_id": 120,
+    "whs_name": "cochlea"
+  },
+  "121": {
+    "match_quality": "exact",
+    "uberon_id": "UBERON:0004727",
+    "uberon_iri": "http://purl.obolibrary.org/obo/UBERON_0004727",
+    "uberon_label": "cochlear nerve",
+    "whs_id": 121,
+    "whs_name": "cochlear nerve"
+  },
+  "122": {
+    "match_quality": "exact",
+    "uberon_id": "UBERON:0003723",
+    "uberon_iri": "http://purl.obolibrary.org/obo/UBERON_0003723",
+    "uberon_label": "vestibular nerve",
+    "whs_id": 122,
+    "whs_name": "vestibular nerve"
+  },
+  "123": {
+    "match_quality": "confirmed",
+    "uberon_id": "UBERON:0002828",
+    "uberon_iri": "http://purl.obolibrary.org/obo/UBERON_0002828",
+    "uberon_label": "ventral cochlear nucleus",
+    "whs_id": 123,
+    "whs_name": "Ventral cochlear nucleus, granule cell layer"
+  },
+  "125": {
+    "match_quality": "exact",
+    "uberon_id": "UBERON:0002422",
+    "uberon_iri": "http://purl.obolibrary.org/obo/UBERON_0002422",
+    "uberon_label": "fourth ventricle",
+    "whs_id": 125,
+    "whs_name": "4th ventricle"
+  },
+  "126": {
+    "match_quality": "confirmed",
+    "uberon_id": "UBERON:0022326",
+    "uberon_iri": "http://purl.obolibrary.org/obo/UBERON_0022326",
+    "uberon_label": "molecular layer of dorsal cochlear nucleus",
+    "whs_id": 126,
+    "whs_name": "Dorsal cochlear nucleus, molecular layer"
+  },
+  "127": {
+    "match_quality": "override",
+    "uberon_id": "UBERON:0029009",
+    "uberon_iri": "http://purl.obolibrary.org/obo/UBERON_0029009",
+    "uberon_label": "granular cell layer of dorsal cochlear nucleus",
+    "whs_id": 127,
+    "whs_name": "Dorsal cochlear nucleus, fusiform and granule layer"
+  },
+  "128": {
+    "match_quality": "confirmed",
+    "uberon_id": "UBERON:0002829",
+    "uberon_iri": "http://purl.obolibrary.org/obo/UBERON_0002829",
+    "uberon_label": "dorsal cochlear nucleus",
+    "whs_id": 128,
+    "whs_name": "Dorsal cochlear nucleus, deep core"
+  },
+  "129": {
+    "match_quality": "confirmed",
+    "uberon_id": "UBERON:0002790",
+    "uberon_iri": "http://purl.obolibrary.org/obo/UBERON_0002790",
+    "uberon_label": "dorsal acoustic stria",
+    "whs_id": 129,
+    "whs_name": "acoustic striae"
+  },
+  "130": {
+    "match_quality": "exact",
+    "uberon_id": "UBERON:0002932",
+    "uberon_iri": "http://purl.obolibrary.org/obo/UBERON_0002932",
+    "uberon_label": "trapezoid body",
+    "whs_id": 130,
+    "whs_name": "trapezoid body"
+  },
+  "131": {
+    "match_quality": "exact",
+    "uberon_id": "UBERON:0007633",
+    "uberon_iri": "http://purl.obolibrary.org/obo/UBERON_0007633",
+    "uberon_label": "nucleus of trapezoid body",
+    "whs_id": 131,
+    "whs_name": "Nucleus of the trapezoid body"
+  },
+  "132": {
+    "match_quality": "exact",
+    "uberon_id": "UBERON:8440043",
+    "uberon_iri": "http://purl.obolibrary.org/obo/UBERON_8440043",
+    "uberon_label": "superior paraolivary nucleus",
+    "whs_id": 132,
+    "whs_name": "Superior paraolivary nucleus"
+  },
+  "133": {
+    "match_quality": "exact",
+    "uberon_id": "UBERON:0002782",
+    "uberon_iri": "http://purl.obolibrary.org/obo/UBERON_0002782",
+    "uberon_label": "medial superior olivary nucleus",
+    "whs_id": 133,
+    "whs_name": "Medial superior olive"
+  },
+  "134": {
+    "match_quality": "exact",
+    "uberon_id": "UBERON:0002779",
+    "uberon_iri": "http://purl.obolibrary.org/obo/UBERON_0002779",
+    "uberon_label": "lateral superior olivary nucleus",
+    "whs_id": 134,
+    "whs_name": "Lateral superior olive"
+  },
+  "135": {
+    "match_quality": "confirmed",
+    "uberon_id": "UBERON:0002971",
+    "uberon_iri": "http://purl.obolibrary.org/obo/UBERON_0002971",
+    "uberon_label": "periolivary nucleus",
+    "whs_id": 135,
+    "whs_name": "Superior periolivary region"
+  },
+  "136": {
+    "match_quality": "confirmed",
+    "uberon_id": "UBERON:0002971",
+    "uberon_iri": "http://purl.obolibrary.org/obo/UBERON_0002971",
+    "uberon_label": "periolivary nucleus",
+    "whs_id": 136,
+    "whs_name": "Ventral periolivary nuclei"
+  },
+  "137": {
+    "match_quality": "confirmed",
+    "uberon_id": "UBERON:0002604",
+    "uberon_iri": "http://purl.obolibrary.org/obo/UBERON_0002604",
+    "uberon_label": "ventral nucleus of lateral lemniscus",
+    "whs_id": 137,
+    "whs_name": "Lateral lemniscus, ventral nucleus"
+  },
+  "138": {
+    "match_quality": "confirmed",
+    "uberon_id": "UBERON:0007710",
+    "uberon_iri": "http://purl.obolibrary.org/obo/UBERON_0007710",
+    "uberon_label": "intermediate nucleus of lateral lemniscus",
+    "whs_id": 138,
+    "whs_name": "Lateral lemniscus, intermediate nucleus"
+  },
+  "139": {
+    "match_quality": "confirmed",
+    "uberon_id": "UBERON:0003006",
+    "uberon_iri": "http://purl.obolibrary.org/obo/UBERON_0003006",
+    "uberon_label": "dorsal nucleus of lateral lemniscus",
+    "whs_id": 139,
+    "whs_name": "Lateral lemniscus, dorsal nucleus"
+  },
+  "140": {
+    "match_quality": "confirmed",
+    "uberon_id": "UBERON:0002953",
+    "uberon_iri": "http://purl.obolibrary.org/obo/UBERON_0002953",
+    "uberon_label": "lateral lemniscus",
+    "whs_id": 140,
+    "whs_name": "lateral lemniscus, commissure"
+  },
+  "141": {
+    "match_quality": "confirmed",
+    "uberon_id": "UBERON:0002953",
+    "uberon_iri": "http://purl.obolibrary.org/obo/UBERON_0002953",
+    "uberon_label": "lateral lemniscus",
+    "whs_id": 141,
+    "whs_name": "lateral lemniscus, unspecified"
+  },
+  "142": {
+    "match_quality": "confirmed",
+    "uberon_id": "UBERON:0002577",
+    "uberon_iri": "http://purl.obolibrary.org/obo/UBERON_0002577",
+    "uberon_label": "pericentral nucleus of inferior colliculus",
+    "whs_id": 142,
+    "whs_name": "Inferior colliculus, dorsal cortex"
+  },
+  "143": {
+    "match_quality": "exact",
+    "uberon_id": "UBERON:0002563",
+    "uberon_iri": "http://purl.obolibrary.org/obo/UBERON_0002563",
+    "uberon_label": "central nucleus of inferior colliculus",
+    "whs_id": 143,
+    "whs_name": "Inferior colliculus, central nucleus"
+  },
+  "145": {
+    "match_quality": "confirmed",
+    "uberon_id": "UBERON:0002571",
+    "uberon_iri": "http://purl.obolibrary.org/obo/UBERON_0002571",
+    "uberon_label": "external nucleus of inferior colliculus",
+    "whs_id": 145,
+    "whs_name": "Inferior colliculus, external cortex"
+  },
+  "146": {
+    "match_quality": "confirmed",
+    "uberon_id": "UBERON:0003025",
+    "uberon_iri": "http://purl.obolibrary.org/obo/UBERON_0003025",
+    "uberon_label": "brachium of inferior colliculus",
+    "whs_id": 146,
+    "whs_name": "inferior colliculus, brachium"
+  },
+  "150": {
+    "match_quality": "override-unmapped",
+    "uberon_id": null,
+    "uberon_iri": null,
+    "uberon_label": null,
+    "whs_id": 150,
+    "whs_name": "Medial geniculate body, marginal zone"
+  },
+  "151": {
+    "match_quality": "exact",
+    "uberon_id": "UBERON:0034751",
+    "uberon_iri": "http://purl.obolibrary.org/obo/UBERON_0034751",
+    "uberon_label": "primary auditory cortex",
+    "whs_id": 151,
+    "whs_name": "Primary auditory area"
+  },
+  "152": {
+    "match_quality": "confirmed",
+    "uberon_id": "UBERON:0035885",
+    "uberon_iri": "http://purl.obolibrary.org/obo/UBERON_0035885",
+    "uberon_label": "dorsal auditory area",
+    "whs_id": 152,
+    "whs_name": "Secondary auditory area, dorsal part"
+  },
+  "153": {
+    "match_quality": "override-unmapped",
+    "uberon_id": null,
+    "uberon_iri": null,
+    "uberon_label": null,
+    "whs_id": 153,
+    "whs_name": "Secondary auditory area, ventral part"
+  },
+  "157": {
+    "match_quality": "confirmed",
+    "uberon_id": "UBERON:0014534",
+    "uberon_iri": "http://purl.obolibrary.org/obo/UBERON_0014534",
+    "uberon_label": "external medullary lamina of thalamus",
+    "whs_id": 157,
+    "whs_name": "external medullary lamina, auditory radiation"
+  },
+  "158": {
+    "match_quality": "exact",
+    "uberon_id": "UBERON:0002830",
+    "uberon_iri": "http://purl.obolibrary.org/obo/UBERON_0002830",
+    "uberon_label": "anteroventral cochlear nucleus",
+    "whs_id": 158,
+    "whs_name": "Ventral cochlear nucleus, anterior part"
+  },
+  "159": {
+    "match_quality": "exact",
+    "uberon_id": "UBERON:0002831",
+    "uberon_iri": "http://purl.obolibrary.org/obo/UBERON_0002831",
+    "uberon_label": "posteroventral cochlear nucleus",
+    "whs_id": 159,
+    "whs_name": "Ventral cochlear nucleus, posterior part"
+  },
+  "160": {
+    "match_quality": "confirmed",
+    "uberon_id": "UBERON:0002828",
+    "uberon_iri": "http://purl.obolibrary.org/obo/UBERON_0002828",
+    "uberon_label": "ventral cochlear nucleus",
+    "whs_id": 160,
+    "whs_name": "Ventral cochlear nucleus, cap area"
+  },
+  "162": {
+    "match_quality": "exact",
+    "uberon_id": "UBERON:0000395",
+    "uberon_iri": "http://purl.obolibrary.org/obo/UBERON_0000395",
+    "uberon_label": "cochlear ganglion",
+    "whs_id": 162,
+    "whs_name": "spiral ganglion"
+  },
+  "163": {
+    "match_quality": "exact",
+    "uberon_id": "UBERON:0022423",
+    "uberon_iri": "http://purl.obolibrary.org/obo/UBERON_0022423",
+    "uberon_label": "sagulum nucleus",
+    "whs_id": 163,
+    "whs_name": "Nucleus sagulum"
+  },
+  "164": {
+    "match_quality": "confirmed",
+    "uberon_id": "UBERON:0001903",
+    "uberon_iri": "http://purl.obolibrary.org/obo/UBERON_0001903",
+    "uberon_label": "thalamic reticular nucleus",
+    "whs_id": 164,
+    "whs_name": "Reticular (pre)thalamic nucleus, auditory segment"
+  },
+  "180": {
+    "match_quality": "exact",
+    "uberon_id": "UBERON:0034730",
+    "uberon_iri": "http://purl.obolibrary.org/obo/UBERON_0034730",
+    "uberon_label": "olfactory tract linking bulb to ipsilateral dorsal telencephalon",
+    "whs_id": 180,
+    "whs_name": "lateral olfactory tract"
+  },
+  "181": {
+    "match_quality": "confirmed",
+    "uberon_id": "UBERON:0014277",
+    "uberon_iri": "http://purl.obolibrary.org/obo/UBERON_0014277",
+    "uberon_label": "piriform cortex layer 1",
+    "whs_id": 181,
+    "whs_name": "Piriform cortex, layer 1"
+  },
+  "182": {
+    "match_quality": "confirmed",
+    "uberon_id": "UBERON:0014280",
+    "uberon_iri": "http://purl.obolibrary.org/obo/UBERON_0014280",
+    "uberon_label": "piriform cortex layer 2",
+    "whs_id": 182,
+    "whs_name": "Piriform cortex, layer 2"
+  },
+  "183": {
+    "match_quality": "confirmed",
+    "uberon_id": "UBERON:0014283",
+    "uberon_iri": "http://purl.obolibrary.org/obo/UBERON_0014283",
+    "uberon_label": "piriform cortex layer 3",
+    "whs_id": 183,
+    "whs_name": "Piriform cortex, layer 3"
+  },
+  "184": {
+    "match_quality": "confirmed",
+    "uberon_id": "UBERON:0012170",
+    "uberon_iri": "http://purl.obolibrary.org/obo/UBERON_0012170",
+    "uberon_label": "core of nucleus accumbens",
+    "whs_id": 184,
+    "whs_name": "Nucleus accumbens, core"
+  },
+  "187": {
+    "match_quality": "exact",
+    "uberon_id": "UBERON:0001966",
+    "uberon_iri": "http://purl.obolibrary.org/obo/UBERON_0001966",
+    "uberon_label": "substantia nigra pars reticulata",
+    "whs_id": 187,
+    "whs_name": "Substantia nigra, reticular part"
+  },
+  "188": {
+    "match_quality": "exact",
+    "uberon_id": "UBERON:0001965",
+    "uberon_iri": "http://purl.obolibrary.org/obo/UBERON_0001965",
+    "uberon_label": "substantia nigra pars compacta",
+    "whs_id": 188,
+    "whs_name": "Substantia nigra, compact part"
+  },
+  "189": {
+    "match_quality": "exact",
+    "uberon_id": "UBERON:0002995",
+    "uberon_iri": "http://purl.obolibrary.org/obo/UBERON_0002995",
+    "uberon_label": "substantia nigra pars lateralis",
+    "whs_id": 189,
+    "whs_name": "Substantia nigra, lateral part"
+  },
+  "192": {
+    "match_quality": "confirmed",
+    "uberon_id": "UBERON:0012171",
+    "uberon_iri": "http://purl.obolibrary.org/obo/UBERON_0012171",
+    "uberon_label": "shell of nucleus accumbens",
+    "whs_id": 192,
+    "whs_name": "Nucleus accumbens, shell"
+  },
+  "193": {
+    "match_quality": "exact",
+    "uberon_id": "UBERON:0002778",
+    "uberon_iri": "http://purl.obolibrary.org/obo/UBERON_0002778",
+    "uberon_label": "ventral pallidum",
+    "whs_id": 193,
+    "whs_name": "Ventral pallidum"
+  },
+  "195": {
+    "match_quality": "confirmed",
+    "uberon_id": "UBERON:0002477",
+    "uberon_iri": "http://purl.obolibrary.org/obo/UBERON_0002477",
+    "uberon_label": "medial globus pallidus",
+    "whs_id": 195,
+    "whs_name": "Globus pallidus external, medial part"
+  },
+  "196": {
+    "match_quality": "exact",
+    "uberon_id": "UBERON:0002691",
+    "uberon_iri": "http://purl.obolibrary.org/obo/UBERON_0002691",
+    "uberon_label": "ventral tegmental area",
+    "whs_id": 196,
+    "whs_name": "Ventral tegmental area"
+  },
+  "197": {
+    "match_quality": "exact",
+    "uberon_id": "UBERON:0005383",
+    "uberon_iri": "http://purl.obolibrary.org/obo/UBERON_0005383",
+    "uberon_label": "caudate-putamen",
+    "whs_id": 197,
+    "whs_name": "Caudate putamen"
+  },
+  "198": {
+    "match_quality": "confirmed",
+    "uberon_id": "UBERON:0002476",
+    "uberon_iri": "http://purl.obolibrary.org/obo/UBERON_0002476",
+    "uberon_label": "lateral globus pallidus",
+    "whs_id": 198,
+    "whs_name": "Globus pallidus external, lateral part"
+  },
+  "199": {
+    "match_quality": "confirmed",
+    "uberon_id": "UBERON:0013235",
+    "uberon_iri": "http://purl.obolibrary.org/obo/UBERON_0013235",
+    "uberon_label": "ventrum",
+    "whs_id": 199,
+    "whs_name": "Ventral striatal region, unspecified"
+  },
+  "200": {
+    "match_quality": "confirmed",
+    "uberon_id": "UBERON:0001903",
+    "uberon_iri": "http://purl.obolibrary.org/obo/UBERON_0001903",
+    "uberon_label": "thalamic reticular nucleus",
+    "whs_id": 200,
+    "whs_name": "Reticular (pre)thalamic nucleus, unspecified"
+  },
+  "201": {
+    "match_quality": "exact",
+    "uberon_id": "UBERON:0002144",
+    "uberon_iri": "http://purl.obolibrary.org/obo/UBERON_0002144",
+    "uberon_label": "peripeduncular nucleus",
+    "whs_id": 201,
+    "whs_name": "Peripeduncular nucleus"
+  },
+  "204": {
+    "match_quality": "exact",
+    "uberon_id": "UBERON:0002480",
+    "uberon_iri": "http://purl.obolibrary.org/obo/UBERON_0002480",
+    "uberon_label": "ventral lateral geniculate nucleus",
+    "whs_id": 204,
+    "whs_name": "Pregeniculate nucleus"
+  },
+  "205": {
+    "match_quality": "exact",
+    "uberon_id": "UBERON:0002479",
+    "uberon_iri": "http://purl.obolibrary.org/obo/UBERON_0002479",
+    "uberon_label": "dorsal lateral geniculate nucleus",
+    "whs_id": 205,
+    "whs_name": "Dorsal lateral geniculate nucleus"
+  },
+  "206": {
+    "match_quality": "exact",
+    "uberon_id": "UBERON:0001941",
+    "uberon_iri": "http://purl.obolibrary.org/obo/UBERON_0001941",
+    "uberon_label": "lateral habenular nucleus",
+    "whs_id": 206,
+    "whs_name": "Lateral habenular nucleus"
+  },
+  "207": {
+    "match_quality": "exact",
+    "uberon_id": "UBERON:0001942",
+    "uberon_iri": "http://purl.obolibrary.org/obo/UBERON_0001942",
+    "uberon_label": "medial habenular nucleus",
+    "whs_id": 207,
+    "whs_name": "Medial habenular nucleus"
+  },
+  "208": {
+    "match_quality": "override-unmapped",
+    "uberon_id": null,
+    "uberon_iri": null,
+    "uberon_label": null,
+    "whs_id": 208,
+    "whs_name": "Posterior intralaminar nucleus"
+  },
+  "210": {
+    "match_quality": "confirmed",
+    "uberon_id": "UBERON:0022243",
+    "uberon_iri": "http://purl.obolibrary.org/obo/UBERON_0022243",
+    "uberon_label": "posterior thalamic peduncle",
+    "whs_id": 210,
+    "whs_name": "Posterior thalamic nuclear group, triangular part"
+  },
+  "211": {
+    "match_quality": "override-unmapped",
+    "uberon_id": null,
+    "uberon_iri": null,
+    "uberon_label": null,
+    "whs_id": 211,
+    "whs_name": "Parataenial thalamic nucleus"
+  },
+  "213": {
+    "match_quality": "exact",
+    "uberon_id": "UBERON:0002679",
+    "uberon_iri": "http://purl.obolibrary.org/obo/UBERON_0002679",
+    "uberon_label": "anterodorsal nucleus of thalamus",
+    "whs_id": 213,
+    "whs_name": "Anterodorsal thalamic nucleus"
+  },
+  "214": {
+    "match_quality": "override-unmapped",
+    "uberon_id": null,
+    "uberon_iri": null,
+    "uberon_label": null,
+    "whs_id": 214,
+    "whs_name": "Anteroventral thalamic nucleus, dorsomedial part"
+  },
+  "215": {
+    "match_quality": "override-unmapped",
+    "uberon_id": null,
+    "uberon_iri": null,
+    "uberon_label": null,
+    "whs_id": 215,
+    "whs_name": "Anteroventral thalamic nucleus, ventrolateral part"
+  },
+  "216": {
+    "match_quality": "exact",
+    "uberon_id": "UBERON:0002955",
+    "uberon_iri": "http://purl.obolibrary.org/obo/UBERON_0002955",
+    "uberon_label": "rhomboidal nucleus",
+    "whs_id": 216,
+    "whs_name": "Rhomboid thalamic nucleus"
+  },
+  "218": {
+    "match_quality": "override-unmapped",
+    "uberon_id": null,
+    "uberon_iri": null,
+    "uberon_label": null,
+    "whs_id": 218,
+    "whs_name": "Xiphoid thalamic nucleus"
+  },
+  "219": {
+    "match_quality": "exact",
+    "uberon_id": "UBERON:0001921",
+    "uberon_iri": "http://purl.obolibrary.org/obo/UBERON_0001921",
+    "uberon_label": "reuniens nucleus",
+    "whs_id": 219,
+    "whs_name": "Reuniens thalamic nucleus"
+  },
+  "221": {
+    "match_quality": "exact",
+    "uberon_id": "UBERON:2000459",
+    "uberon_iri": "http://purl.obolibrary.org/obo/UBERON_2000459",
+    "uberon_label": "ventromedial thalamic nucleus",
+    "whs_id": 221,
+    "whs_name": "Ventromedial thalamic nucleus"
+  },
+  "222": {
+    "match_quality": "exact",
+    "uberon_id": "UBERON:0003031",
+    "uberon_iri": "http://purl.obolibrary.org/obo/UBERON_0003031",
+    "uberon_label": "submedial nucleus of thalamus",
+    "whs_id": 222,
+    "whs_name": "Submedius thalamic nucleus"
+  },
+  "223": {
+    "match_quality": "override-unmapped",
+    "uberon_id": null,
+    "uberon_iri": null,
+    "uberon_label": null,
+    "whs_id": 223,
+    "whs_name": "Angular thalamic nucleus"
+  },
+  "227": {
+    "match_quality": "exact",
+    "uberon_id": "UBERON:0002945",
+    "uberon_iri": "http://purl.obolibrary.org/obo/UBERON_0002945",
+    "uberon_label": "ventral posteromedial nucleus of thalamus",
+    "whs_id": 227,
+    "whs_name": "Ventral posteromedial thalamic nucleus"
+  },
+  "228": {
+    "match_quality": "override-unmapped",
+    "uberon_id": null,
+    "uberon_iri": null,
+    "uberon_label": null,
+    "whs_id": 228,
+    "whs_name": "Laterodorsal thalamic nucleus, dorsomedial part"
+  },
+  "229": {
+    "match_quality": "override-unmapped",
+    "uberon_id": null,
+    "uberon_iri": null,
+    "uberon_label": null,
+    "whs_id": 229,
+    "whs_name": "Laterodorsal thalamic nucleus, ventrolateral part"
+  },
+  "230": {
+    "match_quality": "exact",
+    "uberon_id": "UBERON:0002709",
+    "uberon_iri": "http://purl.obolibrary.org/obo/UBERON_0002709",
+    "uberon_label": "posterior nuclear complex of thalamus",
+    "whs_id": 230,
+    "whs_name": "Posterior thalamic nucleus"
+  },
+  "231": {
+    "match_quality": "exact",
+    "uberon_id": "UBERON:0001925",
+    "uberon_iri": "http://purl.obolibrary.org/obo/UBERON_0001925",
+    "uberon_label": "ventral lateral nucleus of thalamus",
+    "whs_id": 231,
+    "whs_name": "Ventrolateral thalamic nucleus"
+  },
+  "232": {
+    "match_quality": "confirmed",
+    "uberon_id": "UBERON:0035114",
+    "uberon_iri": "http://purl.obolibrary.org/obo/UBERON_0035114",
+    "uberon_label": "lateral part of mediodorsal nucleus of the thalamus",
+    "whs_id": 232,
+    "whs_name": "Mediodorsal thalamic nucleus, lateral part"
+  },
+  "233": {
+    "match_quality": "confirmed",
+    "uberon_id": "UBERON:0035113",
+    "uberon_iri": "http://purl.obolibrary.org/obo/UBERON_0035113",
+    "uberon_label": "central part of mediodorsal nucleus of the thalamus",
+    "whs_id": 233,
+    "whs_name": "Mediodorsal thalamic nucleus, central part"
+  },
+  "235": {
+    "match_quality": "confirmed",
+    "uberon_id": "UBERON:0001907",
+    "uberon_iri": "http://purl.obolibrary.org/obo/UBERON_0001907",
+    "uberon_label": "zona incerta",
+    "whs_id": 235,
+    "whs_name": "Zona incerta, dorsal part"
+  },
+  "236": {
+    "match_quality": "confirmed",
+    "uberon_id": "UBERON:0001907",
+    "uberon_iri": "http://purl.obolibrary.org/obo/UBERON_0001907",
+    "uberon_label": "zona incerta",
+    "whs_id": 236,
+    "whs_name": "Zona incerta, ventral part"
+  },
+  "238": {
+    "match_quality": "confirmed",
+    "uberon_id": "UBERON:0036007",
+    "uberon_iri": "http://purl.obolibrary.org/obo/UBERON_0036007",
+    "uberon_label": "A13 dopaminergic cell group",
+    "whs_id": 238,
+    "whs_name": "Zona incerta, A13 dopamine cells"
+  },
+  "239": {
+    "match_quality": "override-unmapped",
+    "uberon_id": null,
+    "uberon_iri": null,
+    "uberon_label": null,
+    "whs_id": 239,
+    "whs_name": "pretectothalamic lamina"
+  },
+  "240": {
+    "match_quality": "override-unmapped",
+    "uberon_id": null,
+    "uberon_iri": null,
+    "uberon_label": null,
+    "whs_id": 240,
+    "whs_name": "Mediodorsal thalamic nucleus, medial part"
+  },
+  "242": {
+    "match_quality": "confirmed",
+    "uberon_id": "UBERON:0001920",
+    "uberon_iri": "http://purl.obolibrary.org/obo/UBERON_0001920",
+    "uberon_label": "paraventricular nucleus of thalamus",
+    "whs_id": 242,
+    "whs_name": "Paraventricular thalamic nuclei (anterior and posterior)"
+  },
+  "246": {
+    "match_quality": "exact",
+    "uberon_id": "UBERON:0001924",
+    "uberon_iri": "http://purl.obolibrary.org/obo/UBERON_0001924",
+    "uberon_label": "paracentral nucleus",
+    "whs_id": 246,
+    "whs_name": "Paracentral thalamic nucleus"
+  },
+  "247": {
+    "match_quality": "exact",
+    "uberon_id": "UBERON:0001923",
+    "uberon_iri": "http://purl.obolibrary.org/obo/UBERON_0001923",
+    "uberon_label": "central medial nucleus",
+    "whs_id": 247,
+    "whs_name": "Central medial thalamic nucleus"
+  },
+  "248": {
+    "match_quality": "exact",
+    "uberon_id": "UBERON:0003036",
+    "uberon_iri": "http://purl.obolibrary.org/obo/UBERON_0003036",
+    "uberon_label": "central lateral nucleus",
+    "whs_id": 248,
+    "whs_name": "Central lateral thalamic nucleus"
+  },
+  "249": {
+    "match_quality": "confirmed",
+    "uberon_id": "UBERON:0014534",
+    "uberon_iri": "http://purl.obolibrary.org/obo/UBERON_0014534",
+    "uberon_label": "external medullary lamina of thalamus",
+    "whs_id": 249,
+    "whs_name": "external medullary lamina, unspecified"
+  },
+  "254": {
+    "match_quality": "exact",
+    "uberon_id": "UBERON:0002681",
+    "uberon_iri": "http://purl.obolibrary.org/obo/UBERON_0002681",
+    "uberon_label": "anteromedial nucleus of thalamus",
+    "whs_id": 254,
+    "whs_name": "Anteromedial thalamic nucleus"
+  },
+  "255": {
+    "match_quality": "override-unmapped",
+    "uberon_id": null,
+    "uberon_iri": null,
+    "uberon_label": null,
+    "whs_id": 255,
+    "whs_name": "Interanteromedial thalamic nucleus"
+  },
+  "257": {
+    "match_quality": "override-unmapped",
+    "uberon_id": null,
+    "uberon_iri": null,
+    "uberon_label": null,
+    "whs_id": 257,
+    "whs_name": "Zona incerta, rostral part"
+  },
+  "260": {
+    "match_quality": "override-unmapped",
+    "uberon_id": null,
+    "uberon_iri": null,
+    "uberon_label": null,
+    "whs_id": 260,
+    "whs_name": "Intermediodorsal thalamic nucleus"
+  },
+  "266": {
+    "match_quality": "confirmed",
+    "uberon_id": "UBERON:0003018",
+    "uberon_iri": "http://purl.obolibrary.org/obo/UBERON_0003018",
+    "uberon_label": "parvocellular part of ventral posteromedial nucleus",
+    "whs_id": 266,
+    "whs_name": "Ventral posterior nucleus of the thalamus, parvicellular part"
+  },
+  "267": {
+    "match_quality": "exact",
+    "uberon_id": "UBERON:0001922",
+    "uberon_iri": "http://purl.obolibrary.org/obo/UBERON_0001922",
+    "uberon_label": "parafascicular nucleus",
+    "whs_id": 267,
+    "whs_name": "Parafascicular thalamic nucleus"
+  },
+  "268": {
+    "match_quality": "override-unmapped",
+    "uberon_id": null,
+    "uberon_iri": null,
+    "uberon_label": null,
+    "whs_id": 268,
+    "whs_name": "Retroreuniens thalamic nucleus"
+  },
+  "270": {
+    "match_quality": "confirmed",
+    "uberon_id": "UBERON:0002150",
+    "uberon_iri": "http://purl.obolibrary.org/obo/UBERON_0002150",
+    "uberon_label": "superior cerebellar peduncle",
+    "whs_id": 270,
+    "whs_name": "superior cerebellar peduncle and prerubral field"
+  },
+  "272": {
+    "match_quality": "confirmed",
+    "uberon_id": "UBERON:0035975",
+    "uberon_iri": "http://purl.obolibrary.org/obo/UBERON_0035975",
+    "uberon_label": "intergeniculate leaflet of the lateral geniculate complex",
+    "whs_id": 272,
+    "whs_name": "Intergeniculate leaflet"
+  },
+  "278": {
+    "match_quality": "exact",
+    "uberon_id": "UBERON:0016641",
+    "uberon_iri": "http://purl.obolibrary.org/obo/UBERON_0016641",
+    "uberon_label": "subparafascicular nucleus",
+    "whs_id": 278,
+    "whs_name": "Subparafascicular nucleus"
+  },
+  "280": {
+    "match_quality": "override-unmapped",
+    "uberon_id": null,
+    "uberon_iri": null,
+    "uberon_label": null,
+    "whs_id": 280,
+    "whs_name": "Fields of Forel"
+  },
+  "281": {
+    "match_quality": "override-unmapped",
+    "uberon_id": null,
+    "uberon_iri": null,
+    "uberon_label": null,
+    "whs_id": 281,
+    "whs_name": "Subgeniculate nucleus"
+  },
+  "282": {
+    "match_quality": "override-unmapped",
+    "uberon_id": null,
+    "uberon_iri": null,
+    "uberon_label": null,
+    "whs_id": 282,
+    "whs_name": "Ethmoid-Limitans nucleus"
+  },
+  "283": {
+    "match_quality": "override-unmapped",
+    "uberon_id": null,
+    "uberon_iri": null,
+    "uberon_label": null,
+    "whs_id": 283,
+    "whs_name": "Lateral posterior thalamic nucleus, lateral part"
+  },
+  "284": {
+    "match_quality": "confirmed",
+    "uberon_id": "UBERON:0001907",
+    "uberon_iri": "http://purl.obolibrary.org/obo/UBERON_0001907",
+    "uberon_label": "zona incerta",
+    "whs_id": 284,
+    "whs_name": "Zona incerta, A11 dopamine cells"
+  },
+  "285": {
+    "match_quality": "confirmed",
+    "uberon_id": "UBERON:0002983",
+    "uberon_iri": "http://purl.obolibrary.org/obo/UBERON_0002983",
+    "uberon_label": "lateral posterior nucleus of thalamus",
+    "whs_id": 285,
+    "whs_name": "Lateral posterior thalamic nucleus, mediorostral part"
+  },
+  "286": {
+    "match_quality": "confirmed",
+    "uberon_id": "UBERON:0002983",
+    "uberon_iri": "http://purl.obolibrary.org/obo/UBERON_0002983",
+    "uberon_label": "lateral posterior nucleus of thalamus",
+    "whs_id": 286,
+    "whs_name": "Lateral posterior thalamic nucleus, mediocaudal part"
+  },
+  "287": {
+    "match_quality": "confirmed",
+    "uberon_id": "UBERON:0001907",
+    "uberon_iri": "http://purl.obolibrary.org/obo/UBERON_0001907",
+    "uberon_label": "zona incerta",
+    "whs_id": 287,
+    "whs_name": "Zona incerta, caudal part"
+  },
+  "290": {
+    "match_quality": "override-unmapped",
+    "uberon_id": null,
+    "uberon_iri": null,
+    "uberon_label": null,
+    "whs_id": 290,
+    "whs_name": "intramedullary thalamic area"
+  },
+  "291": {
+    "match_quality": "exact",
+    "uberon_id": "UBERON:0014533",
+    "uberon_iri": "http://purl.obolibrary.org/obo/UBERON_0014533",
+    "uberon_label": "medullary lamina of thalamus",
+    "whs_id": 291,
+    "whs_name": "internal medullary lamina"
+  },
+  "293": {
+    "match_quality": "exact",
+    "uberon_id": "UBERON:0002637",
+    "uberon_iri": "http://purl.obolibrary.org/obo/UBERON_0002637",
+    "uberon_label": "ventral anterior nucleus of thalamus",
+    "whs_id": 293,
+    "whs_name": "Ventral anterior thalamic nucleus"
+  },
+  "294": {
+    "match_quality": "exact",
+    "uberon_id": "UBERON:0002942",
+    "uberon_iri": "http://purl.obolibrary.org/obo/UBERON_0002942",
+    "uberon_label": "ventral posterolateral nucleus",
+    "whs_id": 294,
+    "whs_name": "Ventral posterolateral thalamic nucleus"
+  },
+  "295": {
+    "match_quality": "confirmed",
+    "uberon_id": "UBERON:0002758",
+    "uberon_iri": "http://purl.obolibrary.org/obo/UBERON_0002758",
+    "uberon_label": "dorsal nucleus of medial geniculate body",
+    "whs_id": 295,
+    "whs_name": "Medial geniculate body, dorsal division"
+  },
+  "297": {
+    "match_quality": "confirmed",
+    "uberon_id": "UBERON:0001927",
+    "uberon_iri": "http://purl.obolibrary.org/obo/UBERON_0001927",
+    "uberon_label": "medial geniculate body",
+    "whs_id": 297,
+    "whs_name": "Medial geniculate body, medial division"
+  },
+  "298": {
+    "match_quality": "confirmed",
+    "uberon_id": "UBERON:0002985",
+    "uberon_iri": "http://purl.obolibrary.org/obo/UBERON_0002985",
+    "uberon_label": "ventral nucleus of medial geniculate body",
+    "whs_id": 298,
+    "whs_name": "Medial geniculate body, ventral division"
+  },
+  "299": {
+    "match_quality": "override-unmapped",
+    "uberon_id": null,
+    "uberon_iri": null,
+    "uberon_label": null,
+    "whs_id": 299,
+    "whs_name": "Medial geniculate body, suprageniculate nucleus"
+  },
+  "3": {
+    "match_quality": "exact",
+    "uberon_id": "UBERON:0001906",
+    "uberon_iri": "http://purl.obolibrary.org/obo/UBERON_0001906",
+    "uberon_label": "subthalamic nucleus",
+    "whs_id": 3,
+    "whs_name": "Subthalamic nucleus"
+  },
+  "32": {
+    "match_quality": "exact",
+    "uberon_id": "UBERON:0000432",
+    "uberon_iri": "http://purl.obolibrary.org/obo/UBERON_0000432",
+    "uberon_label": "endopeduncular nucleus",
+    "whs_id": 32,
+    "whs_name": "Entopeduncular nucleus"
+  },
+  "33": {
+    "match_quality": "confirmed",
+    "uberon_id": "UBERON:0005281",
+    "uberon_iri": "http://purl.obolibrary.org/obo/UBERON_0005281",
+    "uberon_label": "ventricular system of central nervous system",
+    "whs_id": 33,
+    "whs_name": "ventricular system, unspecified"
+  },
+  "34": {
+    "match_quality": "confirmed",
+    "uberon_id": "UBERON:0003002",
+    "uberon_iri": "http://purl.obolibrary.org/obo/UBERON_0003002",
+    "uberon_label": "medial lemniscus",
+    "whs_id": 34,
+    "whs_name": "medial lemniscus, unspecified"
+  },
+  "35": {
+    "match_quality": "confirmed",
+    "uberon_id": "UBERON:0001647",
+    "uberon_iri": "http://purl.obolibrary.org/obo/UBERON_0001647",
+    "uberon_label": "facial nerve",
+    "whs_id": 35,
+    "whs_name": "facial nerve, unspecified"
+  },
+  "36": {
+    "match_quality": "confirmed",
+    "uberon_id": "UBERON:0003039",
+    "uberon_iri": "http://purl.obolibrary.org/obo/UBERON_0003039",
+    "uberon_label": "anterior commissure anterior part",
+    "whs_id": 36,
+    "whs_name": "anterior commissure, anterior limb"
+  },
+  "37": {
+    "match_quality": "confirmed",
+    "uberon_id": "UBERON:0003043",
+    "uberon_iri": "http://purl.obolibrary.org/obo/UBERON_0003043",
+    "uberon_label": "posterior part of anterior commissure",
+    "whs_id": 37,
+    "whs_name": "anterior commissure, posterior limb"
+  },
+  "38": {
+    "match_quality": "confirmed",
+    "uberon_id": "UBERON:0000908",
+    "uberon_iri": "http://purl.obolibrary.org/obo/UBERON_0000908",
+    "uberon_label": "hippocampal commissure",
+    "whs_id": 38,
+    "whs_name": "ventral hippocampal commissure"
+  },
+  "4": {
+    "match_quality": "override",
+    "uberon_id": "UBERON:0002974",
+    "uberon_iri": "http://purl.obolibrary.org/obo/UBERON_0002974",
+    "uberon_label": "molecular layer of cerebellar cortex",
+    "whs_id": 4,
+    "whs_name": "Molecular cell layer of the cerebellum"
+  },
+  "40": {
+    "match_quality": "exact",
+    "uberon_id": "UBERON:0000446",
+    "uberon_iri": "http://purl.obolibrary.org/obo/UBERON_0000446",
+    "uberon_label": "septum of telencephalon",
+    "whs_id": 40,
+    "whs_name": "Septal region"
+  },
+  "400": {
+    "match_quality": "override-unmapped",
+    "uberon_id": null,
+    "uberon_iri": null,
+    "uberon_label": null,
+    "whs_id": 400,
+    "whs_name": "Ventrolateral orbital area"
+  },
+  "401": {
+    "match_quality": "exact",
+    "uberon_id": "UBERON:0013541",
+    "uberon_iri": "http://purl.obolibrary.org/obo/UBERON_0013541",
+    "uberon_label": "Brodmann (1909) area 10",
+    "whs_id": 401,
+    "whs_name": "Lateral orbital area"
+  },
+  "402": {
+    "match_quality": "override-unmapped",
+    "uberon_id": null,
+    "uberon_iri": null,
+    "uberon_label": null,
+    "whs_id": 402,
+    "whs_name": "Ventral orbital area"
+  },
+  "403": {
+    "match_quality": "exact",
+    "uberon_id": "UBERON:0013528",
+    "uberon_iri": "http://purl.obolibrary.org/obo/UBERON_0013528",
+    "uberon_label": "Brodmann (1909) area 11",
+    "whs_id": 403,
+    "whs_name": "Medial orbital area"
+  },
+  "404": {
+    "match_quality": "override-unmapped",
+    "uberon_id": null,
+    "uberon_iri": null,
+    "uberon_label": null,
+    "whs_id": 404,
+    "whs_name": "Dorsolateral orbital area"
+  },
+  "405": {
+    "match_quality": "exact",
+    "uberon_id": "UBERON:8440032",
+    "uberon_iri": "http://purl.obolibrary.org/obo/UBERON_8440032",
+    "uberon_label": "prelimbic area",
+    "whs_id": 405,
+    "whs_name": "Prelimbic area"
+  },
+  "406": {
+    "match_quality": "override-unmapped",
+    "uberon_id": null,
+    "uberon_iri": null,
+    "uberon_label": null,
+    "whs_id": 406,
+    "whs_name": "Secondary motor area"
+  },
+  "407": {
+    "match_quality": "override-unmapped",
+    "uberon_id": null,
+    "uberon_iri": null,
+    "uberon_label": null,
+    "whs_id": 407,
+    "whs_name": "Frontal association area 3"
+  },
+  "408": {
+    "match_quality": "exact",
+    "uberon_id": "UBERON:0001384",
+    "uberon_iri": "http://purl.obolibrary.org/obo/UBERON_0001384",
+    "uberon_label": "primary motor cortex",
+    "whs_id": 408,
+    "whs_name": "Primary motor area"
+  },
+  "409": {
+    "match_quality": "confirmed",
+    "uberon_id": "UBERON:0034893",
+    "uberon_iri": "http://purl.obolibrary.org/obo/UBERON_0034893",
+    "uberon_label": "agranular insular cortex",
+    "whs_id": 409,
+    "whs_name": "Agranular insular cortex, ventral area"
+  },
+  "41": {
+    "match_quality": "exact",
+    "uberon_id": "UBERON:0004904",
+    "uberon_iri": "http://purl.obolibrary.org/obo/UBERON_0004904",
+    "uberon_label": "neuron projection bundle connecting eye with brain",
+    "whs_id": 41,
+    "whs_name": "optic nerve"
+  },
+  "410": {
+    "match_quality": "confirmed",
+    "uberon_id": "UBERON:0034893",
+    "uberon_iri": "http://purl.obolibrary.org/obo/UBERON_0034893",
+    "uberon_label": "agranular insular cortex",
+    "whs_id": 410,
+    "whs_name": "Agranular insular cortex dorsal area "
+  },
+  "411": {
+    "match_quality": "override-unmapped",
+    "uberon_id": null,
+    "uberon_iri": null,
+    "uberon_label": null,
+    "whs_id": 411,
+    "whs_name": "Cingulate area 1"
+  },
+  "412": {
+    "match_quality": "exact",
+    "uberon_id": "UBERON:0002023",
+    "uberon_iri": "http://purl.obolibrary.org/obo/UBERON_0002023",
+    "uberon_label": "claustrum of brain",
+    "whs_id": 412,
+    "whs_name": "Claustrum"
+  },
+  "413": {
+    "match_quality": "exact",
+    "uberon_id": "UBERON:8440033",
+    "uberon_iri": "http://purl.obolibrary.org/obo/UBERON_8440033",
+    "uberon_label": "infralimbic area",
+    "whs_id": 413,
+    "whs_name": "Infralimbic area"
+  },
+  "414": {
+    "match_quality": "exact",
+    "uberon_id": "UBERON:0034893",
+    "uberon_iri": "http://purl.obolibrary.org/obo/UBERON_0034893",
+    "uberon_label": "agranular insular cortex",
+    "whs_id": 414,
+    "whs_name": "Dysgranular insular cortex"
+  },
+  "416": {
+    "match_quality": "exact",
+    "uberon_id": "UBERON:0034892",
+    "uberon_iri": "http://purl.obolibrary.org/obo/UBERON_0034892",
+    "uberon_label": "granular insular cortex",
+    "whs_id": 416,
+    "whs_name": "Granular insular cortex"
+  },
+  "417": {
+    "match_quality": "override-unmapped",
+    "uberon_id": null,
+    "uberon_iri": null,
+    "uberon_label": null,
+    "whs_id": 417,
+    "whs_name": "Primary somatosensory area, forelimb representation"
+  },
+  "418": {
+    "match_quality": "override-unmapped",
+    "uberon_id": null,
+    "uberon_iri": null,
+    "uberon_label": null,
+    "whs_id": 418,
+    "whs_name": "Primary somatosensory area, dysgranular zone"
+  },
+  "42": {
+    "match_quality": "confirmed",
+    "uberon_id": "UBERON:0001908",
+    "uberon_iri": "http://purl.obolibrary.org/obo/UBERON_0001908",
+    "uberon_label": "optic tract",
+    "whs_id": 42,
+    "whs_name": "optic tract and optic chiasm"
+  },
+  "420": {
+    "match_quality": "override-unmapped",
+    "uberon_id": null,
+    "uberon_iri": null,
+    "uberon_label": null,
+    "whs_id": 420,
+    "whs_name": "Primary somatosensory area, face representation"
+  },
+  "422": {
+    "match_quality": "confirmed",
+    "uberon_id": "UBERON:0008934",
+    "uberon_iri": "http://purl.obolibrary.org/obo/UBERON_0008934",
+    "uberon_label": "secondary somatosensory cortex",
+    "whs_id": 422,
+    "whs_name": "Secondary somatosensory area"
+  },
+  "423": {
+    "match_quality": "override-unmapped",
+    "uberon_id": null,
+    "uberon_iri": null,
+    "uberon_label": null,
+    "whs_id": 423,
+    "whs_name": "Primary somatosensory area, hindlimb representation"
+  },
+  "424": {
+    "match_quality": "confirmed",
+    "uberon_id": "UBERON:0034893",
+    "uberon_iri": "http://purl.obolibrary.org/obo/UBERON_0034893",
+    "uberon_label": "agranular insular cortex",
+    "whs_id": 424,
+    "whs_name": "Agranular insular cortex, posterior area "
+  },
+  "425": {
+    "match_quality": "exact",
+    "uberon_id": "UBERON:0010415",
+    "uberon_iri": "http://purl.obolibrary.org/obo/UBERON_0010415",
+    "uberon_label": "barrel cortex",
+    "whs_id": 425,
+    "whs_name": "Primary somatosensory area, barrel field"
+  },
+  "427": {
+    "match_quality": "override-unmapped",
+    "uberon_id": null,
+    "uberon_iri": null,
+    "uberon_label": null,
+    "whs_id": 427,
+    "whs_name": "Retrosplenial dysgranular area"
+  },
+  "429": {
+    "match_quality": "override-unmapped",
+    "uberon_id": null,
+    "uberon_iri": null,
+    "uberon_label": null,
+    "whs_id": 429,
+    "whs_name": "Primary somatosensory area, trunk representation"
+  },
+  "43": {
+    "match_quality": "exact",
+    "uberon_id": "UBERON:0001905",
+    "uberon_iri": "http://purl.obolibrary.org/obo/UBERON_0001905",
+    "uberon_label": "pineal body",
+    "whs_id": 43,
+    "whs_name": "Pineal gland"
+  },
+  "430": {
+    "match_quality": "exact",
+    "uberon_id": "UBERON:0014918",
+    "uberon_iri": "http://purl.obolibrary.org/obo/UBERON_0014918",
+    "uberon_label": "retrosplenial granular cortex",
+    "whs_id": 430,
+    "whs_name": "Retrosplenial granular area"
+  },
+  "432": {
+    "match_quality": "override-unmapped",
+    "uberon_id": null,
+    "uberon_iri": null,
+    "uberon_label": null,
+    "whs_id": 432,
+    "whs_name": "Parietal association cortex, lateral area"
+  },
+  "433": {
+    "match_quality": "override-unmapped",
+    "uberon_id": null,
+    "uberon_iri": null,
+    "uberon_label": null,
+    "whs_id": 433,
+    "whs_name": "Parietal association cortex, medial area"
+  },
+  "436": {
+    "match_quality": "confirmed",
+    "uberon_id": "UBERON:0034889",
+    "uberon_iri": "http://purl.obolibrary.org/obo/UBERON_0034889",
+    "uberon_label": "posterior parietal cortex",
+    "whs_id": 436,
+    "whs_name": "Parietal association cortex, posterior area "
+  },
+  "442": {
+    "match_quality": "exact",
+    "uberon_id": "UBERON:0002436",
+    "uberon_iri": "http://purl.obolibrary.org/obo/UBERON_0002436",
+    "uberon_label": "primary visual cortex",
+    "whs_id": 442,
+    "whs_name": "Primary visual area"
+  },
+  "443": {
+    "match_quality": "override-unmapped",
+    "uberon_id": null,
+    "uberon_iri": null,
+    "uberon_label": null,
+    "whs_id": 443,
+    "whs_name": "Secondary visual area, lateral part"
+  },
+  "444": {
+    "match_quality": "exact",
+    "uberon_id": "UBERON:0035013",
+    "uberon_iri": "http://purl.obolibrary.org/obo/UBERON_0035013",
+    "uberon_label": "temporal cortex association area",
+    "whs_id": 444,
+    "whs_name": "Temporal association cortex"
+  },
+  "448": {
+    "match_quality": "confirmed",
+    "uberon_id": "UBERON:0022232",
+    "uberon_iri": "http://purl.obolibrary.org/obo/UBERON_0022232",
+    "uberon_label": "secondary visual cortex",
+    "whs_id": 448,
+    "whs_name": "Secondary visual area, medial part"
+  },
+  "45": {
+    "match_quality": "exact",
+    "uberon_id": "UBERON:0002240",
+    "uberon_iri": "http://purl.obolibrary.org/obo/UBERON_0002240",
+    "uberon_label": "spinal cord",
+    "whs_id": 45,
+    "whs_name": "spinal cord"
+  },
+  "46": {
+    "match_quality": "exact",
+    "uberon_id": "UBERON:0002583",
+    "uberon_iri": "http://purl.obolibrary.org/obo/UBERON_0002583",
+    "uberon_label": "commissure of superior colliculus",
+    "whs_id": 46,
+    "whs_name": "commissure of the superior colliculus"
+  },
+  "47": {
+    "match_quality": "confirmed",
+    "uberon_id": "UBERON:0002298",
+    "uberon_iri": "http://purl.obolibrary.org/obo/UBERON_0002298",
+    "uberon_label": "brainstem",
+    "whs_id": 47,
+    "whs_name": "Brainstem, unspecified"
+  },
+  "48": {
+    "match_quality": "override",
+    "uberon_id": "UBERON:0001898",
+    "uberon_iri": "http://purl.obolibrary.org/obo/UBERON_0001898",
+    "uberon_label": "hypothalamus",
+    "whs_id": 48,
+    "whs_name": "Hypothalamic region, unspecified"
+  },
+  "5": {
+    "match_quality": "confirmed",
+    "uberon_id": "UBERON:0002037",
+    "uberon_iri": "http://purl.obolibrary.org/obo/UBERON_0002037",
+    "uberon_label": "cerebellum",
+    "whs_id": 5,
+    "whs_name": "Cerebellum, unspecified"
+  },
+  "50": {
+    "match_quality": "exact",
+    "uberon_id": "UBERON:0006120",
+    "uberon_iri": "http://purl.obolibrary.org/obo/UBERON_0006120",
+    "uberon_label": "superior colliculus superficial gray layer",
+    "whs_id": 50,
+    "whs_name": "Superficial gray layer of the superior colliculus"
+  },
+  "500": {
+    "match_quality": "exact",
+    "uberon_id": "UBERON:0014284",
+    "uberon_iri": "http://purl.obolibrary.org/obo/UBERON_0014284",
+    "uberon_label": "endopiriform nucleus",
+    "whs_id": 500,
+    "whs_name": "Endopiriform nucleus"
+  },
+  "501": {
+    "match_quality": "override-unmapped",
+    "uberon_id": null,
+    "uberon_iri": null,
+    "uberon_label": null,
+    "whs_id": 501,
+    "whs_name": "Amygdaloid area, unspecified"
+  },
+  "502": {
+    "match_quality": "exact",
+    "uberon_id": "UBERON:0002893",
+    "uberon_iri": "http://purl.obolibrary.org/obo/UBERON_0002893",
+    "uberon_label": "nucleus of lateral olfactory tract",
+    "whs_id": 502,
+    "whs_name": "Nucleus of the lateral olfactory tract"
+  },
+  "51": {
+    "match_quality": "exact",
+    "uberon_id": "UBERON:0003040",
+    "uberon_iri": "http://purl.obolibrary.org/obo/UBERON_0003040",
+    "uberon_label": "central gray substance of midbrain",
+    "whs_id": 51,
+    "whs_name": "Periaqueductal gray"
+  },
+  "52": {
+    "match_quality": "exact",
+    "uberon_id": "UBERON:0000051",
+    "uberon_iri": "http://purl.obolibrary.org/obo/UBERON_0000051",
+    "uberon_label": "fornix of vagina",
+    "whs_id": 52,
+    "whs_name": "fornix"
+  },
+  "53": {
+    "match_quality": "exact",
+    "uberon_id": "UBERON:0006698",
+    "uberon_iri": "http://purl.obolibrary.org/obo/UBERON_0006698",
+    "uberon_label": "mammillotegmental axonal tract",
+    "whs_id": 53,
+    "whs_name": "mammillotegmental tract"
+  },
+  "54": {
+    "match_quality": "confirmed",
+    "uberon_id": "UBERON:0003029",
+    "uberon_iri": "http://purl.obolibrary.org/obo/UBERON_0003029",
+    "uberon_label": "stria terminalis",
+    "whs_id": 54,
+    "whs_name": "commissural stria terminalis"
+  },
+  "55": {
+    "match_quality": "override",
+    "uberon_id": "UBERON:0006783",
+    "uberon_iri": "http://purl.obolibrary.org/obo/UBERON_0006783",
+    "uberon_label": "layer of superior colliculus",
+    "whs_id": 55,
+    "whs_name": "Deeper layers of the superior colliculus"
+  },
+  "56": {
+    "match_quality": "confirmed",
+    "uberon_id": "UBERON:0014933",
+    "uberon_iri": "http://purl.obolibrary.org/obo/UBERON_0014933",
+    "uberon_label": "periventricular gray matter",
+    "whs_id": 56,
+    "whs_name": "Periventricular gray"
+  },
+  "57": {
+    "match_quality": "exact",
+    "uberon_id": "UBERON:0014915",
+    "uberon_iri": "http://purl.obolibrary.org/obo/UBERON_0014915",
+    "uberon_label": "genu of facial nerve",
+    "whs_id": 57,
+    "whs_name": "genu of the facial nerve"
+  },
+  "58": {
+    "match_quality": "exact",
+    "uberon_id": "UBERON:0002151",
+    "uberon_iri": "http://purl.obolibrary.org/obo/UBERON_0002151",
+    "uberon_label": "pontine nuclear group",
+    "whs_id": 58,
+    "whs_name": "Pontine nuclei"
+  },
+  "59": {
+    "match_quality": "exact",
+    "uberon_id": "UBERON:0002310",
+    "uberon_iri": "http://purl.obolibrary.org/obo/UBERON_0002310",
+    "uberon_label": "hippocampus fimbria",
+    "whs_id": 59,
+    "whs_name": "fimbria of the hippocampus"
+  },
+  "6": {
+    "match_quality": "exact",
+    "uberon_id": "UBERON:0007639",
+    "uberon_iri": "http://purl.obolibrary.org/obo/UBERON_0007639",
+    "uberon_label": "hippocampus alveus",
+    "whs_id": 6,
+    "whs_name": "alveus of the hippocampus"
+  },
+  "60": {
+    "match_quality": "exact",
+    "uberon_id": "UBERON:0002138",
+    "uberon_iri": "http://purl.obolibrary.org/obo/UBERON_0002138",
+    "uberon_label": "habenulo-interpeduncular tract",
+    "whs_id": 60,
+    "whs_name": "fasciculus retroflexus"
+  },
+  "61": {
+    "match_quality": "exact",
+    "uberon_id": "UBERON:0006086",
+    "uberon_iri": "http://purl.obolibrary.org/obo/UBERON_0006086",
+    "uberon_label": "stria medullaris",
+    "whs_id": 61,
+    "whs_name": "stria medullaris thalami"
+  },
+  "62": {
+    "match_quality": "exact",
+    "uberon_id": "UBERON:0003029",
+    "uberon_iri": "http://purl.obolibrary.org/obo/UBERON_0003029",
+    "uberon_label": "stria terminalis",
+    "whs_id": 62,
+    "whs_name": "stria terminalis"
+  },
+  "63": {
+    "match_quality": "exact",
+    "uberon_id": "UBERON:0000936",
+    "uberon_iri": "http://purl.obolibrary.org/obo/UBERON_0000936",
+    "uberon_label": "posterior commissure",
+    "whs_id": 63,
+    "whs_name": "posterior commissure"
+  },
+  "64": {
+    "match_quality": "exact",
+    "uberon_id": "UBERON:0007631",
+    "uberon_iri": "http://purl.obolibrary.org/obo/UBERON_0007631",
+    "uberon_label": "accessory olfactory bulb glomerular layer",
+    "whs_id": 64,
+    "whs_name": "Glomerular layer of the accessory olfactory bulb"
+  },
+  "65": {
+    "match_quality": "exact",
+    "uberon_id": "UBERON:0005377",
+    "uberon_iri": "http://purl.obolibrary.org/obo/UBERON_0005377",
+    "uberon_label": "olfactory bulb glomerular layer",
+    "whs_id": 65,
+    "whs_name": "Glomerular layer of the olfactory bulb"
+  },
+  "66": {
+    "match_quality": "confirmed",
+    "uberon_id": "UBERON:0002264",
+    "uberon_iri": "http://purl.obolibrary.org/obo/UBERON_0002264",
+    "uberon_label": "olfactory bulb",
+    "whs_id": 66,
+    "whs_name": "Olfactory bulb, unspecified"
+  },
+  "67": {
+    "match_quality": "confirmed",
+    "uberon_id": "UBERON:0002336",
+    "uberon_iri": "http://purl.obolibrary.org/obo/UBERON_0002336",
+    "uberon_label": "corpus callosum",
+    "whs_id": 67,
+    "whs_name": "corpus callosum and associated subcortical white matter"
+  },
+  "68": {
+    "match_quality": "exact",
+    "uberon_id": "UBERON:0002580",
+    "uberon_iri": "http://purl.obolibrary.org/obo/UBERON_0002580",
+    "uberon_label": "brachium of superior colliculus",
+    "whs_id": 68,
+    "whs_name": "brachium of the superior colliculus"
+  },
+  "69": {
+    "match_quality": "confirmed",
+    "uberon_id": "UBERON:0003028",
+    "uberon_iri": "http://purl.obolibrary.org/obo/UBERON_0003028",
+    "uberon_label": "commissure of inferior colliculus",
+    "whs_id": 69,
+    "whs_name": "inferior colliculus, commissure"
+  },
+  "7": {
+    "match_quality": "exact",
+    "uberon_id": "UBERON:0002163",
+    "uberon_iri": "http://purl.obolibrary.org/obo/UBERON_0002163",
+    "uberon_label": "inferior cerebellar peduncle",
+    "whs_id": 7,
+    "whs_name": "inferior cerebellar peduncle"
+  },
+  "70": {
+    "match_quality": "exact",
+    "uberon_id": "UBERON:0002291",
+    "uberon_iri": "http://purl.obolibrary.org/obo/UBERON_0002291",
+    "uberon_label": "central canal of spinal cord",
+    "whs_id": 70,
+    "whs_name": "central canal"
+  },
+  "71": {
+    "match_quality": "exact",
+    "uberon_id": "UBERON:0002145",
+    "uberon_iri": "http://purl.obolibrary.org/obo/UBERON_0002145",
+    "uberon_label": "interpeduncular nucleus",
+    "whs_id": 71,
+    "whs_name": "Interpeduncular nucleus"
+  },
+  "72": {
+    "match_quality": "override",
+    "uberon_id": "UBERON:0001647",
+    "uberon_iri": "http://purl.obolibrary.org/obo/UBERON_0001647",
+    "uberon_label": "facial nerve",
+    "whs_id": 72,
+    "whs_name": "ascending fibers of the facial nerve"
+  },
+  "73": {
+    "match_quality": "override-unmapped",
+    "uberon_id": null,
+    "uberon_iri": null,
+    "uberon_label": null,
+    "whs_id": 73,
+    "whs_name": "anterior commissure, intrabulbar part"
+  },
+  "74": {
+    "match_quality": "exact",
+    "uberon_id": "UBERON:0007244",
+    "uberon_iri": "http://purl.obolibrary.org/obo/UBERON_0007244",
+    "uberon_label": "inferior olivary nucleus",
+    "whs_id": 74,
+    "whs_name": "Inferior olive"
+  },
+  "75": {
+    "match_quality": "exact",
+    "uberon_id": "UBERON:0001717",
+    "uberon_iri": "http://purl.obolibrary.org/obo/UBERON_0001717",
+    "uberon_label": "spinal nucleus of trigeminal nerve",
+    "whs_id": 75,
+    "whs_name": "Spinal trigeminal nucleus"
+  },
+  "76": {
+    "match_quality": "exact",
+    "uberon_id": "UBERON:0014761",
+    "uberon_iri": "http://purl.obolibrary.org/obo/UBERON_0014761",
+    "uberon_label": "spinal trigeminal tract",
+    "whs_id": 76,
+    "whs_name": "spinal trigeminal tract"
+  },
+  "77": {
+    "match_quality": "exact",
+    "uberon_id": "UBERON:0000451",
+    "uberon_iri": "http://purl.obolibrary.org/obo/UBERON_0000451",
+    "uberon_label": "prefrontal cortex",
+    "whs_id": 77,
+    "whs_name": "Frontal association cortex"
+  },
+  "78": {
+    "match_quality": "exact",
+    "uberon_id": "UBERON:0002152",
+    "uberon_iri": "http://purl.obolibrary.org/obo/UBERON_0002152",
+    "uberon_label": "middle cerebellar peduncle",
+    "whs_id": 78,
+    "whs_name": "middle cerebellar peduncle"
+  },
+  "79": {
+    "match_quality": "exact",
+    "uberon_id": "UBERON:0002735",
+    "uberon_iri": "http://purl.obolibrary.org/obo/UBERON_0002735",
+    "uberon_label": "transverse pontine fibers",
+    "whs_id": 79,
+    "whs_name": "transverse fibers of the pons"
+  },
+  "80": {
+    "match_quality": "exact",
+    "uberon_id": "UBERON:0001909",
+    "uberon_iri": "http://purl.obolibrary.org/obo/UBERON_0001909",
+    "uberon_label": "habenular commissure",
+    "whs_id": 80,
+    "whs_name": "habenular commissure"
+  },
+  "81": {
+    "match_quality": "confirmed",
+    "uberon_id": "UBERON:0006086",
+    "uberon_iri": "http://purl.obolibrary.org/obo/UBERON_0006086",
+    "uberon_label": "stria medullaris",
+    "whs_id": 81,
+    "whs_name": "Nucleus of the stria medullaris"
+  },
+  "82": {
+    "match_quality": "confirmed",
+    "uberon_id": "UBERON:0002743",
+    "uberon_iri": "http://purl.obolibrary.org/obo/UBERON_0002743",
+    "uberon_label": "basal forebrain",
+    "whs_id": 82,
+    "whs_name": "Basal forebrain region, unspecified"
+  },
+  "83": {
+    "match_quality": "confirmed",
+    "uberon_id": "UBERON:0002676",
+    "uberon_iri": "http://purl.obolibrary.org/obo/UBERON_0002676",
+    "uberon_label": "ventral supraoptic decussation",
+    "whs_id": 83,
+    "whs_name": "supraoptic decussation"
+  },
+  "84": {
+    "match_quality": "exact",
+    "uberon_id": "UBERON:0002643",
+    "uberon_iri": "http://purl.obolibrary.org/obo/UBERON_0002643",
+    "uberon_label": "decussation of medial lemniscus",
+    "whs_id": 84,
+    "whs_name": "medial lemniscus decussation"
+  },
+  "85": {
+    "match_quality": "exact",
+    "uberon_id": "UBERON:0002755",
+    "uberon_iri": "http://purl.obolibrary.org/obo/UBERON_0002755",
+    "uberon_label": "pyramidal decussation",
+    "whs_id": 85,
+    "whs_name": "pyramidal decussation"
+  },
+  "93": {
+    "match_quality": "exact",
+    "uberon_id": "UBERON:0001880",
+    "uberon_iri": "http://purl.obolibrary.org/obo/UBERON_0001880",
+    "uberon_label": "bed nucleus of stria terminalis",
+    "whs_id": 93,
+    "whs_name": "Bed nucleus of the stria terminalis"
+  },
+  "94": {
+    "match_quality": "exact",
+    "uberon_id": "UBERON:0001944",
+    "uberon_iri": "http://purl.obolibrary.org/obo/UBERON_0001944",
+    "uberon_label": "pretectal region",
+    "whs_id": 94,
+    "whs_name": "Pretectal region"
+  },
+  "95": {
+    "match_quality": "exact",
+    "uberon_id": "UBERON:0003883",
+    "uberon_iri": "http://purl.obolibrary.org/obo/UBERON_0003883",
+    "uberon_label": "CA3 field of hippocampus",
+    "whs_id": 95,
+    "whs_name": "Cornu ammonis 3"
+  },
+  "96": {
+    "match_quality": "exact",
+    "uberon_id": "UBERON:0001885",
+    "uberon_iri": "http://purl.obolibrary.org/obo/UBERON_0001885",
+    "uberon_label": "dentate gyrus of hippocampal formation",
+    "whs_id": 96,
+    "whs_name": "Dentate gyrus"
+  },
+  "97": {
+    "match_quality": "exact",
+    "uberon_id": "UBERON:0003882",
+    "uberon_iri": "http://purl.obolibrary.org/obo/UBERON_0003882",
+    "uberon_label": "CA2 field of hippocampus",
+    "whs_id": 97,
+    "whs_name": "Cornu ammonis 2"
+  },
+  "98": {
+    "match_quality": "exact",
+    "uberon_id": "UBERON:0003881",
+    "uberon_iri": "http://purl.obolibrary.org/obo/UBERON_0003881",
+    "uberon_label": "CA1 field of hippocampus",
+    "whs_id": 98,
+    "whs_name": "Cornu ammonis 1"
+  },
+  "99": {
+    "match_quality": "exact",
+    "uberon_id": "UBERON:0002601",
+    "uberon_iri": "http://purl.obolibrary.org/obo/UBERON_0002601",
+    "uberon_label": "fasciolar gyrus",
+    "whs_id": 99,
+    "whs_name": "Fasciola cinereum"
+  },
+  "9998": {
+    "match_quality": "skipped",
+    "uberon_id": null,
+    "uberon_iri": null,
+    "uberon_label": null,
+    "whs_id": 9998,
+    "whs_name": "Outside atlas"
+  },
+  "9999": {
+    "match_quality": "skipped",
+    "uberon_id": null,
+    "uberon_iri": null,
+    "uberon_label": null,
+    "whs_id": 9999,
+    "whs_name": "WHS-SD v4 (Rat)"
+  }
+}

@@ -2,6 +2,9 @@ import * as THREE from 'three';
 import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
 import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
 
+// Bump this string after any data rebuild to force browsers to drop cached GLBs and JSONs.
+const DATA_VERSION = '20260519';
+
 // ── State ──────────────────────────────────────────────────────────────────
 let scene, camera, renderer, controls, raycaster, mouse;
 // Group that wraps every atlas-anchored object (meshes + electrode Points).
@@ -111,6 +114,29 @@ const ATLAS_CONFIGS = {
     attributionUrl: 'https://ebrains.eu/tools/mebrains',
     regionLinkTemplate: null,
   },
+  whs_sd: {
+    name: "WHS-SD v4 (Rat)",
+    dataPrefix: "data/atlases/whs_sd/",
+    // Waxholm space is RAS in mm; rat brain spans ~20 mm AP. Camera distance
+    // and clipping picked to comfortably fit the brain at lateral view; tune
+    // empirically once the meshes render.
+    camDist: 60,
+    cameraUp: [0, 0, 1],
+    camOffset: [1, 0, 0],  // X=Right in RAS, lateral view
+    nearPlane: 0.1,
+    farPlane: 500,
+    // Electrode dots calibrated proportionally for the rat brain (~half the
+    // linear size of a macaque brain at the same atlas scale). DANDI 001699
+    // doesn't ship atlas-frame coordinates anyway, so these are placeholders
+    // for any future rat dandiset that does.
+    electrodeSize: 0.3,
+    electrodePickThreshold: 0.5,
+    rootOpacity: 0.25,
+    coordSystem: 'ras',
+    attribution: 'Atlas: WHS-SD v4 (Kleven et al. 2023)',
+    attributionUrl: 'https://www.nitrc.org/projects/whs-sd-atlas',
+    regionLinkTemplate: null,
+  },
 };
 
 // Short label shown before electrode coordinates in the hover tooltip.
@@ -122,6 +148,7 @@ const ATLAS_COORD_LABELS = {
   d99: 'D99',
   nmt: 'NMT',
   mebrains: 'MEBRAINS',
+  whs_sd: 'WHS',
 };
 
 let activeAtlasKey = 'allen_ccf';
@@ -223,12 +250,13 @@ async function loadAtlas(atlasKey) {
   meshObjects = {};
   failedMeshIds.clear();
 
+  const v = `?v=${DATA_VERSION}`;
   const [graphResp, regionsResp, manifestResp, assetsResp, electrodeManifestResp] = await Promise.all([
-    fetch(`${activeAtlas.dataPrefix}structure_graph.json`).then(r => r.json()),
-    fetch(`${activeAtlas.dataPrefix}dandi_regions.json`).then(r => r.json()),
-    fetch(`${activeAtlas.dataPrefix}mesh_manifest.json`).then(r => r.json()),
-    fetch(`${activeAtlas.dataPrefix}dandiset_assets.json`).then(r => r.json()),
-    fetch(`${activeAtlas.dataPrefix}dandisets_with_electrodes.json`).then(r => r.json()).catch(() => []),
+    fetch(`${activeAtlas.dataPrefix}structure_graph.json${v}`).then(r => r.json()),
+    fetch(`${activeAtlas.dataPrefix}dandi_regions.json${v}`).then(r => r.json()),
+    fetch(`${activeAtlas.dataPrefix}mesh_manifest.json${v}`).then(r => r.json()),
+    fetch(`${activeAtlas.dataPrefix}dandiset_assets.json${v}`).then(r => r.json()),
+    fetch(`${activeAtlas.dataPrefix}dandisets_with_electrodes.json${v}`).then(r => r.json()).catch(() => []),
   ]);
 
   structureGraph = graphResp;
@@ -523,7 +551,7 @@ function loadMesh(structureId) {
       return;
     }
 
-    const path = `${activeAtlas.dataPrefix}meshes/${structureId}.glb`;
+    const path = `${activeAtlas.dataPrefix}meshes/${structureId}.glb?v=${DATA_VERSION}`;
     gltfLoader.load(
       path,
       (gltf) => {

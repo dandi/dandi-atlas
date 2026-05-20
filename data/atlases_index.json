@@ -35,6 +35,15 @@
       "dandiset_count": 2,
       "file_count": 458,
       "regions_with_data": 2
+    },
+    {
+      "key": "whs_sd",
+      "name": "WHS-SD v4",
+      "species": "Rat",
+      "preview": "data/atlases/whs_sd/atlas_card_whs_sd.png",
+      "dandiset_count": 15,
+      "file_count": 1195,
+      "regions_with_data": 19
     }
   ]
 }

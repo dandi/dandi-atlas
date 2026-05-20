@@ -15,11 +15,18 @@ scripts/electrode_cache.jsonl
 scripts/d99_electrode_cache.jsonl
 scripts/nmt_electrode_cache.jsonl
 scripts/mebrains_electrode_cache.jsonl
+scripts/whs_sd_electrode_cache.jsonl
+scripts/whs_sd_sweep_cache.jsonl
 scripts/*_electrode_cache.jsonl.bak
 scripts/macaque_locations_cache.jsonl
 scripts/siibra_mebrains_palette.json
 scripts/d99_pial_lh.surf.gii
 scripts/d99_pial_rh.surf.gii
+
+# Atlas source files (downloaded manually from NITRC / upstream providers; not committed).
+# Drop new atlas packs into atlas_sources/<atlas_name>/ — build scripts read from
+# there by default.
+atlas_sources/
 
 # Playwright render diagnostics
 debug_output/

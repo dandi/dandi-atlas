@@ -38,6 +38,7 @@ ATLAS_DISPLAY = [
     {"key": "d99", "name": "D99 v2.0", "species": "Macaque"},
     {"key": "nmt", "name": "NMT v2.0 sym", "species": "Macaque"},
     {"key": "mebrains", "name": "MEBRAINS", "species": "Macaque"},
+    {"key": "whs_sd", "name": "WHS-SD v4", "species": "Rat"},
 ]
 
 

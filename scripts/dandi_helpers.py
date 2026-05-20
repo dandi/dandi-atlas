@@ -32,6 +32,14 @@ MESH_URL_TEMPLATE = (
 TRIVIAL_LOCATIONS = {
     "unknown", "none", "", " ", "n/a", "void", "unspecific",
     "na", "not applicable", "other", "nan",
+    # Reference-electrode placements that some NWBs put in `location`.
+    # "Skull" / "ground" / "reference" are not brain regions; they describe
+    # where a reference wire was screwed in, not what was recorded from.
+    "skull", "ground", "gnd", "reference", "ref",
+    # Recording-condition descriptors (000408, 000529 — in vitro patch-clamp
+    # rigs put the buffer composition in the `location` field).
+    "in vitro", "invitro",
+    "in vitro. phosphate buffered saline solution with ar sparging at 37c",
 }
 
 FILTER_IDS = {997, 8}  # root, grey — not useful to display
@@ -134,6 +142,33 @@ def check_species_macaque(dandiset_id):
         if any(tid in identifier for tid in MACAQUE_TAXON_IDS):
             return True
         if "macaca" in name.lower():
+            return True
+    return False
+
+
+# NCBI taxonomy IDs for rat species seen in DANDI. Rattus norvegicus dominates
+# (lab rat); Rattus rattus is included for completeness. Add more here if a
+# future dandiset uses a different Rattus species.
+RAT_TAXON_IDS = {
+    "10116",  # Rattus norvegicus (Norway / lab rat)
+    "10117",  # Rattus rattus (black rat)
+}
+
+
+def check_species_rat(dandiset_id):
+    """Check if a dandiset's assetsSummary.species includes any Rattus species.
+
+    Matches on either an NCBI taxon identifier in RAT_TAXON_IDS or a substring
+    "rattus" in the species `name` field. The name match is intentionally
+    "rattus" (genus) rather than the bare word "rat" to avoid false positives
+    on species like "naked mole-rat" (Heterocephalus glaber).
+    """
+    for sp in get_dandiset_species(dandiset_id):
+        identifier = sp.get("identifier", "") or ""
+        name = sp.get("name", "") or ""
+        if any(tid in identifier for tid in RAT_TAXON_IDS):
+            return True
+        if "rattus" in name.lower():
             return True
     return False
 
