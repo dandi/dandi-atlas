@@ -19,6 +19,12 @@ let meshManifest = {};     // {data_structures, ancestor_structures, root_id}
 let idToStructure = {};    // structure_id -> flat structure object
 let meshObjects = {};      // structure_id -> THREE.Mesh
 let selectedId = null;
+// Ordered list of currently-selected region IDs. Length 0 = no selection
+// (init view), 1 = single-region view (selectedId === selectedRegionIds[0]),
+// N = multi-region view (selectedId === last element). The two writers are
+// enterRegionView (single) and enterMultiRegionView (multi); both keep
+// selectedId in sync as the "primary" (last clicked).
+let selectedRegionIds = [];
 let hoveredId = null;
 let loadingCount = 0;
 let brainCenter = new THREE.Vector3();
@@ -193,6 +199,15 @@ let sliderElectrodeOpacity = 1;       // mirrors the Electrodes slider value (ra
 const ELECTRODE_VIEW_DEFAULT_REGION_OPACITY = 0.5;
 let dandisetRegionFilter = null; // structure_id when filtering subjects by region within a dandiset
 let dandisetSubjectCounts = null; // { directSubjects, totalSubjects } when a dandiset is selected
+// "Region-of-interest" overlay: in a dandiset view, the user can tick the
+// checkbox of a region NOT in the dandiset to display it alongside the
+// dandiset's regions at reduced opacity. Cleared on any non-sub-dandiset view
+// transition. dandisetExtraMeshIds is the derived set of mesh IDs (after
+// nearest-ancestor fallback) — recomputed whenever the region set changes so
+// decideDisplayMode can do an O(1) check.
+let dandisetExtraRegionIds = new Set();
+let dandisetExtraMeshIds = new Set();
+let previousRegionIdsForDandiset = []; // ordered list of region IDs the user came from before entering the current dandiset; powers the "Back to all Dandisets" button
 let hiddenRegionIds = new Set();  // regions toggled off by user in dandiset/subject view
 let dandisetsWithElectrodes = new Set();  // dandiset IDs that have electrode coordinate data
 const SESSION_ELECTRODE_COLORS = [
@@ -222,11 +237,14 @@ async function loadAtlas(atlasKey) {
   // Clear existing state
   clearElectrodePoints();
   selectedId = null;
+  selectedRegionIds = [];
   hoveredId = null;
   selectedDandiset = null;
+  clearDandisetExtras();
   dandisetElectrodes = {};
   dandisetRegionFilter = null;
   dandisetSubjectCounts = null;
+  previousRegionIdsForDandiset = [];
   hiddenRegionIds = new Set();
   idToStructure = {};
   dandisetToStructures = {};
@@ -630,8 +648,8 @@ function loadMesh(structureId) {
         // display mode syncSceneToSelection would assign so late arrivals don't
         // flash in visible. Uses the same decideDisplayMode/applyDisplayMode primitives
         // as the orchestrator, so policy lives in one place.
-        if (selectedId !== null) {
-          applyDisplayMode(mesh, decideDisplayMode(structureId, new Set([selectedId])));
+        if (selectedRegionIds.length > 0) {
+          applyDisplayMode(mesh, decideDisplayMode(structureId, new Set(selectedRegionIds)));
         } else if (selectedDandiset !== null) {
           const dandiStructures = new Set(dandisetToStructures[selectedDandiset] || []);
           applyDisplayMode(mesh, decideDisplayMode(structureId, dandiStructures));
@@ -754,16 +772,22 @@ function onMouseMove(event) {
     // intermediate nodes like "Motor cortex" have 0 direct annotations but
     // non-zero descendant counts, and showing "0 dandisets" there would be
     // misleading. Leaf regions have total == direct so the value is the same.
-    // Matches how the tree badge renders totals via renderBadge.
+    // Matches how the tree badge renders totals via renderBadge. Regions
+    // without a dandiRegions entry fall back to the structure record so they
+    // still get a name/acronym tooltip (with a "no dandisets" footer).
     const region = dandiRegions[String(sid)];
-    if (region) {
-      const dsCount = region.total_dandiset_count ?? region.dandiset_count ?? 0;
-      const fileCount = region.total_file_count ?? region.file_count ?? 0;
+    const structure = idToStructure[sid];
+    const name = region ? region.name : (structure ? structure.name : null);
+    const acronym = region ? region.acronym : (structure ? structure.acronym : '');
+    if (name) {
+      const infoLine = region
+        ? `${region.total_dandiset_count ?? region.dandiset_count ?? 0} dandiset${(region.total_dandiset_count ?? region.dandiset_count ?? 0) !== 1 ? 's' : ''} &middot; ${region.total_file_count ?? region.file_count ?? 0} files`
+        : 'No DANDI datasets reference this region';
       tooltip.classList.remove('hidden');
       tooltip.innerHTML = `
-        <div class="tooltip-name">${region.name}</div>
-        <div class="tooltip-acronym">${region.acronym}</div>
-        <div class="tooltip-info">${dsCount} dandiset${dsCount !== 1 ? 's' : ''} &middot; ${fileCount} files</div>
+        <div class="tooltip-name">${name}</div>
+        <div class="tooltip-acronym">${acronym}</div>
+        <div class="tooltip-info">${infoLine}</div>
       `;
       tooltip.style.left = (event.clientX - renderer.domElement.getBoundingClientRect().left + 15) + 'px';
       tooltip.style.top = (event.clientY - renderer.domElement.getBoundingClientRect().top + 15) + 'px';
@@ -790,7 +814,7 @@ function unhighlightMesh(structureId) {
   if (structureId === null) return;
   const mesh = meshObjects[structureId];
   if (!mesh || !mesh.visible) return;
-  if (structureId === selectedId) return;
+  if (selectedRegionIds.includes(structureId)) return;
   mesh.material.emissive = new THREE.Color(0x000000);
   mesh.material.emissiveIntensity = 0;
 }
@@ -825,10 +849,11 @@ function onClick(event) {
 // Hover includes root when it's the solid init-view mesh, so hovering the
 // whole brain at the atlas view surfaces the aggregate tooltip. Root is
 // excluded while dimmed (fresnel silhouette during selection) — the rim is
-// pure context, not a UI target.
+// pure context, not a UI target. Non-data regions are pickable when visible
+// (e.g. brought in via multi-select) so the user gets a consistent tooltip.
 function getHoverPickables() {
   return Object.values(meshObjects).filter(
-    m => m.visible && (m.userData.isData || (m.userData.isRoot && !m.userData.isDimmed))
+    m => m.visible && (!m.userData.isRoot || !m.userData.isDimmed)
   );
 }
 
@@ -836,7 +861,7 @@ function getHoverPickables() {
 // the hierarchy tree's root node, not the 3D mesh — giving root a click
 // action would create a large accidental-click surface during camera drags.
 function getClickPickables() {
-  return Object.values(meshObjects).filter(m => m.userData.isData && m.visible);
+  return Object.values(meshObjects).filter(m => m.visible && !m.userData.isRoot);
 }
 
 function pickBrainRegionHit(intersects) {
@@ -945,6 +970,8 @@ function decideDisplayMode(meshId, activeIds) {
   if (isRoot && isAllen) return 'glass';
   // In the active set → spotlight.
   if (activeIds.has(meshId)) return 'active';
+  // Region-of-interest overlay (dandiset view + user-added extras).
+  if (dandisetExtraMeshIds.has(meshId)) return 'roi';
   // Macaque root, not in active set → fresnel-rim silhouette for context.
   if (isRoot) return 'silhouette';
   // Anything else not active → completely hidden.
@@ -986,6 +1013,24 @@ function applyDisplayMode(mesh, mode) {
       const mat = orig.clone();
       mat.opacity = orig.opacity * sliderRegionOpacity;
       mat.transparent = mat.opacity < 1;
+      mat.needsUpdate = true;
+      mesh.material = mat;
+      mesh.visible = true;
+    }
+  } else if (mode === 'roi') {
+    // Soft region-of-interest overlay: like 'active' but at ~35% opacity so
+    // the user can visually distinguish it from the dandiset's own regions.
+    if (sliderRegionOpacity === 0) {
+      mesh.visible = false;
+    } else {
+      const mat = orig.clone();
+      mat.opacity = sliderRegionOpacity * 0.35;
+      mat.transparent = true;
+      mat.depthWrite = false;
+      if (isRoot && !isAllen) {
+        mat.depthTest = true;
+        mesh.renderOrder = 0;
+      }
       mat.needsUpdate = true;
       mesh.material = mat;
       mesh.visible = true;
@@ -1172,10 +1217,18 @@ function updateTreeBadges() {
 
 async function enterDandisetView(dandisetId, { pushState = true } = {}) {
   return transitionView('dandiset', async () => {
+    // Capture prior region(s) so the dandiset panel can offer a back button.
+    // Empty selection (deep-link entry) leaves this empty and suppresses the
+    // button. Root is kept: enterRegionView(rootId) is what renders the
+    // "all dandisets" home view, so going back there is the right behavior.
+    previousRegionIdsForDandiset = selectedRegionIds.slice();
+
     selectedDandiset = dandisetId;
     selectedId = null;
+    selectedRegionIds = [];
     dandisetSubjectCounts = computeDandisetSubjectCounts(dandisetId);
     hiddenRegionIds = new Set();
+    clearDandisetExtras();
     clearElectrodePoints();
 
     if (pushState) setHash(`dandiset=${dandisetId}`);
@@ -1214,6 +1267,7 @@ async function enterDandisetView(dandisetId, { pushState = true } = {}) {
     updateDandisetPanel(dandisetId, structureIds);
     filterTreeByDandiset(dandisetId);
     updateTreeBadges();
+    syncTreeCheckboxes();
   });
 }
 
@@ -1286,8 +1340,9 @@ function filterTreeByDandiset(dandisetId) {
 function transitionView(newView, work) {
   currentView = newView;
   dandisetRegionFilter = null;
-  const sel = document.querySelector('.tree-node-content.selected');
-  if (sel) sel.classList.remove('selected');
+  // Clear every selected tree row (multi-select can mark more than one). Each
+  // per-view function re-adds .selected on the rows it owns.
+  document.querySelectorAll('.tree-node-content.selected').forEach(el => el.classList.remove('selected'));
   return work();
 }
 
@@ -1307,9 +1362,12 @@ function transitionView(newView, work) {
 function enterInitView() {
   transitionView('init', () => {
     selectedId = null;
+    selectedRegionIds = [];
     selectedDandiset = null;
     dandisetSubjectCounts = null;
+    previousRegionIdsForDandiset = [];
     hiddenRegionIds = new Set();
+    clearDandisetExtras();
 
     // Restore the Regions slider to full. Any prior auto-drop from an
     // electrode view should not bleed into the "everything" view — root
@@ -1323,13 +1381,8 @@ function enterInitView() {
 
     clearElectrodePoints();
     document.getElementById('region-visibility-overlay').classList.add('hidden');
-    document.getElementById('dandiset-filter-bar').classList.add('hidden');
-    hideSubjectFilter();
-
-    // Tree: strip dandiset filter classes (selected node already deselected by transitionView)
-    const tree = document.getElementById('hierarchy-tree');
-    tree.querySelectorAll('.dandiset-inactive').forEach(el => el.classList.remove('dandiset-inactive'));
-    tree.querySelectorAll('.dandiset-active').forEach(el => el.classList.remove('dandiset-active'));
+    leaveDandisetTreeUI();
+    syncTreeCheckboxes();
 
     // 3D scene
     if (activeAtlas.coordSystem === 'allen') {
@@ -1462,8 +1515,13 @@ async function updateDandisetPanel(dandisetId, structureIds) {
     const end = Math.min(start + PAGE_SIZE, subjects.length);
     const pageSubjects = subjects.slice(start, end);
 
+    const backButtonHtml = previousRegionIdsForDandiset.length > 0
+      ? `<button class="dandiset-back-btn" id="dandiset-back-btn">&larr; Back to all Dandisets</button>`
+      : '';
+
     let html = `
       <div class="region-header">
+        ${backButtonHtml}
         <div class="region-name">Dandiset ${dandisetId}</div>
         <div class="dandiset-detail-title" id="dandiset-detail-title">${title}</div>
         <a class="dandiset-external-link" href="https://dandiarchive.org/dandiset/${dandisetId}" target="_blank" rel="noopener">
@@ -1618,6 +1676,18 @@ async function updateDandisetPanel(dandisetId, structureIds) {
 
     panel.innerHTML = html;
     attachCardListeners();
+
+    const backBtn = document.getElementById('dandiset-back-btn');
+    if (backBtn) {
+      backBtn.addEventListener('click', () => {
+        const targets = previousRegionIdsForDandiset.slice();
+        if (targets.length === 1) {
+          enterRegionView(targets[0]);
+        } else if (targets.length > 1) {
+          enterMultiRegionView(targets);
+        }
+      });
+    }
   }
 
   function attachCardListeners() {
@@ -1763,6 +1833,7 @@ async function updateDandisetPanel(dandisetId, structureIds) {
         }
         applyVisibilityToMesh(rid);
         filterRegionVisibilityRows();  // update toggle-all state
+        syncTreeCheckboxes();
       });
     });
 
@@ -1802,6 +1873,7 @@ async function updateDandisetPanel(dandisetId, structureIds) {
             applyDimmed(meshObjects[meshId]);
           }
         }
+        syncTreeCheckboxes();
       });
     }
   }
@@ -2168,20 +2240,32 @@ function enterRegionView(structureId, { expandTree = true, pushState = true } = 
   // sets currentView correctly.
   const newView = (structureId === meshManifest.root_id) ? 'init' : 'region';
   transitionView(newView, () => {
-    // Drop the highlight tint from the previously selected region (if any).
+    // Drop the highlight tint from previously selected regions (if any).
     // The .selected tree-node class is already cleared by transitionView.
-    if (selectedId !== null) unhighlightMesh(selectedId);
+    for (const prevId of selectedRegionIds) unhighlightMesh(prevId);
 
     selectedId = structureId;
+    selectedRegionIds = [structureId];
     selectedDandiset = null;
+    previousRegionIdsForDandiset = [];
     hiddenRegionIds = new Set();
+    clearDandisetExtras();
     document.getElementById('region-visibility-overlay').classList.add('hidden');
+    leaveDandisetTreeUI();
     clearElectrodePoints();
+    syncTreeCheckboxes();
 
     if (pushState) setHash(`region=${structureId}`);
 
-    spotlightRegion(structureId);
-    highlightMesh(structureId);
+    // Allen "init" view (root selected) is the colorful whole-brain look —
+    // every loaded mesh visible at its natural opacity. Macaque root and any
+    // non-root region get the normal spotlight (only that region visible).
+    if (newView === 'init' && activeAtlas.coordSystem === 'allen') {
+      showAllRegions();
+    } else {
+      spotlightRegion(structureId);
+      highlightMesh(structureId);
+    }
 
     if (expandTree) expandToNode(structureId);
     // Query after expandToNode so lazily-rendered nodes exist in DOM
@@ -2192,6 +2276,121 @@ function enterRegionView(structureId, { expandTree = true, pushState = true } = 
     }
 
     updateRegionPanel(structureId);
+  });
+}
+
+// Recompute the mesh-ID cache from dandisetExtraRegionIds. Call after any
+// mutation to dandisetExtraRegionIds so decideDisplayMode can read it cheaply.
+function recomputeExtraMeshIds() {
+  dandisetExtraMeshIds = new Set();
+  for (const rid of dandisetExtraRegionIds) {
+    const meshId = meshObjects[rid] ? rid : findNearestAncestorWithMesh(rid);
+    if (meshId) dandisetExtraMeshIds.add(meshId);
+  }
+}
+
+// Reapply the dandiset's scene state. Used after an extras mutation so the
+// new mesh (or removed mesh) transitions to its correct display mode.
+// Mirrors the activeSet computation in enterDandisetView.
+function refreshDandisetScene() {
+  if (selectedDandiset === null) return;
+  const structureIds = dandisetToStructures[selectedDandiset] || [];
+  const activeSet = new Set();
+  const meshToRegions = new Map();
+  for (const sid of structureIds) {
+    activeSet.add(sid);
+    const meshId = meshObjects[sid] ? sid : findNearestAncestorWithMesh(sid);
+    if (meshId) {
+      activeSet.add(meshId);
+      if (!meshToRegions.has(meshId)) meshToRegions.set(meshId, []);
+      meshToRegions.get(meshId).push(sid);
+    }
+  }
+  syncSceneToSelection(activeSet, (meshId) => {
+    const regions = meshToRegions.get(meshId) || [meshId];
+    return regions.every(rid => hiddenRegionIds.has(rid));
+  });
+}
+
+// Clear the region-of-interest extras and refresh the cache. Used by any
+// view transition that leaves the dandiset context.
+function clearDandisetExtras() {
+  dandisetExtraRegionIds = new Set();
+  dandisetExtraMeshIds = new Set();
+}
+
+// Strip dandiset-filter visual state from the tree and hide the dandiset
+// filter bar. Called by any non-dandiset view that may be entered from a
+// dandiset view (e.g. checkbox-driven multi-region entry).
+function leaveDandisetTreeUI() {
+  document.getElementById('dandiset-filter-bar').classList.add('hidden');
+  hideSubjectFilter();
+  const tree = document.getElementById('hierarchy-tree');
+  tree.querySelectorAll('.dandiset-inactive').forEach(el => el.classList.remove('dandiset-inactive'));
+  tree.querySelectorAll('.dandiset-active').forEach(el => el.classList.remove('dandiset-active'));
+}
+
+// Reflect current selection in tree row checkboxes. In region/init/multi
+// views this mirrors selectedRegionIds. In a dandiset view the semantics
+// shift to "is this region currently visible in 3D": dandiset regions are
+// checked unless user-hidden, and non-dandiset regions are checked iff the
+// user added them as a region-of-interest extra.
+function syncTreeCheckboxes() {
+  if (selectedDandiset !== null) {
+    const dandisetRegionSet = new Set((dandisetToStructures[selectedDandiset] || []).map(String));
+    const extraSet = new Set([...dandisetExtraRegionIds].map(String));
+    document.querySelectorAll('.tree-checkbox').forEach(cb => {
+      const id = cb.dataset.id;
+      if (dandisetRegionSet.has(id)) {
+        cb.checked = !hiddenRegionIds.has(parseInt(id));
+      } else {
+        cb.checked = extraSet.has(id);
+      }
+    });
+    return;
+  }
+  const selectedSet = new Set(selectedRegionIds.map(String));
+  document.querySelectorAll('.tree-checkbox').forEach(cb => {
+    cb.checked = selectedSet.has(cb.dataset.id);
+  });
+}
+
+// Enter the multi-region view: spotlight all given regions, push the
+// comma-joined hash, and render the stacked region panel. Treats the most
+// recently added id as the "primary" (selectedId) so other code that reads
+// selectedId continues to work.
+async function enterMultiRegionView(ids, { pushState = true, expandTree = true } = {}) {
+  const uniqueIds = [...new Set(ids)];
+  if (uniqueIds.length === 0) { enterInitView(); return; }
+  if (uniqueIds.length === 1) { enterRegionView(uniqueIds[0], { pushState, expandTree }); return; }
+
+  return transitionView('region', async () => {
+    for (const prevId of selectedRegionIds) unhighlightMesh(prevId);
+
+    selectedRegionIds = uniqueIds.slice();
+    selectedId = uniqueIds[uniqueIds.length - 1];
+    selectedDandiset = null;
+    previousRegionIdsForDandiset = [];
+    hiddenRegionIds = new Set();
+    clearDandisetExtras();
+    document.getElementById('region-visibility-overlay').classList.add('hidden');
+    leaveDandisetTreeUI();
+    clearElectrodePoints();
+
+    if (pushState) setHash(`region=${uniqueIds.join(',')}`);
+
+    await spotlightRegions(uniqueIds);
+
+    if (expandTree) {
+      for (const rid of uniqueIds) expandToNode(rid);
+    }
+    for (const rid of uniqueIds) {
+      const el = document.querySelector(`.tree-node-content[data-id="${rid}"]`);
+      if (el) el.classList.add('selected');
+    }
+    syncTreeCheckboxes();
+
+    updateMultiRegionPanel(uniqueIds);
   });
 }
 
@@ -2305,6 +2504,123 @@ function updateRegionPanel(structureId) {
   render(0);
 }
 
+// Renders the right panel for the multi-region view: a stack of selected
+// region cards (with a remove control) followed by the union of dandisets
+// across all selections. Pagination over the union list, same widget as the
+// single-region panel.
+function updateMultiRegionPanel(ids) {
+  const panel = document.getElementById('region-panel');
+
+  const regionInfos = ids.map(rid => {
+    const r = dandiRegions[String(rid)];
+    const s = idToStructure[rid];
+    return {
+      id: rid,
+      name: r ? r.name : (s ? s.name : `Region ${rid}`),
+      acronym: r ? r.acronym : (s ? s.acronym : ''),
+      color: r ? r.color_hex_triplet : (s && s.color_hex_triplet) || 'aaaaaa',
+      dandisets: r ? mergedDandisetsForRegion(r) : [],
+    };
+  });
+
+  const seen = new Set();
+  const unionDandisets = [];
+  for (const info of regionInfos) {
+    for (const did of info.dandisets) {
+      if (!seen.has(did)) { seen.add(did); unionDandisets.push(did); }
+    }
+  }
+
+  const PAGE_SIZE = 20;
+  const totalPages = Math.max(1, Math.ceil(unionDandisets.length / PAGE_SIZE));
+
+  function render(page) {
+    const start = page * PAGE_SIZE;
+    const end = Math.min(start + PAGE_SIZE, unionDandisets.length);
+    const pageDandisets = unionDandisets.slice(start, end);
+
+    let html = `<div class="multi-region-header"><div class="multi-region-title">${ids.length} regions selected</div></div>`;
+    html += `<div class="multi-region-card-stack">`;
+    for (const info of regionInfos) {
+      html += `
+        <div class="multi-region-card" data-region-id="${info.id}">
+          <span class="multi-region-card-dot" style="background:#${info.color}"></span>
+          <div class="multi-region-card-text">
+            <div class="multi-region-card-name">${info.name}</div>
+            ${info.acronym ? `<div class="multi-region-card-acronym">${info.acronym}</div>` : ''}
+          </div>
+          <button class="multi-region-card-remove" data-region-id="${info.id}" title="Remove from selection">&times;</button>
+        </div>`;
+    }
+    html += `</div>`;
+
+    if (unionDandisets.length > 0) {
+      html += `<div class="dandiset-list-header">Dandisets <span class="dandiset-list-hint">union across selected regions &middot; click to view in 3D</span></div>`;
+      for (const did of pageDandisets) {
+        const regionCount = (dandisetToStructures[did] || []).length;
+        const hasElectrodes = dandisetsWithElectrodes.has(did);
+        html += `
+          <div class="dandiset-card" data-dandiset-id="${did}">
+            <div class="dandiset-card-top">
+              ${hasElectrodes ? '<span class="electrode-indicator" title="Has electrode coordinates"></span>' : ''}
+              <span class="dandiset-card-id">${did}</span>
+              <span class="dandiset-card-count">${regionCount} region${regionCount !== 1 ? 's' : ''}</span>
+              <a class="dandiset-card-ext" href="https://dandiarchive.org/dandiset/${did}" target="_blank" rel="noopener" title="Open on DANDI Archive">&#8599;</a>
+            </div>
+            <div class="dandiset-card-title" data-dandiset-id="${did}">${dandisetTitles[did] || ''}</div>
+          </div>`;
+      }
+
+      if (totalPages > 1) {
+        html += `<div class="pagination">`;
+        html += `<button class="pagination-btn" data-page="${page - 1}" ${page === 0 ? 'disabled' : ''}>&laquo; Prev</button>`;
+        html += `<span class="pagination-info">${start + 1}&ndash;${end} of ${unionDandisets.length}</span>`;
+        html += `<button class="pagination-btn" data-page="${page + 1}" ${page >= totalPages - 1 ? 'disabled' : ''}>Next &raquo;</button>`;
+        html += `</div>`;
+      }
+    } else {
+      html += '<p class="no-data-msg">No DANDI datasets reference these regions.</p>';
+    }
+
+    panel.innerHTML = html;
+
+    panel.querySelectorAll('.multi-region-card-remove').forEach(btn => {
+      btn.addEventListener('click', (e) => {
+        e.stopPropagation();
+        const rid = parseInt(btn.dataset.regionId);
+        const remaining = selectedRegionIds.filter(x => x !== rid);
+        if (remaining.length === 0) enterInitView();
+        else if (remaining.length === 1) enterRegionView(remaining[0]);
+        else enterMultiRegionView(remaining);
+      });
+    });
+
+    panel.querySelectorAll('.dandiset-card').forEach(card => {
+      card.addEventListener('click', (e) => {
+        if (e.target.closest('.dandiset-card-ext')) return;
+        enterDandisetView(card.dataset.dandisetId);
+      });
+    });
+
+    panel.querySelectorAll('.pagination-btn').forEach(btn => {
+      btn.addEventListener('click', () => {
+        const p = parseInt(btn.dataset.page);
+        if (p >= 0 && p < totalPages) render(p);
+      });
+    });
+  }
+
+  render(0);
+}
+
+function mergedDandisetsForRegion(region) {
+  const seen = new Set();
+  const out = [];
+  for (const did of (region.dandisets || [])) { seen.add(did); out.push(did); }
+  for (const did of (region.total_dandisets || [])) { if (!seen.has(did)) { seen.add(did); out.push(did); } }
+  return out;
+}
+
 // ── Hierarchy Tree (Left Sidebar) ──────────────────────────────────────────
 function buildHierarchyTree() {
   const container = document.getElementById('hierarchy-tree');
@@ -2337,6 +2653,33 @@ function createTreeNode(node, depth) {
   toggle.className = `tree-toggle ${hasChildren ? '' : 'leaf'}`;
   toggle.textContent = '\u25B6'; // right triangle
 
+  // Multi-select checkbox. Shown for any region that has a 3D mesh and isn't
+  // the root (root has its own "everything" semantics via init view). Regions
+  // without dandiset data are still selectable; their right-panel content just
+  // reports that no dandisets reference them.
+  const isRoot = node.id === meshManifest.root_id;
+  const showCheckbox = hasMesh && !isRoot;
+  let checkbox = null;
+  if (showCheckbox) {
+    checkbox = document.createElement('input');
+    checkbox.type = 'checkbox';
+    checkbox.className = 'tree-checkbox';
+    checkbox.dataset.id = node.id;
+    checkbox.title = 'Add to / remove from multi-region selection';
+    // Initial checked state mirrors syncTreeCheckboxes' rules so lazy-rendered
+    // tree branches don't desync with the active view.
+    if (selectedDandiset !== null) {
+      const dandisetRegions = dandisetToStructures[selectedDandiset] || [];
+      if (dandisetRegions.includes(node.id)) {
+        checkbox.checked = !hiddenRegionIds.has(node.id);
+      } else {
+        checkbox.checked = dandisetExtraRegionIds.has(node.id);
+      }
+    } else {
+      checkbox.checked = selectedRegionIds.includes(node.id);
+    }
+  }
+
   // Color dot — hollow ring if no mesh
   const dot = document.createElement('span');
   dot.className = 'tree-color-dot';
@@ -2357,8 +2700,67 @@ function createTreeNode(node, depth) {
   label.title = hasData && !hasMesh ? `${node.name} (no 3D mesh available)` : node.name;
 
   content.appendChild(toggle);
+  if (checkbox) content.appendChild(checkbox);
   content.appendChild(dot);
   content.appendChild(label);
+
+  if (selectedRegionIds.includes(node.id)) content.classList.add('selected');
+
+  if (checkbox) {
+    // Stop propagation so the row click handler doesn't ALSO fire (which
+    // would replace the selection with the just-toggled region).
+    checkbox.addEventListener('click', (e) => e.stopPropagation());
+    checkbox.addEventListener('change', async (e) => {
+      e.stopPropagation();
+
+      if (currentView === 'dandiset') {
+        // Dandiset view: checkbox toggles visibility (for dandiset regions)
+        // or ROI overlay membership (for regions not in the dandiset).
+        const dandisetRegions = dandisetToStructures[selectedDandiset] || [];
+        const isInDandiset = dandisetRegions.includes(node.id);
+
+        if (isInDandiset) {
+          if (checkbox.checked) hiddenRegionIds.delete(node.id);
+          else hiddenRegionIds.add(node.id);
+          // The 3D viewer's region-visibility-overlay holds a sibling
+          // checkbox for the same region. Dispatching change on it reuses
+          // the overlay's existing handler (which updates the mesh + the
+          // toggle-all state) and keeps both control surfaces in sync.
+          const overlayCb = document.querySelector(`.region-visibility-row input[data-region-id="${node.id}"]`);
+          if (overlayCb) {
+            overlayCb.checked = checkbox.checked;
+            overlayCb.dispatchEvent(new Event('change'));
+          } else {
+            refreshDandisetScene();
+          }
+        } else {
+          if (checkbox.checked) {
+            dandisetExtraRegionIds.add(node.id);
+            await ensureMeshLoaded(node.id);
+          } else {
+            dandisetExtraRegionIds.delete(node.id);
+          }
+          recomputeExtraMeshIds();
+          refreshDandisetScene();
+        }
+        return;
+      }
+
+      // Region / init / multi-region context: checkbox drives the
+      // selectedRegionIds set directly. Root is filtered out: in non-Allen
+      // init view selectedRegionIds = [root] as an internal "everything is
+      // active" marker, but a user-driven selection should never include
+      // root (otherwise root renders 'active' = opaque brain, defeating the
+      // glass-brain context view).
+      const rootId = meshManifest.root_id;
+      const baseIds = selectedRegionIds.filter(x => x !== node.id && x !== rootId);
+      const nextIds = checkbox.checked ? [...baseIds, node.id] : baseIds;
+      if (nextIds.length === 0) enterInitView();
+      else if (nextIds.length === 1) enterRegionView(nextIds[0], { expandTree: false });
+      else enterMultiRegionView(nextIds, { expandTree: false });
+      ensureMeshLoaded(node.id);
+    });
+  }
 
   // Badge: show counts (dandisets normally, subjects when a dandiset is selected)
   if (hasData) {
@@ -2371,17 +2773,20 @@ function createTreeNode(node, depth) {
   el.appendChild(content);
 
   // Children container (lazy: only rendered when expanded)
+  let childrenEl = null;
   if (hasChildren) {
-    const childrenEl = document.createElement('div');
+    childrenEl = document.createElement('div');
     childrenEl.className = 'tree-children';
     childrenEl.dataset.parentId = node.id;
     el.appendChild(childrenEl);
 
-    // Click on toggle or content to expand/collapse
-    content.addEventListener('click', (e) => {
+    // Disclosure triangle: expand/collapse ONLY. Selection and view changes
+    // are intentionally decoupled — clicking the triangle should not pick the
+    // region (so users can browse the hierarchy without disturbing the
+    // current selection or the multi-region checkboxes).
+    toggle.addEventListener('click', (e) => {
       e.stopPropagation();
 
-      // If children not yet rendered, render them
       if (childrenEl.children.length === 0) {
         for (const child of node.children) {
           childrenEl.appendChild(createTreeNode(child, depth + 1));
@@ -2390,32 +2795,23 @@ function createTreeNode(node, depth) {
 
       const isExpanded = childrenEl.classList.toggle('expanded');
       toggle.classList.toggle('expanded', isExpanded);
-
-      // Tree root → full init view, even when a dandiset is selected. Clicking
-      // "everything" should always exit the current scope; otherwise it would
-      // be a dandiset-region filter on root, which is meaningless.
-      if (node.id === meshManifest.root_id) {
-        enterInitView();
-      } else if (selectedDandiset) {
-        filterDandisetPanelByRegion(node.id);
-      } else {
-        enterRegionView(node.id, { expandTree: false });
-      }
-      ensureMeshLoaded(node.id);
-    });
-  } else {
-    content.addEventListener('click', (e) => {
-      e.stopPropagation();
-      if (node.id === meshManifest.root_id) {
-        enterInitView();
-      } else if (selectedDandiset) {
-        filterDandisetPanelByRegion(node.id);
-      } else {
-        enterRegionView(node.id, { expandTree: false });
-      }
-      ensureMeshLoaded(node.id);
     });
   }
+
+  // Row click (label / color dot / badge / empty space): select the region.
+  // Clicks that originate on the toggle triangle or the checkbox are handled
+  // by their own listeners and stop propagation, so they never reach here.
+  content.addEventListener('click', (e) => {
+    e.stopPropagation();
+    if (node.id === meshManifest.root_id) {
+      enterInitView();
+    } else if (selectedDandiset) {
+      filterDandisetPanelByRegion(node.id);
+    } else {
+      enterRegionView(node.id, { expandTree: false });
+    }
+    ensureMeshLoaded(node.id);
+  });
 
   return el;
 }
@@ -2681,7 +3077,8 @@ document.getElementById('region-opacity').addEventListener('input', (e) => {
   // discussion. Revisit if we adopt order-independent transparency or a
   // hierarchy-aware renderOrder scheme.
   for (const mesh of Object.values(meshObjects)) {
-    if (mesh.userData.displayMode === 'hidden' || mesh.userData.displayMode === 'silhouette') continue;
+    const mode = mesh.userData.displayMode;
+    if (mode === 'hidden' || mode === 'silhouette') continue;
     if (sliderRegionOpacity === 0) {
       mesh.visible = false;
       continue;
@@ -2689,8 +3086,16 @@ document.getElementById('region-opacity').addEventListener('input', (e) => {
     mesh.visible = true;
     const orig = mesh.userData.originalMaterial;
     if (!orig) continue;
-    mesh.material.opacity = orig.opacity * sliderRegionOpacity;
-    mesh.material.transparent = mesh.material.opacity < 1;
+    // Match the per-mode opacity formulas in applyDisplayMode. Using a
+    // single 'orig.opacity * slider' formula for all modes leaks the
+    // material's intrinsic translucency into the active/roi modes, which
+    // caps the effective opacity below 1 even when the slider reads 1.
+    let opacity;
+    if (mode === 'active') opacity = sliderRegionOpacity;
+    else if (mode === 'roi') opacity = sliderRegionOpacity * 0.35;
+    else opacity = orig.opacity * sliderRegionOpacity;  // 'glass'
+    mesh.material.opacity = opacity;
+    mesh.material.transparent = opacity < 1;
     mesh.material.needsUpdate = true;
   }
 });
@@ -2750,7 +3155,7 @@ async function applyURLState() {
   if (params.size === 0) {
     // No hash — show default (init) view. Guard avoids redundant DOM thrash
     // when a hashchange fires but nothing is actually selected.
-    if (selectedId !== null || selectedDandiset !== null) {
+    if (selectedRegionIds.length > 0 || selectedDandiset !== null) {
       enterInitView();
     }
     return;
@@ -2771,8 +3176,12 @@ async function applyURLState() {
       enterSubjectViewFromURL(did, subject, session || null);
     }
   } else if (region) {
-    const sid = parseInt(region);
-    if (idToStructure[sid]) enterRegionView(sid, { expandTree: true, pushState: false });
+    const ids = region.split(',').map(x => parseInt(x)).filter(x => idToStructure[x]);
+    if (ids.length === 1) {
+      enterRegionView(ids[0], { expandTree: true, pushState: false });
+    } else if (ids.length > 1) {
+      await enterMultiRegionView(ids, { expandTree: true, pushState: false });
+    }
   }
 }
 
