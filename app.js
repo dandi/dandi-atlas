@@ -48,6 +48,10 @@ const ATLAS_CONFIGS = {
   allen_ccf: {
     name: "Allen CCF (Mouse)",
     dataPrefix: "data/atlases/allen_ccf/",
+    // Precomputed fragments, byte-identical to what BrainGlobe serves. Set
+    // meshBaseUrl to stream them from the bucket instead of our copy:
+    // 'https://brainglobe.s3.us-west-2.amazonaws.com/atlas/annotation-sets/allen_mouse-annotation/1_2/annotation.precomputed/'
+    meshFormat: 'precomputed',
     camDist: 18000,
     cameraUp: [0, -1, 0],
     camOffset: [0, 0, 1],  // Z=Right in PIR, lateral view
@@ -64,6 +68,7 @@ const ATLAS_CONFIGS = {
   d99: {
     name: "D99 v2.0 (Macaque)",
     dataPrefix: "data/atlases/d99/",
+    meshFormat: 'glb',
     camDist: 200,
     cameraUp: [0, 0, 1],
     camOffset: [1, 0, 0],  // X=Right in RAS, lateral view
@@ -91,6 +96,7 @@ const ATLAS_CONFIGS = {
   nmt: {
     name: "NMT v2.0 sym (Macaque)",
     dataPrefix: "data/atlases/nmt/",
+    meshFormat: 'glb',
     camDist: 200,
     cameraUp: [0, 0, 1],
     camOffset: [1, 0, 0],  // X=Right in RAS, lateral view
@@ -107,6 +113,7 @@ const ATLAS_CONFIGS = {
   mebrains: {
     name: "MEBRAINS (Macaque)",
     dataPrefix: "data/atlases/mebrains/",
+    meshFormat: 'glb',
     camDist: 200,
     cameraUp: [0, 0, 1],
     camOffset: [1, 0, 0],  // X=Right in RAS, lateral view
@@ -123,6 +130,7 @@ const ATLAS_CONFIGS = {
   whs_sd: {
     name: "WHS-SD v4 (Rat)",
     dataPrefix: "data/atlases/whs_sd/",
+    meshFormat: 'glb',
     // Waxholm space is RAS in mm; rat brain spans ~20 mm AP. Camera distance
     // and clipping picked to comfortably fit the brain at lateral view; tune
     // empirically once the meshes render.
@@ -561,106 +569,148 @@ function onResize() {
 // ── Mesh Loading ───────────────────────────────────────────────────────────
 const gltfLoader = new GLTFLoader();
 const failedMeshIds = new Set();
+// Loads in flight, so two callers asking for the same structure share one fetch
+// instead of racing to add two copies of it to the scene.
+const pendingMeshLoads = new Map();
+
+// Region meshes are stored as neuroglancer "precomputed" fragments — the same
+// bytes, under the same bare-ID filenames, that BrainGlobe serves from its
+// public S3 bucket. An atlas can therefore set meshBaseUrl to that bucket and
+// stream its meshes remotely without touching this loader. Atlases still on the
+// older GLB layout set meshFormat: 'glb'.
+//
+//   uint32   numVertices
+//   float32  positions[3 * numVertices]   (atlas units, same frame as the GLBs)
+//   uint32   indices[3 * numTriangles]
+//
+// Fragments carry no normals, so we derive them at load time.
+function decodePrecomputedMesh(buffer) {
+  const numVertices = new DataView(buffer).getUint32(0, true);
+  const positions = new Float32Array(buffer, 4, numVertices * 3);
+  const indices = new Uint32Array(buffer, 4 + numVertices * 12);
+  const geometry = new THREE.BufferGeometry();
+  geometry.setAttribute('position', new THREE.BufferAttribute(positions, 3));
+  geometry.setIndex(new THREE.BufferAttribute(indices, 1));
+  geometry.computeVertexNormals();
+  return geometry;
+}
+
+function meshUrl(structureId) {
+  if (activeAtlas.meshFormat === 'glb') {
+    return `${activeAtlas.dataPrefix}meshes/${structureId}.glb?v=${DATA_VERSION}`;
+  }
+  // Remote fragments are immutable and versioned by the bucket itself, so the
+  // cache-busting query only applies to copies we ship.
+  if (activeAtlas.meshBaseUrl) return `${activeAtlas.meshBaseUrl}${structureId}`;
+  return `${activeAtlas.dataPrefix}meshes/${structureId}?v=${DATA_VERSION}`;
+}
+
+async function loadMeshGeometry(structureId) {
+  const url = meshUrl(structureId);
+  if (activeAtlas.meshFormat === 'glb') {
+    const gltf = await gltfLoader.loadAsync(url);
+    let geometry = null;
+    gltf.scene.traverse((child) => {
+      if (!geometry && child.isMesh) geometry = child.geometry;
+    });
+    return geometry;
+  }
+  const response = await fetch(url);
+  if (!response.ok) throw new Error(`${response.status} fetching ${url}`);
+  return decodePrecomputedMesh(await response.arrayBuffer());
+}
 
 function loadMesh(structureId) {
-  return new Promise((resolve) => {
-    if (meshObjects[structureId]) {
-      resolve(meshObjects[structureId]);
-      return;
-    }
+  if (meshObjects[structureId]) return Promise.resolve(meshObjects[structureId]);
+  if (pendingMeshLoads.has(structureId)) return pendingMeshLoads.get(structureId);
 
-    const path = `${activeAtlas.dataPrefix}meshes/${structureId}.glb?v=${DATA_VERSION}`;
-    gltfLoader.load(
-      path,
-      (gltf) => {
-        let mesh = null;
-        gltf.scene.traverse((child) => {
-          if (!mesh && child.isMesh) mesh = child;
+  const pending = loadMeshGeometry(structureId)
+    .catch(() => { failedMeshIds.add(structureId); return null; })
+    .then((geometry) => {
+      if (!geometry) return null;
+
+      // Get color and style based on whether this structure has data
+      const isRoot = structureId === meshManifest.root_id;
+      const region = dandiRegions[String(structureId)];
+      // Root is never treated as a data region even if a stale
+      // dandi_regions.json carries a zero-count entry for it — that was
+      // visible in NMT as a "0 dandisets" tooltip on hover of the outline.
+      const hasData = !isRoot && !!region;
+      const s = idToStructure[structureId];
+
+      let color = 0xaaaaaa;
+      if (region && region.color_hex_triplet) {
+        color = parseInt(region.color_hex_triplet, 16);
+      } else if (s && s.color_hex_triplet) {
+        color = parseInt(s.color_hex_triplet, 16);
+      }
+
+      let material;
+      if (isRoot) {
+        material = new THREE.MeshPhongMaterial({
+          color: 0xcccccc,
+          transparent: true,
+          opacity: activeAtlas.rootOpacity,
+          side: THREE.FrontSide,
+          depthWrite: false,
         });
-        if (!mesh) { resolve(null); return; }
+      } else if (hasData) {
+        // Opacity scaled by log of total (including descendants) dandiset count
+        const count = region.total_dandiset_count || region.dandiset_count || 1;
+        const opacity = Math.min(0.3 + 0.2 * Math.log2(count + 1), 0.9);
+        material = new THREE.MeshPhongMaterial({
+          color,
+          transparent: true,
+          opacity,
+          side: THREE.DoubleSide,
+        });
+      } else if (activeAtlas.coordSystem === 'allen') {
+        // CCF: wireframe context (original behavior)
+        material = new THREE.MeshPhongMaterial({
+          color,
+          transparent: true,
+          opacity: 0.05,
+          wireframe: true,
+          side: THREE.DoubleSide,
+          depthWrite: false,
+        });
+      } else {
+        // Macaque: low-opacity solid for anatomical context
+        material = new THREE.MeshPhongMaterial({
+          color,
+          transparent: true,
+          opacity: 0.15,
+          side: THREE.DoubleSide,
+          depthWrite: false,
+        });
+      }
 
-        // Get color and style based on whether this structure has data
-        const isRoot = structureId === meshManifest.root_id;
-        const region = dandiRegions[String(structureId)];
-        // Root is never treated as a data region even if a stale
-        // dandi_regions.json carries a zero-count entry for it — that was
-        // visible in NMT as a "0 dandisets" tooltip on hover of the outline.
-        const hasData = !isRoot && !!region;
-        const s = idToStructure[structureId];
+      const mesh = new THREE.Mesh(geometry, material);
+      mesh.userData.structureId = structureId;
+      mesh.userData.isData = hasData;
+      mesh.userData.isRoot = isRoot;
+      mesh.userData.originalMaterial = material.clone();
 
-        let color = 0xaaaaaa;
-        if (region && region.color_hex_triplet) {
-          color = parseInt(region.color_hex_triplet, 16);
-        } else if (s && s.color_hex_triplet) {
-          color = parseInt(s.color_hex_triplet, 16);
-        }
+      worldRoot.add(mesh);
+      meshObjects[structureId] = mesh;
 
-        let material;
-        if (isRoot) {
-          material = new THREE.MeshPhongMaterial({
-            color: 0xcccccc,
-            transparent: true,
-            opacity: activeAtlas.rootOpacity,
-            side: THREE.FrontSide,
-            depthWrite: false,
-          });
-        } else if (hasData) {
-          // Opacity scaled by log of total (including descendants) dandiset count
-          const count = region.total_dandiset_count || region.dandiset_count || 1;
-          const opacity = Math.min(0.3 + 0.2 * Math.log2(count + 1), 0.9);
-          material = new THREE.MeshPhongMaterial({
-            color,
-            transparent: true,
-            opacity,
-            side: THREE.DoubleSide,
-          });
-        } else if (activeAtlas.coordSystem === 'allen') {
-          // CCF: wireframe context (original behavior)
-          material = new THREE.MeshPhongMaterial({
-            color,
-            transparent: true,
-            opacity: 0.05,
-            wireframe: true,
-            side: THREE.DoubleSide,
-            depthWrite: false,
-          });
-        } else {
-          // Macaque: low-opacity solid for anatomical context
-          material = new THREE.MeshPhongMaterial({
-            color,
-            transparent: true,
-            opacity: 0.15,
-            side: THREE.DoubleSide,
-            depthWrite: false,
-          });
-        }
+      // When meshes load asynchronously mid-selection, give them the same
+      // display mode syncSceneToSelection would assign so late arrivals don't
+      // flash in visible. Uses the same decideDisplayMode/applyDisplayMode primitives
+      // as the orchestrator, so policy lives in one place.
+      if (selectedRegionIds.length > 0) {
+        applyDisplayMode(mesh, decideDisplayMode(structureId, new Set(selectedRegionIds)));
+      } else if (selectedDandiset !== null) {
+        const dandiStructures = new Set(dandisetToStructures[selectedDandiset] || []);
+        applyDisplayMode(mesh, decideDisplayMode(structureId, dandiStructures));
+      }
 
-        mesh.material = material;
-        mesh.userData.structureId = structureId;
-        mesh.userData.isData = hasData;
-        mesh.userData.isRoot = isRoot;
-        mesh.userData.originalMaterial = material.clone();
+      return mesh;
+    })
+    .finally(() => pendingMeshLoads.delete(structureId));
 
-        worldRoot.add(mesh);
-        meshObjects[structureId] = mesh;
-
-        // When meshes load asynchronously mid-selection, give them the same
-        // display mode syncSceneToSelection would assign so late arrivals don't
-        // flash in visible. Uses the same decideDisplayMode/applyDisplayMode primitives
-        // as the orchestrator, so policy lives in one place.
-        if (selectedRegionIds.length > 0) {
-          applyDisplayMode(mesh, decideDisplayMode(structureId, new Set(selectedRegionIds)));
-        } else if (selectedDandiset !== null) {
-          const dandiStructures = new Set(dandisetToStructures[selectedDandiset] || []);
-          applyDisplayMode(mesh, decideDisplayMode(structureId, dandiStructures));
-        }
-
-        resolve(mesh);
-      },
-      undefined,
-      () => { failedMeshIds.add(structureId); resolve(null); }
-    );
-  });
+  pendingMeshLoads.set(structureId, pending);
+  return pending;
 }
 
 async function ensureMeshLoaded(structureId) {
