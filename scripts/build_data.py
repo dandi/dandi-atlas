@@ -2,15 +2,16 @@
 """Build static data for the brain atlas viewer.
 
 Downloads Allen CCF structure graph, matches DANDI locations to CCF terms,
-and downloads OBJ meshes for relevant structures.
+and fetches meshes for relevant structures from BrainGlobe.
 """
 
 import json
 import os
 import sys
-import time
 import urllib.request
 from pathlib import Path
+
+import brainglobe_lib
 
 PROJECT_ROOT = Path(__file__).parent.parent
 DATA_DIR = PROJECT_ROOT / "data" / "atlases" / "allen_ccf"
@@ -28,10 +29,9 @@ LABEL_RESULTS_PATH = Path(
 STRUCTURE_GRAPH_URL = (
     "http://api.brain-map.org/api/v2/structure_graph_download/1.json"
 )
-MESH_URL_TEMPLATE = (
-    "http://download.alleninstitute.org/informatics-archive/"
-    "current-release/mouse_ccf/annotation/ccf_2017/structure_meshes/{structure_id}.obj"
-)
+# Meshes come from BrainGlobe; the hierarchy still comes from the Allen API,
+# which covers 1327 structures to BrainGlobe's 840.
+BRAINGLOBE_ATLAS = "allen_mouse_25um"
 
 
 def download_json(url: str) -> dict:
@@ -40,22 +40,6 @@ def download_json(url: str) -> dict:
     req = urllib.request.Request(url, headers={"User-Agent": "brain-atlas-viewer/1.0"})
     with urllib.request.urlopen(req, timeout=60) as resp:
         return json.loads(resp.read().decode("utf-8"))
-
-
-def download_file(url: str, dest: Path) -> bool:
-    """Download a file to disk. Returns True if successful."""
-    if dest.exists():
-        return True
-    try:
-        req = urllib.request.Request(
-            url, headers={"User-Agent": "brain-atlas-viewer/1.0"}
-        )
-        with urllib.request.urlopen(req, timeout=60) as resp:
-            dest.write_bytes(resp.read())
-        return True
-    except Exception as e:
-        print(f"    Failed to download {url}: {e}")
-        return False
 
 
 def flatten_structure_graph(msg: list) -> list:
@@ -227,45 +211,24 @@ def main():
         f"Total meshes to download: {len(all_mesh_ids)}"
     )
 
-    # 6. Download meshes
-    print("Step 6: Downloading OBJ meshes...")
-    downloaded = 0
-    failed = 0
-    skipped = 0
-    failed_ids = []
-    for i, sid in enumerate(sorted(all_mesh_ids)):
-        dest = MESHES_DIR / f"{sid}.obj"
-        if dest.exists():
-            skipped += 1
-            continue
-
-        url = MESH_URL_TEMPLATE.format(structure_id=sid)
-        if download_file(url, dest):
-            downloaded += 1
-        else:
-            failed += 1
-            failed_ids.append(sid)
-
-        # Progress indicator
-        if (i + 1) % 50 == 0:
-            print(
-                f"  Progress: {i + 1}/{len(all_mesh_ids)} "
-                f"(downloaded: {downloaded}, skipped: {skipped}, failed: {failed})"
-            )
-
-        # Be nice to the server
-        if downloaded > 0 and downloaded % 10 == 0:
-            time.sleep(0.5)
-
+    # 6. Fetch meshes from BrainGlobe
+    #
+    # Meshes are neuroglancer precomputed fragments stored under their bare
+    # structure ID, byte-identical to the bucket - see build_brainglobe_atlas.py
+    # for the standalone version of this step and the format details.
+    print("Step 6: Fetching meshes from BrainGlobe...")
+    existing = {sid for sid in all_mesh_ids if (MESHES_DIR / str(sid)).exists()}
+    unavailable = brainglobe_lib.download_fragments(
+        BRAINGLOBE_ATLAS, all_mesh_ids - existing, MESHES_DIR
+    )
     print(
-        f"  Done: {downloaded} downloaded, {skipped} already existed, {failed} failed"
+        f"  Done: {len(all_mesh_ids) - len(existing) - len(unavailable)} fetched, "
+        f"{len(existing)} already existed, {len(unavailable)} with no mesh upstream"
     )
 
-    # Also check for previously failed meshes (already missing on disk)
-    for sid in sorted(all_mesh_ids):
-        dest = MESHES_DIR / f"{sid}.obj"
-        if not dest.exists() and sid not in failed_ids:
-            failed_ids.append(sid)
+    # BrainGlobe's terminology covers fewer structures than the Allen graph, so
+    # some IDs never get a mesh (cortical layer subdivisions, CA3 strata).
+    failed_ids = [sid for sid in sorted(all_mesh_ids) if not (MESHES_DIR / str(sid)).exists()]
 
     # 7. Save a mesh manifest (so the frontend knows which meshes are available)
     mesh_manifest = {

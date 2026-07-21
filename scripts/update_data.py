@@ -29,7 +29,6 @@ from dandi_helpers import (
     build_parent_map,
     check_species_mouse,
     compute_mesh_set,
-    download_meshes,
     extract_desc,
     extract_electrode_coords,
     extract_locations,
@@ -43,10 +42,15 @@ from dandi_helpers import (
     iter_dandisets_modified_since,
     match_location,
 )
+import brainglobe_lib
 
 PROJECT_ROOT = Path(__file__).resolve().parent.parent
 DATA_DIR = PROJECT_ROOT / "data" / "atlases" / "allen_ccf"
 MESHES_DIR = DATA_DIR / "meshes"
+# BrainGlobe atlas the CCF meshes come from. The hierarchy still comes from the
+# Allen API (fetch_allen_structure_graph) - it covers 1327 structures to
+# BrainGlobe's 840 - so only geometry is sourced here.
+BRAINGLOBE_ATLAS = "allen_mouse_25um"
 SCRIPT_DIR = Path(__file__).resolve().parent
 
 LABEL_CACHE_FILE = SCRIPT_DIR / "label_cache.jsonl"
@@ -575,31 +579,24 @@ def main():
     print("\nStep 8: Checking meshes...")
     data_ids, ancestor_ids, all_mesh_ids = compute_mesh_set(dandi_regions, parent_map)
 
-    # Check which meshes are missing (accept either .obj or .glb)
-    missing = [sid for sid in all_mesh_ids
-               if not (MESHES_DIR / f"{sid}.glb").exists()
-               and not (MESHES_DIR / f"{sid}.obj").exists()]
+    # Meshes are neuroglancer precomputed fragments fetched from BrainGlobe and
+    # stored under their bare structure ID, byte-identical to the bucket - see
+    # scripts/build_brainglobe_atlas.py. BrainGlobe's terminology covers fewer
+    # structures than the Allen graph (no cortical layer subdivisions, no CA3
+    # strata), so some IDs legitimately never get a mesh and land in no_mesh.
+    missing = [sid for sid in all_mesh_ids if not (MESHES_DIR / str(sid)).exists()]
     if missing:
-        print(f"  Downloading {len(missing)} new meshes...")
-        failed_ids = download_meshes(set(missing), MESHES_DIR)
+        print(f"  Fetching {len(missing)} new meshes from BrainGlobe...")
+        unavailable = brainglobe_lib.download_fragments(
+            BRAINGLOBE_ATLAS, missing, MESHES_DIR
+        )
+        if unavailable:
+            print(f"  {len(unavailable)} have no mesh upstream: {unavailable[:10]}")
     else:
         print("  All meshes present")
-        failed_ids = []
-
-    # Convert any OBJ files to GLB
-    obj_files = list(MESHES_DIR.glob("*.obj"))
-    if obj_files:
-        print(f"  Converting {len(obj_files)} OBJ meshes to GLB...")
-        from convert_meshes import convert_obj_to_glb
-        for obj_path in obj_files:
-            if convert_obj_to_glb(obj_path):
-                obj_path.unlink()
 
     # Check for any missing meshes overall
-    all_failed = []
-    for sid in sorted(all_mesh_ids):
-        if not (MESHES_DIR / f"{sid}.glb").exists():
-            all_failed.append(sid)
+    all_failed = [sid for sid in sorted(all_mesh_ids) if not (MESHES_DIR / str(sid)).exists()]
 
     # ── Step 9: Rebuild mesh_manifest.json ─────────────────────────────────
     print("\nStep 9: Building mesh_manifest.json...")

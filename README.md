@@ -29,7 +29,16 @@ Read the [blog post](https://about.dandiarchive.org/blog/2026/02/24/introducing-
 python scripts/build_data.py
 ```
 
-This downloads the Allen structure graph, matches DANDI locations to CCF terms, and downloads OBJ meshes (~190 MB) to `data/meshes/`.
+This downloads the Allen structure graph and matches DANDI locations to CCF terms.
+
+Region meshes come from the [BrainGlobe](https://brainglobe.info) V3 public S3 bucket, in the neuroglancer precomputed format it serves them in:
+
+```bash
+python scripts/build_brainglobe_atlas.py --atlas allen_mouse_25um \
+    --out data/atlases/allen_ccf --terminology keep --like data/atlases/allen_ccf
+```
+
+Files are stored under their bare structure ID, byte-identical to the bucket, so setting `meshBaseUrl` on an atlas in `app.js` streams the meshes from S3 instead of our copy. The hierarchy still comes from the Allen API — BrainGlobe's terminology covers 840 structures to the Allen graph's 1327, dropping the cortical layer subdivisions and CA3 strata that `dandi_regions.json` references.
 
 Requires `label_results_full.json` from the [DANDI location analysis](https://github.com/catalystneuro/dandi-location-analysis). Set the path via:
 
@@ -57,12 +66,15 @@ Navigate to [http://localhost:8000](http://localhost:8000)
 │   ├── structure_graph.json    # Allen hierarchy tree (from Allen API)
 │   ├── dandi_regions.json      # Structure data with direct + aggregate dandiset counts
 │   ├── mesh_manifest.json      # Index of available meshes
-│   └── meshes/                 # OBJ files by structure ID (generated, not in git)
+│   └── meshes/                 # Precomputed mesh fragments, named by structure ID
 └── scripts/
-    └── build_data.py           # Generates all static data
+    ├── build_data.py           # Generates all static data
+    ├── brainglobe_lib.py       # Reads atlases from the BrainGlobe V3 S3 bucket
+    └── build_brainglobe_atlas.py  # Builds meshes (and hierarchies) from BrainGlobe
 ```
 
 ## Data Sources
 
-- **Allen Brain Atlas API** — structure graph and OBJ meshes
+- **Allen Brain Atlas API** — structure graph
+- **BrainGlobe** — region meshes, as neuroglancer precomputed fragments
 - **DANDI Archive** — dataset-to-brain-region mappings from NWB file metadata
