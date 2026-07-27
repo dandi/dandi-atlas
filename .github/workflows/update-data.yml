@@ -17,10 +17,20 @@ on:
 permissions:
   contents: write
 
+# A run that is still going when the next night's run starts should yield to
+# it rather than have both push to main.
+concurrency:
+  group: update-data
+  cancel-in-progress: false
+
 jobs:
   update-data:
     runs-on: ubuntu-latest
-    timeout-minutes: 120
+    # The atlas steps are individually fault-tolerant (see continue-on-error
+    # below) and the cache is saved even on failure, so a long run costs a
+    # slow night rather than a lost one. 350 leaves headroom under the
+    # 360-minute ceiling for hosted runners.
+    timeout-minutes: 350
 
     steps:
       - uses: actions/checkout@v4
@@ -34,8 +44,15 @@ jobs:
       - name: Install dependencies
         run: pip install -r scripts/requirements.txt
 
+      # Restore and save are split so that the save can run with
+      # `if: always()`. With the combined `actions/cache` action the save
+      # happens in a post-step that is skipped when the job fails or times
+      # out. That is what broke this workflow: every run since May timed out,
+      # so no cache was ever written, the old one aged out after 7 days, and
+      # every subsequent run started cold and timed out again.
       - name: Restore cache
-        uses: actions/cache@v4
+        id: cache-restore
+        uses: actions/cache/restore@v4
         with:
           path: |
             scripts/label_cache.jsonl
@@ -45,6 +62,8 @@ jobs:
             scripts/mebrains_electrode_cache.jsonl
             scripts/whs_sd_electrode_cache.jsonl
             scripts/whs_sd_sweep_cache.jsonl
+            scripts/macaque_locations_cache.jsonl
+            scripts/macaque_sweep_cache.jsonl
           key: data-cache-${{ github.run_id }}
           restore-keys: data-cache-
 
@@ -57,37 +76,72 @@ jobs:
             echo "mode=incremental" >> $GITHUB_OUTPUT
           fi
 
+      # Each atlas is allowed to fail without taking the others down. One
+      # atlas hitting a transient DANDI or Allen API error should not stop the
+      # other five from publishing. Failures are surfaced in the summary step.
       - name: Update Allen CCF data
+        id: allen
+        continue-on-error: true
         run: python scripts/update_data.py --mode ${{ steps.mode.outputs.mode }} --workers 4
         env:
           PYTHONUNBUFFERED: "1"
 
       - name: Update macaque atlas data (D99)
+        id: d99
+        continue-on-error: true
         run: python scripts/update_macaque_data.py --atlas d99 --mode ${{ steps.mode.outputs.mode }}
         env:
           PYTHONUNBUFFERED: "1"
 
       - name: Update macaque atlas data (NMT)
+        id: nmt
+        continue-on-error: true
         run: python scripts/update_macaque_data.py --atlas nmt --mode ${{ steps.mode.outputs.mode }}
         env:
           PYTHONUNBUFFERED: "1"
 
       - name: Update macaque atlas data (MEBRAINS)
+        id: mebrains
+        continue-on-error: true
         run: python scripts/update_macaque_data.py --atlas mebrains --mode ${{ steps.mode.outputs.mode }}
         env:
           PYTHONUNBUFFERED: "1"
 
       - name: Update rat atlas data (WHS-SD)
+        id: whs_sd
+        continue-on-error: true
         run: python scripts/update_rat_data.py --mode ${{ steps.mode.outputs.mode }}
         env:
           PYTHONUNBUFFERED: "1"
 
+      # Save before the index build and commit so that partial progress
+      # survives even if something later goes wrong.
+      # NOTE: this path list must stay in sync with the restore step above.
+      # GitHub Actions does not support YAML anchors, so it has to be repeated.
+      - name: Save cache
+        if: always()
+        uses: actions/cache/save@v4
+        with:
+          path: |
+            scripts/label_cache.jsonl
+            scripts/electrode_cache.jsonl
+            scripts/d99_electrode_cache.jsonl
+            scripts/nmt_electrode_cache.jsonl
+            scripts/mebrains_electrode_cache.jsonl
+            scripts/whs_sd_electrode_cache.jsonl
+            scripts/whs_sd_sweep_cache.jsonl
+            scripts/macaque_locations_cache.jsonl
+            scripts/macaque_sweep_cache.jsonl
+          key: data-cache-${{ github.run_id }}
+
       - name: Build landing-page atlas index
+        if: always()
         run: python scripts/build_atlases_index.py
         env:
           PYTHONUNBUFFERED: "1"
 
       - name: Commit and push if changed
+        if: always()
         run: |
           git diff --quiet data/atlases/ data/atlases_index.json data/last_updated.json && exit 0
           git config user.name "github-actions[bot]"
@@ -96,3 +150,26 @@ jobs:
           git commit -m "Update DANDI data (${{ steps.mode.outputs.mode }})"
           git pull --rebase
           git push
+
+      - name: Report per-atlas outcome
+        if: always()
+        run: |
+          {
+            echo "| Atlas | Outcome |"
+            echo "|---|---|"
+            echo "| Allen CCF | ${{ steps.allen.outcome }} |"
+            echo "| D99 | ${{ steps.d99.outcome }} |"
+            echo "| NMT | ${{ steps.nmt.outcome }} |"
+            echo "| MEBRAINS | ${{ steps.mebrains.outcome }} |"
+            echo "| WHS-SD | ${{ steps.whs_sd.outcome }} |"
+          } >> "$GITHUB_STEP_SUMMARY"
+          # Fail the run if every atlas failed, so a total outage is not
+          # reported as green.
+          if [ "${{ steps.allen.outcome }}" != "success" ] \
+            && [ "${{ steps.d99.outcome }}" != "success" ] \
+            && [ "${{ steps.nmt.outcome }}" != "success" ] \
+            && [ "${{ steps.mebrains.outcome }}" != "success" ] \
+            && [ "${{ steps.whs_sd.outcome }}" != "success" ]; then
+            echo "All atlas updates failed." >&2
+            exit 1
+          fi
