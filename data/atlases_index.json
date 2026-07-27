@@ -7,7 +7,56 @@
       "preview": "data/atlases/allen_ccf/atlas_card_allen_ccf.png",
       "dandiset_count": 47,
       "file_count": 35087,
-      "regions_with_data": 592
+      "regions_with_data": 592,
+      "dandisets": [
+        "000017",
+        "000021",
+        "000022",
+        "000037",
+        "000039",
+        "000049",
+        "000050",
+        "000150",
+        "000165",
+        "000248",
+        "000253",
+        "000302",
+        "000402",
+        "000409",
+        "000458",
+        "000462",
+        "000470",
+        "000473",
+        "000488",
+        "000535",
+        "000563",
+        "000568",
+        "000579",
+        "000617",
+        "000625",
+        "000638",
+        "000690",
+        "000717",
+        "000718",
+        "000728",
+        "000871",
+        "001051",
+        "001084",
+        "001184",
+        "001260",
+        "001326",
+        "001361",
+        "001371",
+        "001420",
+        "001421",
+        "001430",
+        "001605",
+        "001676",
+        "001701",
+        "001710",
+        "001791",
+        "001832"
+      ]
     },
     {
       "key": "d99",
@@ -16,7 +65,14 @@
       "preview": "data/atlases/d99/atlas_card_d99.png",
       "dandiset_count": 5,
       "file_count": 1043,
-      "regions_with_data": 6
+      "regions_with_data": 6,
+      "dandisets": [
+        "000717",
+        "000947",
+        "001357",
+        "001358",
+        "001636"
+      ]
     },
     {
       "key": "nmt",
@@ -25,7 +81,25 @@
       "preview": "data/atlases/nmt/atlas_card_nmt.png",
       "dandiset_count": 16,
       "file_count": 1400,
-      "regions_with_data": 7
+      "regions_with_data": 7,
+      "dandisets": [
+        "000070",
+        "000128",
+        "000129",
+        "000138",
+        "000139",
+        "000140",
+        "000347",
+        "000688",
+        "000941",
+        "000947",
+        "000953",
+        "001201",
+        "001209",
+        "001357",
+        "001358",
+        "001636"
+      ]
     },
     {
       "key": "mebrains",
@@ -34,7 +108,11 @@
       "preview": "data/atlases/mebrains/atlas_card_mebrains.png",
       "dandiset_count": 2,
       "file_count": 458,
-      "regions_with_data": 2
+      "regions_with_data": 2,
+      "dandisets": [
+        "001475",
+        "001636"
+      ]
     },
     {
       "key": "whs_sd",
@@ -43,7 +121,24 @@
       "preview": "data/atlases/whs_sd/atlas_card_whs_sd.png",
       "dandiset_count": 15,
       "file_count": 1195,
-      "regions_with_data": 19
+      "regions_with_data": 19,
+      "dandisets": [
+        "000213",
+        "000218",
+        "000299",
+        "000398",
+        "000447",
+        "000582",
+        "000978",
+        "001250",
+        "001280",
+        "001539",
+        "001641",
+        "001642",
+        "001683",
+        "001699",
+        "001754"
+      ]
     }
   ]
 }
