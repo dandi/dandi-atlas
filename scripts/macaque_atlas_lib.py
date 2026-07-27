@@ -82,6 +82,9 @@ SIIBRA_MEBRAINS_PALETTE_CACHE = SCRIPTS_DIR / "siibra_mebrains_palette.json"
 # during the implicit-routing pass. JSONL: each line is
 # {"asset_id": "...", "dandiset_id": "...", "locations": [...]}.
 MACAQUE_LOCATIONS_CACHE = SCRIPTS_DIR / "macaque_locations_cache.jsonl"
+# Per-dandiset negative verdicts for the implicit sweep, keyed by
+# (dandiset_id, draft_version.modified). Shared by all three macaque atlases.
+MACAQUE_SWEEP_CACHE = SCRIPTS_DIR / "macaque_sweep_cache.jsonl"
 
 # D99 whole-brain cortical surfaces from HumanBrainED/RheMAP-Surf. AFNI's D99
 # v2 distribution does NOT ship whole-brain surfaces (only per-ROI meshes
@@ -2594,6 +2597,40 @@ def _append_locations_cache(entry):
         f.write(json.dumps(entry) + "\n")
 
 
+def _load_sweep_cache():
+    """Load the per-dandiset sweep verdict cache.
+
+    Returns {(dandiset_id, version_modified): entry}. Keying on the draft
+    version's `modified` timestamp is what makes this safe: when a dandiset
+    changes on DANDI its listing shows a fresh timestamp, the lookup misses,
+    and the dandiset is re-evaluated from scratch.
+
+    One file is shared by all three macaque atlases, so ONLY atlas-independent
+    verdicts may be written here: "not_macaque" (species metadata) and
+    "no_assets" (asset listing). Do not add a verdict for "resolved to no
+    regions" — that outcome depends on the atlas vocabulary being matched
+    against, and caching it globally would let a D99 miss suppress a MEBRAINS
+    hit for the same dandiset.
+    """
+    cache = {}
+    if MACAQUE_SWEEP_CACHE.exists():
+        with open(MACAQUE_SWEEP_CACHE) as f:
+            for line in f:
+                try:
+                    entry = json.loads(line)
+                except json.JSONDecodeError:
+                    continue
+                ds_id = entry.get("dandiset_id")
+                if ds_id:
+                    cache[(ds_id, entry.get("version_modified", ""))] = entry
+    return cache
+
+
+def _append_sweep_cache(entry):
+    with open(MACAQUE_SWEEP_CACHE, "a") as f:
+        f.write(json.dumps(entry) + "\n")
+
+
 def fetch_macaque_implicit_data(
     abbrev_to_id, id_to_structure, name_to_id,
     aliases=None,
@@ -2620,18 +2657,39 @@ def fetch_macaque_implicit_data(
     Returns dict {dandiset_id: [asset_record, ...]}, suitable for merging
     into the dandiset_assets dict produced by fetch_dandi_data.
     """
-    from dandi_helpers import iter_all_dandisets
+    from dandi_helpers import iter_all_dandisets, dandiset_version_modified
     cache = _load_locations_cache()
+    sweep_cache = _load_sweep_cache()
 
     macaque_ids = []
+    version_modified_by_id = {}
+    skipped_by_verdict = 0
     for ds in iter_all_dandisets():
         ds_id = ds.get("identifier")
         if not ds_id or ds_id == DANDISET_ID:
             continue
+        version_modified = dandiset_version_modified(ds)
+        # A cached negative verdict for this exact (dandiset, version) means
+        # nothing about it has changed since we last looked, so skip it before
+        # spending any API calls on listing its assets. This is what keeps a
+        # nightly run proportional to what actually changed: without it, every
+        # run re-lists the assets of every macaque dandiset in DANDI.
+        if sweep_cache.get((ds_id, version_modified)):
+            skipped_by_verdict += 1
+            continue
         if not _is_macaque_metadata(ds):
+            _append_sweep_cache({
+                "dandiset_id": ds_id,
+                "version_modified": version_modified,
+                "verdict": "not_macaque",
+            })
             continue
         macaque_ids.append(ds_id)
-    print(f"  [macaque-implicit] discovered {len(macaque_ids)} candidate macaque dandisets")
+        version_modified_by_id[ds_id] = version_modified
+    print(
+        f"  [macaque-implicit] discovered {len(macaque_ids)} candidate macaque "
+        f"dandisets ({skipped_by_verdict} skipped via cached verdict)"
+    )
 
     out = {}
 
@@ -2659,9 +2717,16 @@ def fetch_macaque_implicit_data(
         try:
             assets = list(get_nwb_assets_paged(dandiset_id))
         except Exception as exc:
+            # Deliberately not cached: a listing failure is transient, and
+            # caching it would suppress the dandiset until it changes again.
             print(f"  [macaque-implicit] failed to list {dandiset_id}: {exc}")
             continue
         if not assets:
+            _append_sweep_cache({
+                "dandiset_id": dandiset_id,
+                "version_modified": version_modified_by_id.get(dandiset_id, ""),
+                "verdict": "no_assets",
+            })
             continue
 
         records = []
