@@ -9,6 +9,7 @@ import json
 import re
 import time
 import urllib.request
+from datetime import datetime, timezone
 
 import h5py
 import remfile
@@ -202,23 +203,79 @@ def get_download_url(dandiset_id, asset_id, version="draft"):
     )
 
 
-def iter_dandisets_modified_since(since_iso):
-    """Yield dandiset metadata dicts modified after the given ISO timestamp.
+def parse_api_timestamp(value):
+    """Parse an ISO-8601 timestamp into an aware UTC datetime, or None.
 
-    Iterates the DANDI API ordered by most-recently-modified, stopping
-    once a dandiset older than the cutoff is encountered.
+    Handles both spellings we have to compare across: the DANDI API returns
+    "2026-07-27T16:44:44.308178Z" while our own last_updated.json is written by
+    datetime.isoformat() as "2026-05-20T05:57:12.339725+00:00". Comparing those
+    as plain strings is subtly wrong ("Z" sorts after "+"), so both sides go
+    through here first. A naive timestamp is assumed to be UTC.
     """
-    url = f"{DANDI_API}/dandisets/?page_size=200&ordering=-modified"
-    while url:
-        resp = _request_with_retry(requests.get, url, timeout=30)
-        resp.raise_for_status()
-        data = resp.json()
-        for ds in data["results"]:
-            modified = ds.get("modified", "")
-            if modified <= since_iso:
-                return
+    if not value:
+        return None
+    try:
+        parsed = datetime.fromisoformat(str(value).replace("Z", "+00:00"))
+    except ValueError:
+        return None
+    if parsed.tzinfo is None:
+        parsed = parsed.replace(tzinfo=timezone.utc)
+    return parsed
+
+
+def dandiset_version_modified(dandiset_metadata):
+    """Return the draft version's `modified` timestamp for a dandiset listing.
+
+    This is the timestamp that tracks changes to a dandiset's *contents*, and
+    it is the one that matters here: every extraction path reads the draft
+    version's assets (see get_nwb_assets_paged, which defaults to
+    version="draft").
+
+    It is NOT the same as the dandiset-level `modified` field. That one tracks
+    the container record and can be years older than the draft it holds. For
+    example 000571 currently reports a dandiset-level `modified` of 2023-06-30
+    while its draft version was modified 2026-05-16.
+
+    Returns "" when the listing carries no draft version, which sorts before
+    any real timestamp and so is treated as "not modified since".
+    """
+    draft = dandiset_metadata.get("draft_version") or {}
+    return draft.get("modified") or ""
+
+
+def iter_dandisets_modified_since(since_iso):
+    """Yield dandiset metadata dicts whose draft version changed after
+    `since_iso`.
+
+    Scans the full dandiset listing and filters. It deliberately does NOT stop
+    early at the first out-of-cutoff entry, for two reasons:
+
+    1. The API's `ordering=-modified` does not sort by the field we compare.
+       It appears to sort published dandisets by their most recent *published*
+       version, so a handful of entries per page appear out of order with
+       respect to draft_version.modified. Three of the first 100 results are
+       out of order today (001832, 001636, 000571).
+    2. The previous implementation compared the dandiset-level `modified` and
+       returned at the first entry at or below the cutoff. Because that field
+       is unrelated to the sort order, it stopped almost immediately: with a
+       cutoff of 2026-05-20 it yielded 1 dandiset, where 93 of the first 100
+       results had in fact been modified since.
+
+    A full scan costs one paginated pass (about 5 requests for ~880
+    dandisets), which is negligible next to the per-asset streaming it gates.
+    """
+    cutoff = parse_api_timestamp(since_iso)
+    if cutoff is None:
+        # No usable cutoff means we cannot tell what changed. Yielding
+        # everything is the safe direction: callers re-derive rather than
+        # silently skip.
+        yield from iter_all_dandisets()
+        return
+
+    for ds in iter_all_dandisets():
+        modified = parse_api_timestamp(dandiset_version_modified(ds))
+        if modified is not None and modified > cutoff:
             yield ds
-        url = data.get("next")
 
 
 def iter_all_dandisets():

@@ -5,9 +5,9 @@
       "name": "Allen CCF v3",
       "species": "Mouse",
       "preview": "data/atlases/allen_ccf/atlas_card_allen_ccf.png",
-      "dandiset_count": 47,
-      "file_count": 35087,
-      "regions_with_data": 592,
+      "dandiset_count": 55,
+      "file_count": 44710,
+      "regions_with_data": 602,
       "dandisets": [
         "000017",
         "000021",
@@ -42,20 +42,28 @@
         "000871",
         "001051",
         "001084",
+        "001097",
         "001184",
+        "001191",
         "001260",
         "001326",
         "001361",
         "001371",
+        "001417",
         "001420",
         "001421",
         "001430",
+        "001510",
         "001605",
+        "001637",
         "001676",
         "001701",
         "001710",
+        "001777",
         "001791",
-        "001832"
+        "001832",
+        "001868",
+        "001876"
       ]
     },
     {
@@ -63,15 +71,16 @@
       "name": "D99 v2.0",
       "species": "Macaque",
       "preview": "data/atlases/d99/atlas_card_d99.png",
-      "dandiset_count": 5,
-      "file_count": 1043,
-      "regions_with_data": 6,
+      "dandiset_count": 6,
+      "file_count": 1055,
+      "regions_with_data": 8,
       "dandisets": [
         "000717",
         "000947",
         "001357",
         "001358",
-        "001636"
+        "001636",
+        "001838"
       ]
     },
     {
@@ -79,9 +88,9 @@
       "name": "NMT v2.0 sym",
       "species": "Macaque",
       "preview": "data/atlases/nmt/atlas_card_nmt.png",
-      "dandiset_count": 16,
-      "file_count": 1400,
-      "regions_with_data": 7,
+      "dandiset_count": 17,
+      "file_count": 1416,
+      "regions_with_data": 9,
       "dandisets": [
         "000070",
         "000128",
@@ -98,7 +107,8 @@
         "001209",
         "001357",
         "001358",
-        "001636"
+        "001636",
+        "001838"
       ]
     },
     {
@@ -106,12 +116,13 @@
       "name": "MEBRAINS",
       "species": "Macaque",
       "preview": "data/atlases/mebrains/atlas_card_mebrains.png",
-      "dandiset_count": 2,
-      "file_count": 458,
+      "dandiset_count": 3,
+      "file_count": 463,
       "regions_with_data": 2,
       "dandisets": [
         "001475",
-        "001636"
+        "001636",
+        "001838"
       ]
     },
     {

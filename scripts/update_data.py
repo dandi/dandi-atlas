@@ -310,6 +310,7 @@ def main():
 
     # ── Step 2: Determine target dandisets ────────────────────────────────
     is_full = args.mode == "full"
+    since = ""
 
     if args.dandiset:
         # Specific dandisets requested
@@ -324,14 +325,11 @@ def main():
     else:
         # Incremental: find recently modified
         print("\nStep 2: Incremental — checking for modified dandisets...")
-        if LAST_UPDATED_FILE.exists():
-            with open(LAST_UPDATED_FILE) as f:
-                last_data = json.load(f)
-            since = last_data.get("timestamp", "")
-            print(f"  Last updated: {since}")
+        since = _read_since()
+        if since:
+            print(f"  Last updated ({ATLAS_KEY}): {since}")
         else:
-            print("  No last_updated.json found — falling back to full mode")
-            since = ""
+            print("  No usable watermark found — falling back to full mode")
             is_full = True
 
         if since:
@@ -341,7 +339,7 @@ def main():
             print(f"  {len(target_ids)} dandisets modified since last update")
             if not target_ids:
                 print("  No changes detected. Writing timestamp and exiting.")
-                _write_last_updated("incremental", 0, 0, 0)
+                _write_last_updated("incremental", 0, 0, 0, since=since)
                 print("Done!")
                 return
         else:
@@ -364,7 +362,7 @@ def main():
 
     if not mouse_ids:
         print("  No mouse dandisets to process.")
-        _write_last_updated(args.mode, len(target_ids), 0, 0)
+        _write_last_updated(args.mode, len(target_ids), 0, 0, since=since)
         print("Done!")
         return
 
@@ -614,7 +612,7 @@ def main():
     print(f"  data: {len(data_ids)}, ancestors: {len(ancestor_ids - data_ids)}, no_mesh: {len(all_failed)}")
 
     # ── Step 10: Write last_updated.json ───────────────────────────────────
-    _write_last_updated(args.mode, len(target_ids), len(mouse_ids), total_assets_processed)
+    _write_last_updated(args.mode, len(target_ids), len(mouse_ids), total_assets_processed, since=since)
 
     elapsed = time.time() - start_time
     print(f"\nDone! ({elapsed:.0f}s)")
@@ -624,17 +622,72 @@ def main():
     print(f"  Errors: {total_errors}")
 
 
-def _write_last_updated(mode, dandisets_checked, dandisets_updated, assets_processed):
-    """Write the last_updated.json file."""
-    data = {
-        "timestamp": datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ"),
+ATLAS_KEY = "allen_ccf"
+
+
+def _read_since():
+    """Return this atlas's incremental cutoff, or "" if there isn't one.
+
+    Reads per_atlas[ATLAS_KEY].timestamp, falling back to the top-level
+    timestamp for files written before per-atlas watermarks existed.
+
+    The per-atlas record matters because every atlas script writes to this one
+    file. The top-level `timestamp` is whatever ran last (the rat step), not
+    when Allen CCF last succeeded, so using it here would skip anything
+    modified between the Allen step and the end of the run.
+    """
+    if not LAST_UPDATED_FILE.exists():
+        return ""
+    try:
+        record = json.load(open(LAST_UPDATED_FILE))
+    except (OSError, json.JSONDecodeError):
+        return ""
+    per_atlas = record.get("per_atlas") or {}
+    mine = per_atlas.get(ATLAS_KEY) or {}
+    return mine.get("timestamp") or record.get("timestamp") or ""
+
+
+def _write_last_updated(
+    mode, dandisets_checked, dandisets_updated, assets_processed, since=None
+):
+    """Merge this atlas's results into last_updated.json.
+
+    Reads the existing file and updates only this atlas's slice. The previous
+    version replaced the whole file, which wiped the per_atlas records the
+    macaque and rat scripts had written (they then re-added their own, so the
+    file never carried an allen_ccf entry at all).
+
+    `since` is the cutoff this run scanned from, recorded so a run can be
+    audited after the fact.
+    """
+    record = {}
+    if LAST_UPDATED_FILE.exists():
+        try:
+            record = json.load(open(LAST_UPDATED_FILE))
+        except (OSError, json.JSONDecodeError):
+            record = {}
+
+    timestamp = datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ")
+    record["timestamp"] = timestamp
+    record["mode"] = mode
+    record["dandisets_checked"] = dandisets_checked
+    record["dandisets_updated"] = dandisets_updated
+    record["assets_processed"] = assets_processed
+
+    per_atlas = record.get("per_atlas") or {}
+    per_atlas[ATLAS_KEY] = {
+        "timestamp": timestamp,
         "mode": mode,
         "dandisets_checked": dandisets_checked,
         "dandisets_updated": dandisets_updated,
         "assets_processed": assets_processed,
+        "scanned_since": since or "",
     }
+    record["per_atlas"] = per_atlas
+
+    LAST_UPDATED_FILE.parent.mkdir(parents=True, exist_ok=True)
     with open(LAST_UPDATED_FILE, "w") as f:
-        json.dump(data, f, indent=2)
+        json.dump(record, f, indent=2)
     print(f"\n  Updated {LAST_UPDATED_FILE}")
 
 
