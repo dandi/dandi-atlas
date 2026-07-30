@@ -1,4 +1,8 @@
-# DANDI Brain Atlas Explorer
+<p align="center">
+  <img src="logo.png" alt="DANDI Atlas Explorer logo" width="120">
+</p>
+
+<h1 align="center">DANDI Brain Atlas Explorer</h1>
 
 Interactive 3D viewer for finding data in the [DANDI Archive](https://dandiarchive.org) by brain region. Regions come from standard reference atlases and are shaded by how much data covers them, and selecting one lists the dandisets, subjects, and sessions that recorded there. Where a session provides electrode coordinates, the individual contacts are drawn in the same 3D space.
 
