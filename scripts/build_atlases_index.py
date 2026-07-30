@@ -11,12 +11,17 @@ writes a per-atlas record with:
   - dandiset_count
   - file_count
   - regions_with_data
+  - dandisets      : sorted IDs of the dandisets counted by dandiset_count
 
 The aggregate counts are read from the root entry of dandi_regions.json,
-which already carries total_dandiset_count / total_file_count. The
-"regions_with_data" count is computed by filtering for regions where
-file_count > 0 (i.e. the region itself is recorded in some asset, not
-just an ancestor of one).
+which already carries total_dandiset_count / total_file_count /
+total_dandisets. The "regions_with_data" count is computed by filtering
+for regions where file_count > 0 (i.e. the region itself is recorded in
+some asset, not just an ancestor of one).
+
+The "dandisets" list lets other sites (e.g. the DANDI Archive landing
+page) decide whether a given dandiset has anything to show here without
+downloading the much larger per-atlas data files.
 
 Run after the per-atlas update scripts (update_data.py for Allen CCF,
 update_macaque_data.py for the macaque atlases). Idempotent.
@@ -59,6 +64,7 @@ def summarize_atlas(atlas_dir: Path) -> dict:
         "dandiset_count": root_entry.get("total_dandiset_count", 0),
         "file_count": root_entry.get("total_file_count", 0),
         "regions_with_data": regions_with_data,
+        "dandisets": sorted(root_entry.get("total_dandisets", [])),
     }
 
 
