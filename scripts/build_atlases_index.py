@@ -30,11 +30,13 @@ update_macaque_data.py for the macaque atlases). Idempotent.
 from __future__ import annotations
 
 import json
+from datetime import datetime
 from pathlib import Path
 
 REPO_ROOT = Path(__file__).resolve().parent.parent
 ATLASES_DIR = REPO_ROOT / "data" / "atlases"
 INDEX_PATH = REPO_ROOT / "data" / "atlases_index.json"
+LAST_UPDATED_PATH = REPO_ROOT / "data" / "last_updated.json"
 
 # Display metadata not derivable from the per-atlas JSON files. Order in
 # this list defines the order of cards on the landing page.
@@ -66,6 +68,46 @@ def summarize_atlas(atlas_dir: Path) -> dict:
     }
 
 
+def stamp_last_updated_date() -> None:
+    """Add a plain YYYY-MM-DD `date` field to last_updated.json.
+
+    The three per-atlas update scripts each stamp the top-level `timestamp`,
+    in two different formats ("...Z" from update_data.py, isoformat with
+    microseconds from the macaque and rat scripts), and whichever runs last
+    wins. Neither is usable in a README badge, because shields.io prints the
+    raw string it reads. This derives one short value from the newest per-atlas
+    run, so the badge has something stable to point at and does not depend on
+    which script happened to finish last.
+    """
+    if not LAST_UPDATED_PATH.exists():
+        return
+    try:
+        record = json.loads(LAST_UPDATED_PATH.read_text())
+    except (OSError, json.JSONDecodeError):
+        print("  warning: last_updated.json unreadable, leaving date unset")
+        return
+
+    stamps = [v.get("timestamp") for v in (record.get("per_atlas") or {}).values()]
+    stamps.append(record.get("timestamp"))
+
+    newest = None
+    for raw in filter(None, stamps):
+        try:
+            parsed = datetime.fromisoformat(raw.replace("Z", "+00:00"))
+        except (AttributeError, ValueError):
+            continue
+        if newest is None or parsed > newest:
+            newest = parsed
+
+    if newest is None:
+        print("  warning: no parseable timestamps, leaving date unset")
+        return
+
+    record["date"] = newest.date().isoformat()
+    LAST_UPDATED_PATH.write_text(json.dumps(record, indent=2) + "\n")
+    print(f"  last_updated.json date = {record['date']}")
+
+
 def main() -> None:
     atlases = []
     for entry in ATLAS_DISPLAY:
@@ -88,6 +130,8 @@ def main() -> None:
 
     INDEX_PATH.write_text(json.dumps({"atlases": atlases}, indent=2) + "\n")
     print(f"\nWrote {INDEX_PATH.relative_to(REPO_ROOT)} ({len(atlases)} atlases)")
+
+    stamp_last_updated_date()
 
 
 if __name__ == "__main__":

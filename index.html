@@ -4,9 +4,22 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>3D Brain Atlas — DANDI Explorer</title>
+  <!-- favicon.ico carries 16/32/48/64 and is transparent, so it reads on both
+       light and dark tab bars. iOS ignores alpha and composites on black, so the
+       touch icon is the one variant with a solid navy background. -->
+  <link rel="icon" href="favicon.ico" sizes="any">
+  <link rel="apple-touch-icon" href="apple-touch-icon.png">
   <link rel="stylesheet" href="style.css?v=8">
 </head>
 <body class="landing-active">
+  <!-- GitHub mark, defined once and referenced by <use> from both the landing
+       page footer and the viewer, so the path data is not duplicated. -->
+  <svg width="0" height="0" style="position:absolute" aria-hidden="true">
+    <symbol id="icon-github" viewBox="0 0 16 16">
+      <path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27s1.36.09 2 .27c1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.01 8.01 0 0 0 16 8c0-4.42-3.58-8-8-8z"/>
+    </symbol>
+  </svg>
+
   <!-- Atlas landing page: shown on bare load (no ?atlas= and no #hash).
        Hidden once the user picks a card; deep-link loads skip it. -->
   <section id="atlas-landing" class="atlas-landing">
@@ -15,6 +28,16 @@
       <p>Pick an atlas to browse dandisets, subjects, and electrode locations in 3D.</p>
     </header>
     <div id="atlas-landing-grid" class="atlas-landing-grid"></div>
+    <!-- Same two links the viewer carries, so attribution and the repo are
+         reachable from the first screen rather than only after picking an atlas. -->
+    <footer class="atlas-landing-footer">
+      <a href="https://catalystneuro.com" target="_blank" rel="noopener" class="created-by-link">
+        Created by <img src="cn-logo-banner.png" alt="CatalystNeuro" class="cn-logo">
+      </a>
+      <a href="https://github.com/dandi/dandi-atlas" target="_blank" rel="noopener" class="github-link" title="View on GitHub">
+        <svg width="20" height="20" fill="currentColor" aria-hidden="true"><use href="#icon-github"/></svg>
+      </a>
+    </footer>
   </section>
 
   <!-- Left sidebar: Hierarchy tree -->
@@ -75,7 +98,7 @@
       <span id="last-updated" class="last-updated"></span>
     </div>
     <a href="https://github.com/dandi/dandi-atlas" target="_blank" rel="noopener" class="github-link" title="View on GitHub">
-      <svg width="20" height="20" viewBox="0 0 16 16" fill="currentColor"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27s1.36.09 2 .27c1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.01 8.01 0 0 0 16 8c0-4.42-3.58-8-8-8z"/></svg>
+      <svg width="20" height="20" fill="currentColor" aria-hidden="true"><use href="#icon-github"/></svg>
     </a>
     <a href="https://catalystneuro.com" target="_blank" rel="noopener" class="created-by-link">
       Created by <img src="cn-logo-banner.png" alt="CatalystNeuro" class="cn-logo">

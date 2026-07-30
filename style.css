@@ -430,14 +430,21 @@ body {
   font-size: 10px;
 }
 
+/* These two links appear in two places: pinned to the corners of the viewer,
+   and in the landing page footer. Only the appearance lives on the class; the
+   viewer's corner positioning is scoped to #viewer below, so the landing copies
+   can flow in normal layout. */
 .github-link {
+  color: rgba(255,255,255,0.35);
+  text-decoration: none;
+  transition: color 0.2s;
+}
+
+#viewer .github-link {
   position: absolute;
   bottom: 12px;
   right: 12px;
-  color: rgba(255,255,255,0.35);
-  text-decoration: none;
   z-index: 50;
-  transition: color 0.2s;
 }
 
 .github-link:hover {
@@ -445,17 +452,20 @@ body {
 }
 
 .created-by-link {
-  position: absolute;
-  bottom: 12px;
-  left: 12px;
   display: flex;
   align-items: center;
   gap: 6px;
   color: rgba(255,255,255,0.45);
   text-decoration: none;
   font-size: 12px;
-  z-index: 50;
   transition: color 0.2s;
+}
+
+#viewer .created-by-link {
+  position: absolute;
+  bottom: 12px;
+  left: 12px;
+  z-index: 50;
 }
 
 .created-by-link:hover {
@@ -1316,6 +1326,19 @@ body:not(.landing-active) > #atlas-landing {
   margin: 0;
   color: var(--text-secondary);
   font-size: 15px;
+}
+
+/* margin-top:auto pins the footer to the bottom when the cards leave room, and
+   lets it sit below them when the grid is tall enough to scroll. */
+.atlas-landing-footer {
+  width: 100%;
+  max-width: 1100px;
+  margin-top: auto;
+  padding-top: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
 }
 
 .atlas-landing-grid {
