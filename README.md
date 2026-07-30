@@ -2,7 +2,7 @@
 
 Interactive 3D viewer for finding data in the [DANDI Archive](https://dandiarchive.org) by brain region. Regions come from standard reference atlases and are shaded by how much data covers them, and selecting one lists the dandisets, subjects, and sessions that recorded there. Where a session provides electrode coordinates, the individual contacts are drawn in the same 3D space.
 
-Live at **[atlas.dandiarchive.org](https://atlas.dandiarchive.org)**. There is also a [blog post](https://about.dandiarchive.org/blog/2026/02/24/introducing-dandi-atlas-explorer-explore-the-dandi-archive-in-3d/) introducing the project.
+Live at **[atlas.dandiarchive.org](https://atlas.dandiarchive.org)**. There is a [blog post](https://about.dandiarchive.org/blog/2026/02/24/introducing-dandi-atlas-explorer-explore-the-dandi-archive-in-3d/) introducing the project, and a [demo video](https://www.youtube.com/watch?v=D8514CLVXYo) walking through what the viewer can do.
 
 <p align="center">
   <a href="https://www.youtube.com/watch?v=D8514CLVXYo">
