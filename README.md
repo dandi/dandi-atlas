@@ -4,6 +4,11 @@
 
 <h1 align="center">DANDI Brain Atlas Explorer</h1>
 
+<p align="center">
+  <a href="https://github.com/dandi/dandi-atlas/actions/workflows/update-data.yml"><img src="https://github.com/dandi/dandi-atlas/actions/workflows/update-data.yml/badge.svg" alt="Nightly data update"></a>
+  <a href="data/last_updated.json"><img src="https://img.shields.io/badge/dynamic/json?url=https%3A%2F%2Fraw.githubusercontent.com%2Fdandi%2Fdandi-atlas%2Fmain%2Fdata%2Flast_updated.json&query=%24.date&label=data%20updated&color=blue" alt="Data last updated"></a>
+</p>
+
 Interactive 3D viewer for finding data in the [DANDI Archive](https://dandiarchive.org) by brain region. Regions come from standard reference atlases and are shaded by how much data covers them, and selecting one lists the dandisets, subjects, and sessions that recorded there. Where a session provides electrode coordinates, the individual contacts are drawn in the same 3D space.
 
 Live at **[atlas.dandiarchive.org](https://atlas.dandiarchive.org)**. There is a [blog post](https://about.dandiarchive.org/blog/2026/02/24/introducing-dandi-atlas-explorer-explore-the-dandi-archive-in-3d/) introducing the project, and a [demo video](https://www.youtube.com/watch?v=D8514CLVXYo) walking through what the viewer can do.
