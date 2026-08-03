@@ -1328,6 +1328,17 @@ body:not(.landing-active) > #atlas-landing {
   font-size: 15px;
 }
 
+/* Left empty until data/last_updated.json resolves, so the margin is scoped to
+   the populated state and the subtitle keeps its spacing if the fetch fails. */
+.atlas-landing-header .landing-last-updated {
+  color: var(--text-secondary);
+  font-size: 12px;
+}
+
+.atlas-landing-header .landing-last-updated:not(:empty) {
+  margin-top: 12px;
+}
+
 /* margin-top:auto pins the footer to the bottom when the cards leave room, and
    lets it sit below them when the grid is tall enough to scroll. */
 .atlas-landing-footer {

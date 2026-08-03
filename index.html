@@ -9,7 +9,7 @@
        touch icon is the one variant with a solid navy background. -->
   <link rel="icon" href="favicon.ico" sizes="any">
   <link rel="apple-touch-icon" href="apple-touch-icon.png">
-  <link rel="stylesheet" href="style.css?v=8">
+  <link rel="stylesheet" href="style.css?v=9">
 </head>
 <body class="landing-active">
   <!-- GitHub mark, defined once and referenced by <use> from both the landing
@@ -26,6 +26,7 @@
     <header class="atlas-landing-header">
       <h1>DANDI Brain Atlas Explorer</h1>
       <p>Pick an atlas to browse dandisets, subjects, and electrode locations in 3D.</p>
+      <p id="landing-last-updated" class="landing-last-updated"></p>
     </header>
     <div id="atlas-landing-grid" class="atlas-landing-grid"></div>
     <!-- Same two links the viewer carries, so attribution and the repo are
@@ -123,6 +124,6 @@
     }
   }
   </script>
-  <script type="module" src="app.js?v=19"></script>
+  <script type="module" src="app.js?v=20"></script>
 </body>
 </html>

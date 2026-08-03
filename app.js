@@ -377,16 +377,28 @@ function ensureSceneInitialized() {
     });
   }
 
-  fetch('data/last_updated.json').then(r => r.json()).catch(() => null).then(resp => {
-    if (resp && resp.timestamp) {
-      const date = new Date(resp.timestamp);
-      const formatted = date.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
-      const el = document.getElementById('last-updated');
-      if (el) el.textContent = `Data updated ${formatted}`;
-    }
-  });
+  showLastUpdated('last-updated', 'Data updated');
 
   sceneInitialized = true;
+}
+
+// The update pipeline writes data/last_updated.json. Both the landing header
+// and the viewer's control hint report it, and either may run first, so the
+// fetch is shared rather than repeated per call site.
+let lastUpdatedPromise = null;
+
+async function showLastUpdated(elementId, label) {
+  const el = document.getElementById(elementId);
+  if (!el) return;
+  if (!lastUpdatedPromise) {
+    lastUpdatedPromise = fetch('data/last_updated.json').then(r => r.json()).catch(() => null);
+  }
+  const resp = await lastUpdatedPromise;
+  if (!resp || !resp.timestamp) return;
+  const date = new Date(resp.timestamp);
+  if (Number.isNaN(date.getTime())) return;
+  el.textContent = `${label} ${date.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}`;
+  el.title = date.toLocaleString();
 }
 
 async function enterAtlas(atlasKey, { pushState = true } = {}) {
@@ -406,6 +418,8 @@ async function enterAtlas(atlasKey, { pushState = true } = {}) {
 }
 
 async function setupLanding() {
+  showLastUpdated('landing-last-updated', 'Data last updated');
+
   const grid = document.getElementById('atlas-landing-grid');
   if (!grid) return;
   let index;
