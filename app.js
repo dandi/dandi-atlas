@@ -397,8 +397,15 @@ async function showLastUpdated(elementId, label) {
   if (!resp || !resp.timestamp) return;
   const date = new Date(resp.timestamp);
   if (Number.isNaN(date.getTime())) return;
-  el.textContent = `${label} ${date.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}`;
-  el.title = date.toLocaleString();
+  // The pipeline stamps UTC but this renders in the viewer's zone, so the zone
+  // name is shown rather than leaving a bare clock time ambiguous.
+  const formatted = date.toLocaleString('en-US', {
+    month: 'short', day: 'numeric', year: 'numeric',
+    hour: 'numeric', minute: '2-digit', second: '2-digit',
+    timeZoneName: 'short',
+  });
+  el.textContent = `${label} ${formatted}`;
+  el.title = resp.timestamp;
 }
 
 async function enterAtlas(atlasKey, { pushState = true } = {}) {
@@ -420,8 +427,8 @@ async function enterAtlas(atlasKey, { pushState = true } = {}) {
 async function setupLanding() {
   showLastUpdated('landing-last-updated', 'Data last updated');
 
-  const grid = document.getElementById('atlas-landing-grid');
-  if (!grid) return;
+  const container = document.getElementById('atlas-landing-groups');
+  if (!container) return;
   let index;
   try {
     const resp = await fetch('data/atlases_index.json');
@@ -433,8 +440,41 @@ async function setupLanding() {
 
   const fmt = (n) => n.toLocaleString('en-US');
   const plural = (n, singular, pluralForm) => (n === 1 ? singular : pluralForm);
-  grid.innerHTML = '';
+
+  // Species order follows first appearance in the index rather than an
+  // alphabetical sort, so the index file stays in control of which species
+  // leads the page.
+  const bySpecies = new Map();
   for (const atlas of index.atlases) {
+    const species = atlas.species || 'Other';
+    if (!bySpecies.has(species)) bySpecies.set(species, []);
+    bySpecies.get(species).push(atlas);
+  }
+
+  container.innerHTML = '';
+  for (const [species, atlases] of bySpecies) {
+    const group = document.createElement('section');
+    group.className = 'atlas-species-group';
+    const heading = document.createElement('h2');
+    heading.className = 'atlas-species-heading';
+    heading.textContent = species;
+    heading.append(Object.assign(document.createElement('span'), {
+      className: 'atlas-species-count',
+      textContent: `${atlases.length} ${plural(atlases.length, 'atlas', 'atlases')}`,
+    }));
+    group.appendChild(heading);
+
+    const grid = document.createElement('div');
+    grid.className = 'atlas-landing-grid';
+    group.appendChild(grid);
+    container.appendChild(group);
+
+    renderAtlasCards(grid, atlases, fmt, plural);
+  }
+}
+
+function renderAtlasCards(grid, atlases, fmt, plural) {
+  for (const atlas of atlases) {
     const card = document.createElement('button');
     card.type = 'button';
     card.className = 'atlas-card';
@@ -443,7 +483,6 @@ async function setupLanding() {
       <img class="atlas-card-image" src="${atlas.preview}" alt="${atlas.name} brain preview" loading="lazy">
       <div class="atlas-card-body">
         <h3 class="atlas-card-title">${atlas.name}</h3>
-        <div class="atlas-card-species">${atlas.species}</div>
         <div class="atlas-card-stats">
           <div class="atlas-card-stat">
             <span class="atlas-card-stat-value">${fmt(atlas.dandiset_count)}</span>

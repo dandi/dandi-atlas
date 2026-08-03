@@ -28,7 +28,9 @@
       <p>Pick an atlas to browse dandisets, subjects, and electrode locations in 3D.</p>
       <p id="landing-last-updated" class="landing-last-updated"></p>
     </header>
-    <div id="atlas-landing-grid" class="atlas-landing-grid"></div>
+    <!-- Filled by setupLanding() with one .atlas-species-group per species,
+         each wrapping its own card grid. -->
+    <div id="atlas-landing-groups" class="atlas-landing-groups"></div>
     <!-- Same two links the viewer carries, so attribution and the repo are
          reachable from the first screen rather than only after picking an atlas. -->
     <footer class="atlas-landing-footer">
