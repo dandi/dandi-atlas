@@ -1328,6 +1328,17 @@ body:not(.landing-active) > #atlas-landing {
   font-size: 15px;
 }
 
+/* Left empty until data/last_updated.json resolves, so the margin is scoped to
+   the populated state and the subtitle keeps its spacing if the fetch fails. */
+.atlas-landing-header .landing-last-updated {
+  color: var(--text-secondary);
+  font-size: 12px;
+}
+
+.atlas-landing-header .landing-last-updated:not(:empty) {
+  margin-top: 12px;
+}
+
 /* margin-top:auto pins the footer to the bottom when the cards leave room, and
    lets it sit below them when the grid is tall enough to scroll. */
 .atlas-landing-footer {
@@ -1341,11 +1352,46 @@ body:not(.landing-active) > #atlas-landing {
   gap: 16px;
 }
 
+/* The species groups stack; each one holds its own card grid, so the columns
+   resolve per species rather than letting one long row span the whole page. */
+.atlas-landing-groups {
+  width: 100%;
+  max-width: 1100px;
+  display: flex;
+  flex-direction: column;
+  gap: 36px;
+}
+
+.atlas-species-heading {
+  display: flex;
+  align-items: baseline;
+  gap: 10px;
+  margin: 0 0 14px;
+  padding-bottom: 8px;
+  border-bottom: 1px solid var(--border-color);
+  font-size: 13px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--text-secondary);
+}
+
+.atlas-species-count {
+  font-size: 11px;
+  font-weight: 400;
+  text-transform: none;
+  letter-spacing: 0;
+  color: var(--text-secondary);
+  opacity: 0.75;
+}
+
+/* auto-fill, not auto-fit: a species with a single atlas should get one
+   normal-width card and empty tracks beside it, not one card stretched across
+   the full row. */
 .atlas-landing-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
   gap: 20px;
-  max-width: 1100px;
   width: 100%;
 }
 
@@ -1393,14 +1439,6 @@ body:not(.landing-active) > #atlas-landing {
   margin: 0;
   letter-spacing: -0.01em;
   color: var(--text-primary);
-}
-
-.atlas-card-species {
-  font-size: 12px;
-  color: var(--text-secondary);
-  text-transform: uppercase;
-  letter-spacing: 0.06em;
-  margin-top: -8px;
 }
 
 .atlas-card-stats {
