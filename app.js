@@ -427,8 +427,14 @@ async function enterAtlas(atlasKey, { pushState = true } = {}) {
 async function setupLanding() {
   showLastUpdated('landing-last-updated', 'Data last updated');
 
+  // A miss here means index.html and this file disagree about the container,
+  // which in practice means a stale cached app.js. Silently returning renders
+  // an empty landing with nothing in the console to explain it.
   const container = document.getElementById('atlas-landing-groups');
-  if (!container) return;
+  if (!container) {
+    console.error('Landing container #atlas-landing-groups not found; app.js may be a stale cached copy.');
+    return;
+  }
   let index;
   try {
     const resp = await fetch('data/atlases_index.json');
