@@ -26,7 +26,7 @@
       "001791",
       "001876"
     ],
-    "total_file_count": 3527,
+    "total_file_count": 3568,
     "total_dandiset_count": 27,
     "total_dandisets": [
       "000017",
@@ -75,7 +75,7 @@
       "000728",
       "001051"
     ],
-    "total_file_count": 1181,
+    "total_file_count": 1186,
     "total_dandiset_count": 16,
     "total_dandisets": [
       "000017",
@@ -259,7 +259,7 @@
     "acronym": "TH",
     "name": "Thalamus",
     "color_hex_triplet": "FF7080",
-    "file_count": 666,
+    "file_count": 672,
     "dandiset_count": 16,
     "dandisets": [
       "000017",
@@ -279,7 +279,7 @@
       "001417",
       "001637"
     ],
-    "total_file_count": 5515,
+    "total_file_count": 5575,
     "total_dandiset_count": 19,
     "total_dandisets": [
       "000017",
@@ -341,7 +341,7 @@
     "acronym": "chpl",
     "name": "choroid plexus",
     "color_hex_triplet": "AAAAAA",
-    "file_count": 141,
+    "file_count": 143,
     "dandiset_count": 5,
     "dandisets": [
       "000302",
@@ -350,7 +350,7 @@
       "001417",
       "001637"
     ],
-    "total_file_count": 141,
+    "total_file_count": 143,
     "total_dandiset_count": 5,
     "total_dandisets": [
       "000302",
@@ -400,7 +400,7 @@
     "acronym": "V3",
     "name": "third ventricle",
     "color_hex_triplet": "AAAAAA",
-    "file_count": 175,
+    "file_count": 176,
     "dandiset_count": 5,
     "dandisets": [
       "000302",
@@ -409,7 +409,7 @@
       "001051",
       "001637"
     ],
-    "total_file_count": 175,
+    "total_file_count": 176,
     "total_dandiset_count": 5,
     "total_dandisets": [
       "000302",
@@ -448,7 +448,7 @@
     "acronym": "HPF",
     "name": "Hippocampal formation",
     "color_hex_triplet": "7ED04B",
-    "file_count": 329,
+    "file_count": 330,
     "dandiset_count": 15,
     "dandisets": [
       "000021",
@@ -467,7 +467,7 @@
       "001637",
       "001701"
     ],
-    "total_file_count": 7840,
+    "total_file_count": 7887,
     "total_dandiset_count": 30,
     "total_dandisets": [
       "000017",
@@ -576,7 +576,7 @@
     "acronym": "SUB",
     "name": "Subiculum",
     "color_hex_triplet": "4FC244",
-    "file_count": 389,
+    "file_count": 391,
     "dandiset_count": 13,
     "dandisets": [
       "000017",
@@ -593,7 +593,7 @@
       "001417",
       "001637"
     ],
-    "total_file_count": 389,
+    "total_file_count": 391,
     "total_dandiset_count": 13,
     "total_dandisets": [
       "000017",
@@ -615,7 +615,7 @@
     "acronym": "alv",
     "name": "alveus",
     "color_hex_triplet": "CCCCCC",
-    "file_count": 597,
+    "file_count": 604,
     "dandiset_count": 8,
     "dandisets": [
       "000165",
@@ -627,7 +627,7 @@
       "001637",
       "001701"
     ],
-    "total_file_count": 597,
+    "total_file_count": 604,
     "total_dandiset_count": 8,
     "total_dandisets": [
       "000165",
@@ -644,7 +644,7 @@
     "acronym": "bsc",
     "name": "brachium of the superior colliculus",
     "color_hex_triplet": "CCCCCC",
-    "file_count": 243,
+    "file_count": 249,
     "dandiset_count": 5,
     "dandisets": [
       "000409",
@@ -653,7 +653,7 @@
       "001417",
       "001637"
     ],
-    "total_file_count": 243,
+    "total_file_count": 249,
     "total_dandiset_count": 5,
     "total_dandisets": [
       "000409",
@@ -667,7 +667,7 @@
     "acronym": "dhc",
     "name": "dorsal hippocampal commissure",
     "color_hex_triplet": "CCCCCC",
-    "file_count": 127,
+    "file_count": 130,
     "dandiset_count": 5,
     "dandisets": [
       "000409",
@@ -676,7 +676,7 @@
       "001637",
       "001701"
     ],
-    "total_file_count": 127,
+    "total_file_count": 130,
     "total_dandiset_count": 5,
     "total_dandisets": [
       "000409",
@@ -690,7 +690,7 @@
     "acronym": "fiber tracts",
     "name": "fiber tracts",
     "color_hex_triplet": "CCCCCC",
-    "file_count": 261,
+    "file_count": 268,
     "dandiset_count": 7,
     "dandisets": [
       "000302",
@@ -701,7 +701,7 @@
       "001417",
       "001637"
     ],
-    "total_file_count": 4736,
+    "total_file_count": 4820,
     "total_dandiset_count": 15,
     "total_dandisets": [
       "000165",
@@ -725,7 +725,7 @@
     "acronym": "or",
     "name": "optic radiation",
     "color_hex_triplet": "CCCCCC",
-    "file_count": 358,
+    "file_count": 365,
     "dandiset_count": 7,
     "dandisets": [
       "000409",
@@ -736,7 +736,7 @@
       "001417",
       "001637"
     ],
-    "total_file_count": 358,
+    "total_file_count": 365,
     "total_dandiset_count": 7,
     "total_dandisets": [
       "000409",
@@ -752,7 +752,7 @@
     "acronym": "scwm",
     "name": "supra-callosal cerebral white matter",
     "color_hex_triplet": "CCCCCC",
-    "file_count": 253,
+    "file_count": 254,
     "dandiset_count": 6,
     "dandisets": [
       "000409",
@@ -762,7 +762,7 @@
       "001417",
       "001637"
     ],
-    "total_file_count": 253,
+    "total_file_count": 254,
     "total_dandiset_count": 6,
     "total_dandisets": [
       "000409",
@@ -837,7 +837,7 @@
       "001051",
       "001420"
     ],
-    "total_file_count": 505,
+    "total_file_count": 511,
     "total_dandiset_count": 5,
     "total_dandisets": [
       "000409",
@@ -929,7 +929,7 @@
     "acronym": "CA1",
     "name": "Field CA1",
     "color_hex_triplet": "7ED04B",
-    "file_count": 2239,
+    "file_count": 2246,
     "dandiset_count": 29,
     "dandisets": [
       "000017",
@@ -962,7 +962,7 @@
       "001701",
       "001710"
     ],
-    "total_file_count": 2239,
+    "total_file_count": 2246,
     "total_dandiset_count": 29,
     "total_dandisets": [
       "000017",
@@ -1000,7 +1000,7 @@
     "acronym": "CA3",
     "name": "Field CA3",
     "color_hex_triplet": "7ED04B",
-    "file_count": 1010,
+    "file_count": 1017,
     "dandiset_count": 16,
     "dandisets": [
       "000017",
@@ -1020,7 +1020,7 @@
       "001637",
       "001701"
     ],
-    "total_file_count": 1059,
+    "total_file_count": 1066,
     "total_dandiset_count": 17,
     "total_dandisets": [
       "000017",
@@ -1061,7 +1061,7 @@
     "acronym": "ProS",
     "name": "Prosubiculum",
     "color_hex_triplet": "58BA48",
-    "file_count": 280,
+    "file_count": 283,
     "dandiset_count": 13,
     "dandisets": [
       "000021",
@@ -1078,7 +1078,7 @@
       "001417",
       "001637"
     ],
-    "total_file_count": 280,
+    "total_file_count": 283,
     "total_dandiset_count": 13,
     "total_dandisets": [
       "000021",
@@ -1171,7 +1171,7 @@
     "acronym": "cing",
     "name": "cingulum bundle",
     "color_hex_triplet": "CCCCCC",
-    "file_count": 319,
+    "file_count": 326,
     "dandiset_count": 8,
     "dandisets": [
       "000409",
@@ -1183,7 +1183,7 @@
       "001637",
       "001701"
     ],
-    "total_file_count": 319,
+    "total_file_count": 326,
     "total_dandiset_count": 8,
     "total_dandisets": [
       "000409",
@@ -1200,7 +1200,7 @@
     "acronym": "LD",
     "name": "Lateral dorsal nucleus of thalamus",
     "color_hex_triplet": "FF909F",
-    "file_count": 221,
+    "file_count": 224,
     "dandiset_count": 12,
     "dandisets": [
       "000017",
@@ -1216,7 +1216,7 @@
       "001637",
       "001701"
     ],
-    "total_file_count": 221,
+    "total_file_count": 224,
     "total_dandiset_count": 12,
     "total_dandisets": [
       "000017",
@@ -1237,7 +1237,7 @@
     "acronym": "LH",
     "name": "Lateral habenula",
     "color_hex_triplet": "FF909F",
-    "file_count": 101,
+    "file_count": 102,
     "dandiset_count": 7,
     "dandisets": [
       "000017",
@@ -1248,7 +1248,7 @@
       "001326",
       "001637"
     ],
-    "total_file_count": 101,
+    "total_file_count": 102,
     "total_dandiset_count": 7,
     "total_dandisets": [
       "000017",
@@ -1264,7 +1264,7 @@
     "acronym": "MD",
     "name": "Mediodorsal nucleus of thalamus",
     "color_hex_triplet": "FF909F",
-    "file_count": 119,
+    "file_count": 122,
     "dandiset_count": 8,
     "dandisets": [
       "000017",
@@ -1276,7 +1276,7 @@
       "001326",
       "001637"
     ],
-    "total_file_count": 119,
+    "total_file_count": 122,
     "total_dandiset_count": 8,
     "total_dandisets": [
       "000017",
@@ -1293,7 +1293,7 @@
     "acronym": "PO",
     "name": "Posterior complex of the thalamus",
     "color_hex_triplet": "FF909F",
-    "file_count": 238,
+    "file_count": 239,
     "dandiset_count": 12,
     "dandisets": [
       "000017",
@@ -1309,7 +1309,7 @@
       "001417",
       "001637"
     ],
-    "total_file_count": 238,
+    "total_file_count": 239,
     "total_dandiset_count": 12,
     "total_dandisets": [
       "000017",
@@ -1392,7 +1392,7 @@
     "acronym": "VPM",
     "name": "Ventral posteromedial nucleus of the thalamus",
     "color_hex_triplet": "FF8084",
-    "file_count": 252,
+    "file_count": 256,
     "dandiset_count": 12,
     "dandisets": [
       "000017",
@@ -1408,7 +1408,7 @@
       "001417",
       "001637"
     ],
-    "total_file_count": 252,
+    "total_file_count": 256,
     "total_dandiset_count": 12,
     "total_dandisets": [
       "000017",
@@ -1429,7 +1429,7 @@
     "acronym": "ZI",
     "name": "Zona incerta",
     "color_hex_triplet": "F2483B",
-    "file_count": 174,
+    "file_count": 175,
     "dandiset_count": 11,
     "dandisets": [
       "000017",
@@ -1444,7 +1444,7 @@
       "001417",
       "001637"
     ],
-    "total_file_count": 204,
+    "total_file_count": 205,
     "total_dandiset_count": 11,
     "total_dandisets": [
       "000017",
@@ -1464,7 +1464,7 @@
     "acronym": "fi",
     "name": "fimbria",
     "color_hex_triplet": "CCCCCC",
-    "file_count": 156,
+    "file_count": 163,
     "dandiset_count": 7,
     "dandisets": [
       "000302",
@@ -1475,7 +1475,7 @@
       "001417",
       "001637"
     ],
-    "total_file_count": 156,
+    "total_file_count": 163,
     "total_dandiset_count": 7,
     "total_dandisets": [
       "000302",
@@ -1491,7 +1491,7 @@
     "acronym": "VL",
     "name": "lateral ventricle",
     "color_hex_triplet": "AAAAAA",
-    "file_count": 371,
+    "file_count": 377,
     "dandiset_count": 12,
     "dandisets": [
       "000021",
@@ -1507,7 +1507,7 @@
       "001417",
       "001637"
     ],
-    "total_file_count": 684,
+    "total_file_count": 697,
     "total_dandiset_count": 12,
     "total_dandisets": [
       "000021",
@@ -1545,7 +1545,7 @@
     "acronym": "sm",
     "name": "stria medullaris",
     "color_hex_triplet": "CCCCCC",
-    "file_count": 28,
+    "file_count": 29,
     "dandiset_count": 4,
     "dandisets": [
       "000302",
@@ -1553,7 +1553,7 @@
       "001326",
       "001637"
     ],
-    "total_file_count": 28,
+    "total_file_count": 29,
     "total_dandiset_count": 4,
     "total_dandisets": [
       "000302",
@@ -1566,7 +1566,7 @@
     "acronym": "SEZ",
     "name": "subependymal zone",
     "color_hex_triplet": "AAAAAA",
-    "file_count": 172,
+    "file_count": 177,
     "dandiset_count": 8,
     "dandisets": [
       "000409",
@@ -1578,7 +1578,7 @@
       "001417",
       "001637"
     ],
-    "total_file_count": 172,
+    "total_file_count": 177,
     "total_dandiset_count": 8,
     "total_dandisets": [
       "000409",
@@ -2074,7 +2074,7 @@
       "001326",
       "001637"
     ],
-    "total_file_count": 939,
+    "total_file_count": 940,
     "total_dandiset_count": 16,
     "total_dandisets": [
       "000017",
@@ -2256,7 +2256,7 @@
     "dandisets": [
       "000409"
     ],
-    "total_file_count": 130,
+    "total_file_count": 132,
     "total_dandiset_count": 4,
     "total_dandisets": [
       "000409",
@@ -2286,7 +2286,7 @@
     "acronym": "ar",
     "name": "auditory radiation",
     "color_hex_triplet": "CCCCCC",
-    "file_count": 73,
+    "file_count": 75,
     "dandiset_count": 6,
     "dandisets": [
       "000409",
@@ -2296,7 +2296,7 @@
       "001417",
       "001637"
     ],
-    "total_file_count": 73,
+    "total_file_count": 75,
     "total_dandiset_count": 6,
     "total_dandisets": [
       "000409",
@@ -2366,7 +2366,7 @@
     "acronym": "CP",
     "name": "Caudoputamen",
     "color_hex_triplet": "98D6F9",
-    "file_count": 394,
+    "file_count": 398,
     "dandiset_count": 12,
     "dandisets": [
       "000017",
@@ -2382,7 +2382,7 @@
       "001417",
       "001637"
     ],
-    "total_file_count": 394,
+    "total_file_count": 398,
     "total_dandiset_count": 12,
     "total_dandisets": [
       "000017",
@@ -2428,7 +2428,7 @@
     "acronym": "OLF",
     "name": "Olfactory areas",
     "color_hex_triplet": "9AD2BD",
-    "file_count": 217,
+    "file_count": 219,
     "dandiset_count": 10,
     "dandisets": [
       "000017",
@@ -2442,7 +2442,7 @@
       "001417",
       "001637"
     ],
-    "total_file_count": 651,
+    "total_file_count": 659,
     "total_dandiset_count": 12,
     "total_dandisets": [
       "000017",
@@ -2484,7 +2484,7 @@
     "acronym": "STR",
     "name": "Striatum",
     "color_hex_triplet": "98D6F9",
-    "file_count": 845,
+    "file_count": 851,
     "dandiset_count": 12,
     "dandisets": [
       "000302",
@@ -2500,7 +2500,7 @@
       "001637",
       "001832"
     ],
-    "total_file_count": 1946,
+    "total_file_count": 1966,
     "total_dandiset_count": 15,
     "total_dandisets": [
       "000017",
@@ -2620,7 +2620,7 @@
     "acronym": "CA2",
     "name": "Field CA2",
     "color_hex_triplet": "7ED04B",
-    "file_count": 456,
+    "file_count": 463,
     "dandiset_count": 14,
     "dandisets": [
       "000017",
@@ -2638,7 +2638,7 @@
       "001637",
       "001701"
     ],
-    "total_file_count": 456,
+    "total_file_count": 463,
     "total_dandiset_count": 14,
     "total_dandisets": [
       "000017",
@@ -2708,7 +2708,7 @@
     "acronym": "LP",
     "name": "Lateral posterior nucleus of the thalamus",
     "color_hex_triplet": "FF909F",
-    "file_count": 619,
+    "file_count": 623,
     "dandiset_count": 17,
     "dandisets": [
       "000017",
@@ -2729,7 +2729,7 @@
       "001637",
       "001701"
     ],
-    "total_file_count": 619,
+    "total_file_count": 623,
     "total_dandiset_count": 17,
     "total_dandisets": [
       "000017",
@@ -2835,7 +2835,7 @@
     "acronym": "ccg",
     "name": "genu of corpus callosum",
     "color_hex_triplet": "CCCCCC",
-    "file_count": 107,
+    "file_count": 112,
     "dandiset_count": 6,
     "dandisets": [
       "000409",
@@ -2845,7 +2845,7 @@
       "001417",
       "001637"
     ],
-    "total_file_count": 107,
+    "total_file_count": 112,
     "total_dandiset_count": 6,
     "total_dandisets": [
       "000409",
@@ -3181,7 +3181,7 @@
     "acronym": "RT",
     "name": "Reticular nucleus of the thalamus",
     "color_hex_triplet": "FF909F",
-    "file_count": 180,
+    "file_count": 182,
     "dandiset_count": 11,
     "dandisets": [
       "000017",
@@ -3196,7 +3196,7 @@
       "001417",
       "001637"
     ],
-    "total_file_count": 180,
+    "total_file_count": 182,
     "total_dandiset_count": 11,
     "total_dandisets": [
       "000017",
@@ -3237,14 +3237,14 @@
     "acronym": "st",
     "name": "stria terminalis",
     "color_hex_triplet": "CCCCCC",
-    "file_count": 58,
+    "file_count": 62,
     "dandiset_count": 3,
     "dandisets": [
       "000409",
       "001326",
       "001637"
     ],
-    "total_file_count": 58,
+    "total_file_count": 62,
     "total_dandiset_count": 3,
     "total_dandisets": [
       "000409",
@@ -3280,7 +3280,7 @@
       "001051",
       "001260"
     ],
-    "total_file_count": 286,
+    "total_file_count": 287,
     "total_dandiset_count": 10,
     "total_dandisets": [
       "000017",
@@ -3299,7 +3299,7 @@
     "acronym": "int",
     "name": "internal capsule",
     "color_hex_triplet": "CCCCCC",
-    "file_count": 87,
+    "file_count": 89,
     "dandiset_count": 4,
     "dandisets": [
       "000409",
@@ -3307,7 +3307,7 @@
       "001326",
       "001637"
     ],
-    "total_file_count": 87,
+    "total_file_count": 89,
     "total_dandiset_count": 4,
     "total_dandisets": [
       "000409",
@@ -3474,13 +3474,13 @@
     "acronym": "PSV",
     "name": "Principal sensory nucleus of the trigeminal",
     "color_hex_triplet": "FFAE6F",
-    "file_count": 75,
+    "file_count": 81,
     "dandiset_count": 2,
     "dandisets": [
       "000409",
       "001687"
     ],
-    "total_file_count": 75,
+    "total_file_count": 81,
     "total_dandiset_count": 2,
     "total_dandisets": [
       "000409",
@@ -3506,7 +3506,7 @@
     "acronym": "CL",
     "name": "Central lateral nucleus of the thalamus",
     "color_hex_triplet": "FF909F",
-    "file_count": 65,
+    "file_count": 67,
     "dandiset_count": 6,
     "dandisets": [
       "000017",
@@ -3516,7 +3516,7 @@
       "001051",
       "001637"
     ],
-    "total_file_count": 65,
+    "total_file_count": 67,
     "total_dandiset_count": 6,
     "total_dandisets": [
       "000017",
@@ -3563,7 +3563,7 @@
     "acronym": "Eth",
     "name": "Ethmoid nucleus of the thalamus",
     "color_hex_triplet": "FF909F",
-    "file_count": 125,
+    "file_count": 126,
     "dandiset_count": 12,
     "dandisets": [
       "000021",
@@ -3579,7 +3579,7 @@
       "001326",
       "001637"
     ],
-    "total_file_count": 125,
+    "total_file_count": 126,
     "total_dandiset_count": 12,
     "total_dandisets": [
       "000021",
@@ -3600,7 +3600,7 @@
     "acronym": "PoT",
     "name": "Posterior triangular thalamic nucleus",
     "color_hex_triplet": "FF8084",
-    "file_count": 136,
+    "file_count": 137,
     "dandiset_count": 11,
     "dandisets": [
       "000021",
@@ -3615,7 +3615,7 @@
       "001417",
       "001637"
     ],
-    "total_file_count": 136,
+    "total_file_count": 137,
     "total_dandiset_count": 11,
     "total_dandisets": [
       "000021",
@@ -3760,7 +3760,7 @@
     "acronym": "SGN",
     "name": "Suprageniculate nucleus",
     "color_hex_triplet": "FF909F",
-    "file_count": 176,
+    "file_count": 177,
     "dandiset_count": 12,
     "dandisets": [
       "000021",
@@ -3776,7 +3776,7 @@
       "001417",
       "001637"
     ],
-    "total_file_count": 176,
+    "total_file_count": 177,
     "total_dandiset_count": 12,
     "total_dandisets": [
       "000021",
@@ -3901,7 +3901,7 @@
     "acronym": "DP",
     "name": "Dorsal peduncular area",
     "color_hex_triplet": "A4DAA4",
-    "file_count": 157,
+    "file_count": 160,
     "dandiset_count": 10,
     "dandisets": [
       "000017",
@@ -3915,7 +3915,7 @@
       "001417",
       "001637"
     ],
-    "total_file_count": 157,
+    "total_file_count": 160,
     "total_dandiset_count": 10,
     "total_dandisets": [
       "000017",
@@ -3999,7 +3999,7 @@
     "acronym": "LGv",
     "name": "Ventral part of the lateral geniculate complex",
     "color_hex_triplet": "FF909F",
-    "file_count": 201,
+    "file_count": 203,
     "dandiset_count": 12,
     "dandisets": [
       "000021",
@@ -4015,7 +4015,7 @@
       "001417",
       "001637"
     ],
-    "total_file_count": 201,
+    "total_file_count": 203,
     "total_dandiset_count": 12,
     "total_dandisets": [
       "000021",
@@ -4192,7 +4192,7 @@
     "acronym": "MS",
     "name": "Medial septal nucleus",
     "color_hex_triplet": "96A7D3",
-    "file_count": 35,
+    "file_count": 36,
     "dandiset_count": 8,
     "dandisets": [
       "000017",
@@ -4204,7 +4204,7 @@
       "001417",
       "001637"
     ],
-    "total_file_count": 35,
+    "total_file_count": 36,
     "total_dandiset_count": 8,
     "total_dandisets": [
       "000017",
@@ -4487,7 +4487,7 @@
     "acronym": "SH",
     "name": "Septohippocampal nucleus",
     "color_hex_triplet": "90CBED",
-    "file_count": 25,
+    "file_count": 26,
     "dandiset_count": 4,
     "dandisets": [
       "000409",
@@ -4495,7 +4495,7 @@
       "001417",
       "001637"
     ],
-    "total_file_count": 25,
+    "total_file_count": 26,
     "total_dandiset_count": 4,
     "total_dandisets": [
       "000409",
@@ -4523,7 +4523,7 @@
     "acronym": "PCN",
     "name": "Paracentral nucleus",
     "color_hex_triplet": "FF909F",
-    "file_count": 30,
+    "file_count": 31,
     "dandiset_count": 4,
     "dandisets": [
       "000409",
@@ -4531,7 +4531,7 @@
       "001326",
       "001637"
     ],
-    "total_file_count": 30,
+    "total_file_count": 31,
     "total_dandiset_count": 4,
     "total_dandisets": [
       "000409",
@@ -5254,7 +5254,7 @@
     "acronym": "IAD",
     "name": "Interanterodorsal nucleus of the thalamus",
     "color_hex_triplet": "FF909F",
-    "file_count": 33,
+    "file_count": 35,
     "dandiset_count": 4,
     "dandisets": [
       "000409",
@@ -5262,7 +5262,7 @@
       "001051",
       "001637"
     ],
-    "total_file_count": 33,
+    "total_file_count": 35,
     "total_dandiset_count": 4,
     "total_dandisets": [
       "000409",
@@ -5566,7 +5566,7 @@
     "acronym": "AD",
     "name": "Anterodorsal nucleus",
     "color_hex_triplet": "FF909F",
-    "file_count": 47,
+    "file_count": 49,
     "dandiset_count": 4,
     "dandisets": [
       "000409",
@@ -5574,7 +5574,7 @@
       "001051",
       "001637"
     ],
-    "total_file_count": 47,
+    "total_file_count": 49,
     "total_dandiset_count": 4,
     "total_dandisets": [
       "000409",
@@ -5672,7 +5672,7 @@
     "acronym": "IntG",
     "name": "Intermediate geniculate nucleus",
     "color_hex_triplet": "FF909F",
-    "file_count": 42,
+    "file_count": 44,
     "dandiset_count": 9,
     "dandisets": [
       "000021",
@@ -5685,7 +5685,7 @@
       "001417",
       "001637"
     ],
-    "total_file_count": 42,
+    "total_file_count": 44,
     "total_dandiset_count": 9,
     "total_dandisets": [
       "000021",
@@ -5875,7 +5875,7 @@
       "001051",
       "001701"
     ],
-    "total_file_count": 2050,
+    "total_file_count": 2071,
     "total_dandiset_count": 18,
     "total_dandisets": [
       "000017",
@@ -5940,7 +5940,7 @@
     "acronym": "DG-mo",
     "name": "Dentate gyrus, molecular layer",
     "color_hex_triplet": "7ED04B",
-    "file_count": 478,
+    "file_count": 485,
     "dandiset_count": 12,
     "dandisets": [
       "000248",
@@ -5956,7 +5956,7 @@
       "001637",
       "001701"
     ],
-    "total_file_count": 478,
+    "total_file_count": 485,
     "total_dandiset_count": 12,
     "total_dandisets": [
       "000248",
@@ -5977,7 +5977,7 @@
     "acronym": "DG-po",
     "name": "Dentate gyrus, polymorph layer",
     "color_hex_triplet": "7ED04B",
-    "file_count": 270,
+    "file_count": 276,
     "dandiset_count": 12,
     "dandisets": [
       "000248",
@@ -5993,7 +5993,7 @@
       "001637",
       "001701"
     ],
-    "total_file_count": 270,
+    "total_file_count": 276,
     "total_dandiset_count": 12,
     "total_dandisets": [
       "000248",
@@ -6014,7 +6014,7 @@
     "acronym": "DG-sg",
     "name": "Dentate gyrus, granule cell layer",
     "color_hex_triplet": "66A83D",
-    "file_count": 395,
+    "file_count": 402,
     "dandiset_count": 12,
     "dandisets": [
       "000248",
@@ -6030,7 +6030,7 @@
       "001637",
       "001701"
     ],
-    "total_file_count": 395,
+    "total_file_count": 402,
     "total_dandiset_count": 12,
     "total_dandisets": [
       "000248",
@@ -6051,7 +6051,7 @@
     "acronym": "MGd",
     "name": "Medial geniculate complex, dorsal part",
     "color_hex_triplet": "FF8084",
-    "file_count": 179,
+    "file_count": 181,
     "dandiset_count": 13,
     "dandisets": [
       "000021",
@@ -6068,7 +6068,7 @@
       "001421",
       "001637"
     ],
-    "total_file_count": 179,
+    "total_file_count": 181,
     "total_dandiset_count": 13,
     "total_dandisets": [
       "000021",
@@ -6090,7 +6090,7 @@
     "acronym": "RSPagl1",
     "name": "Retrosplenial area, lateral agranular part, layer 1",
     "color_hex_triplet": "1AA698",
-    "file_count": 29,
+    "file_count": 30,
     "dandiset_count": 5,
     "dandisets": [
       "000563",
@@ -6099,7 +6099,7 @@
       "001420",
       "001637"
     ],
-    "total_file_count": 29,
+    "total_file_count": 30,
     "total_dandiset_count": 5,
     "total_dandisets": [
       "000563",
@@ -6113,7 +6113,7 @@
     "acronym": "RSPagl2/3",
     "name": "Retrosplenial area, lateral agranular part, layer 2/3",
     "color_hex_triplet": "1AA698",
-    "file_count": 31,
+    "file_count": 32,
     "dandiset_count": 6,
     "dandisets": [
       "000563",
@@ -6123,7 +6123,7 @@
       "001420",
       "001637"
     ],
-    "total_file_count": 31,
+    "total_file_count": 32,
     "total_dandiset_count": 6,
     "total_dandisets": [
       "000563",
@@ -6138,7 +6138,7 @@
     "acronym": "RSPagl5",
     "name": "Retrosplenial area, lateral agranular part, layer 5",
     "color_hex_triplet": "1AA698",
-    "file_count": 30,
+    "file_count": 32,
     "dandiset_count": 6,
     "dandisets": [
       "000563",
@@ -6148,7 +6148,7 @@
       "001420",
       "001637"
     ],
-    "total_file_count": 30,
+    "total_file_count": 32,
     "total_dandiset_count": 6,
     "total_dandisets": [
       "000563",
@@ -6552,7 +6552,7 @@
     "acronym": "VISl1",
     "name": "Lateral visual area, layer 1",
     "color_hex_triplet": "08858C",
-    "file_count": 139,
+    "file_count": 142,
     "dandiset_count": 6,
     "dandisets": [
       "000248",
@@ -6562,7 +6562,7 @@
       "001191",
       "001637"
     ],
-    "total_file_count": 139,
+    "total_file_count": 142,
     "total_dandiset_count": 6,
     "total_dandisets": [
       "000248",
@@ -6577,7 +6577,7 @@
     "acronym": "VISl2/3",
     "name": "Lateral visual area, layer 2/3",
     "color_hex_triplet": "08858C",
-    "file_count": 132,
+    "file_count": 135,
     "dandiset_count": 6,
     "dandisets": [
       "000248",
@@ -6587,7 +6587,7 @@
       "001191",
       "001637"
     ],
-    "total_file_count": 132,
+    "total_file_count": 135,
     "total_dandiset_count": 6,
     "total_dandisets": [
       "000248",
@@ -6602,7 +6602,7 @@
     "acronym": "VISl4",
     "name": "Lateral visual area, layer 4",
     "color_hex_triplet": "08858C",
-    "file_count": 130,
+    "file_count": 133,
     "dandiset_count": 6,
     "dandisets": [
       "000248",
@@ -6612,7 +6612,7 @@
       "001191",
       "001637"
     ],
-    "total_file_count": 130,
+    "total_file_count": 133,
     "total_dandiset_count": 6,
     "total_dandisets": [
       "000248",
@@ -6627,7 +6627,7 @@
     "acronym": "VISl5",
     "name": "Lateral visual area, layer 5",
     "color_hex_triplet": "08858C",
-    "file_count": 127,
+    "file_count": 131,
     "dandiset_count": 6,
     "dandisets": [
       "000248",
@@ -6637,7 +6637,7 @@
       "001191",
       "001637"
     ],
-    "total_file_count": 127,
+    "total_file_count": 131,
     "total_dandiset_count": 6,
     "total_dandisets": [
       "000248",
@@ -6652,7 +6652,7 @@
     "acronym": "VISl6a",
     "name": "Lateral visual area, layer 6a",
     "color_hex_triplet": "08858C",
-    "file_count": 102,
+    "file_count": 106,
     "dandiset_count": 6,
     "dandisets": [
       "000248",
@@ -6662,7 +6662,7 @@
       "001191",
       "001637"
     ],
-    "total_file_count": 102,
+    "total_file_count": 106,
     "total_dandiset_count": 6,
     "total_dandisets": [
       "000248",
@@ -6677,7 +6677,7 @@
     "acronym": "VISl6b",
     "name": "Lateral visual area, layer 6b",
     "color_hex_triplet": "08858C",
-    "file_count": 91,
+    "file_count": 95,
     "dandiset_count": 6,
     "dandisets": [
       "000248",
@@ -6687,7 +6687,7 @@
       "001191",
       "001637"
     ],
-    "total_file_count": 91,
+    "total_file_count": 95,
     "total_dandiset_count": 6,
     "total_dandisets": [
       "000248",
@@ -6701,64 +6701,6 @@
   "593": {
     "acronym": "VISp1",
     "name": "Primary visual area, layer 1",
-    "color_hex_triplet": "08858C",
-    "file_count": 218,
-    "dandiset_count": 8,
-    "dandisets": [
-      "000248",
-      "000253",
-      "000563",
-      "000690",
-      "001191",
-      "001417",
-      "001420",
-      "001637"
-    ],
-    "total_file_count": 218,
-    "total_dandiset_count": 8,
-    "total_dandisets": [
-      "000248",
-      "000253",
-      "000563",
-      "000690",
-      "001191",
-      "001417",
-      "001420",
-      "001637"
-    ]
-  },
-  "821": {
-    "acronym": "VISp2/3",
-    "name": "Primary visual area, layer 2/3",
-    "color_hex_triplet": "08858C",
-    "file_count": 224,
-    "dandiset_count": 8,
-    "dandisets": [
-      "000248",
-      "000253",
-      "000563",
-      "000690",
-      "001191",
-      "001417",
-      "001420",
-      "001637"
-    ],
-    "total_file_count": 224,
-    "total_dandiset_count": 8,
-    "total_dandisets": [
-      "000248",
-      "000253",
-      "000563",
-      "000690",
-      "001191",
-      "001417",
-      "001420",
-      "001637"
-    ]
-  },
-  "721": {
-    "acronym": "VISp4",
-    "name": "Primary visual area, layer 4",
     "color_hex_triplet": "08858C",
     "file_count": 225,
     "dandiset_count": 8,
@@ -6785,11 +6727,11 @@
       "001637"
     ]
   },
-  "778": {
-    "acronym": "VISp5",
-    "name": "Primary visual area, layer 5",
+  "821": {
+    "acronym": "VISp2/3",
+    "name": "Primary visual area, layer 2/3",
     "color_hex_triplet": "08858C",
-    "file_count": 226,
+    "file_count": 231,
     "dandiset_count": 8,
     "dandisets": [
       "000248",
@@ -6801,7 +6743,65 @@
       "001420",
       "001637"
     ],
-    "total_file_count": 226,
+    "total_file_count": 231,
+    "total_dandiset_count": 8,
+    "total_dandisets": [
+      "000248",
+      "000253",
+      "000563",
+      "000690",
+      "001191",
+      "001417",
+      "001420",
+      "001637"
+    ]
+  },
+  "721": {
+    "acronym": "VISp4",
+    "name": "Primary visual area, layer 4",
+    "color_hex_triplet": "08858C",
+    "file_count": 232,
+    "dandiset_count": 8,
+    "dandisets": [
+      "000248",
+      "000253",
+      "000563",
+      "000690",
+      "001191",
+      "001417",
+      "001420",
+      "001637"
+    ],
+    "total_file_count": 232,
+    "total_dandiset_count": 8,
+    "total_dandisets": [
+      "000248",
+      "000253",
+      "000563",
+      "000690",
+      "001191",
+      "001417",
+      "001420",
+      "001637"
+    ]
+  },
+  "778": {
+    "acronym": "VISp5",
+    "name": "Primary visual area, layer 5",
+    "color_hex_triplet": "08858C",
+    "file_count": 233,
+    "dandiset_count": 8,
+    "dandisets": [
+      "000248",
+      "000253",
+      "000563",
+      "000690",
+      "001191",
+      "001417",
+      "001420",
+      "001637"
+    ],
+    "total_file_count": 233,
     "total_dandiset_count": 8,
     "total_dandisets": [
       "000248",
@@ -6818,7 +6818,7 @@
     "acronym": "VISp6a",
     "name": "Primary visual area, layer 6a",
     "color_hex_triplet": "08858C",
-    "file_count": 216,
+    "file_count": 223,
     "dandiset_count": 7,
     "dandisets": [
       "000248",
@@ -6829,7 +6829,7 @@
       "001417",
       "001637"
     ],
-    "total_file_count": 216,
+    "total_file_count": 223,
     "total_dandiset_count": 7,
     "total_dandisets": [
       "000248",
@@ -6845,7 +6845,7 @@
     "acronym": "VISp6b",
     "name": "Primary visual area, layer 6b",
     "color_hex_triplet": "08858C",
-    "file_count": 187,
+    "file_count": 193,
     "dandiset_count": 7,
     "dandisets": [
       "000248",
@@ -6856,7 +6856,7 @@
       "001417",
       "001637"
     ],
-    "total_file_count": 187,
+    "total_file_count": 193,
     "total_dandiset_count": 7,
     "total_dandisets": [
       "000248",
@@ -6998,7 +6998,7 @@
     "acronym": "VISrl1",
     "name": "Rostrolateral area, layer 1",
     "color_hex_triplet": "009FAC",
-    "file_count": 120,
+    "file_count": 122,
     "dandiset_count": 7,
     "dandisets": [
       "000248",
@@ -7009,7 +7009,7 @@
       "001417",
       "001637"
     ],
-    "total_file_count": 120,
+    "total_file_count": 122,
     "total_dandiset_count": 7,
     "total_dandisets": [
       "000248",
@@ -7025,7 +7025,7 @@
     "acronym": "VISrl2/3",
     "name": "Rostrolateral area, layer 2/3",
     "color_hex_triplet": "009FAC",
-    "file_count": 127,
+    "file_count": 129,
     "dandiset_count": 7,
     "dandisets": [
       "000248",
@@ -7036,7 +7036,7 @@
       "001417",
       "001637"
     ],
-    "total_file_count": 127,
+    "total_file_count": 129,
     "total_dandiset_count": 7,
     "total_dandisets": [
       "000248",
@@ -7052,7 +7052,7 @@
     "acronym": "VISrl4",
     "name": "Rostrolateral area, layer 4",
     "color_hex_triplet": "009FAC",
-    "file_count": 121,
+    "file_count": 122,
     "dandiset_count": 7,
     "dandisets": [
       "000248",
@@ -7063,7 +7063,7 @@
       "001417",
       "001637"
     ],
-    "total_file_count": 121,
+    "total_file_count": 122,
     "total_dandiset_count": 7,
     "total_dandisets": [
       "000248",
@@ -7229,7 +7229,7 @@
     "acronym": "LGd-sh",
     "name": "Dorsal part of the lateral geniculate complex, shell",
     "color_hex_triplet": "FF8084",
-    "file_count": 154,
+    "file_count": 160,
     "dandiset_count": 9,
     "dandisets": [
       "000248",
@@ -7242,7 +7242,7 @@
       "001417",
       "001637"
     ],
-    "total_file_count": 154,
+    "total_file_count": 160,
     "total_dandiset_count": 9,
     "total_dandisets": [
       "000248",
@@ -7260,7 +7260,7 @@
     "acronym": "MGm",
     "name": "Medial geniculate complex, medial part",
     "color_hex_triplet": "FF8084",
-    "file_count": 141,
+    "file_count": 142,
     "dandiset_count": 13,
     "dandisets": [
       "000021",
@@ -7277,7 +7277,7 @@
       "001421",
       "001637"
     ],
-    "total_file_count": 141,
+    "total_file_count": 142,
     "total_dandiset_count": 13,
     "total_dandisets": [
       "000021",
@@ -7299,7 +7299,7 @@
     "acronym": "MGv",
     "name": "Medial geniculate complex, ventral part",
     "color_hex_triplet": "FF8084",
-    "file_count": 173,
+    "file_count": 176,
     "dandiset_count": 13,
     "dandisets": [
       "000021",
@@ -7316,7 +7316,7 @@
       "001421",
       "001637"
     ],
-    "total_file_count": 173,
+    "total_file_count": 176,
     "total_dandiset_count": 13,
     "total_dandisets": [
       "000021",
@@ -7428,7 +7428,7 @@
     "acronym": "LGd-co",
     "name": "Dorsal part of the lateral geniculate complex, core",
     "color_hex_triplet": "FF8084",
-    "file_count": 168,
+    "file_count": 174,
     "dandiset_count": 10,
     "dandisets": [
       "000248",
@@ -7442,7 +7442,7 @@
       "001417",
       "001637"
     ],
-    "total_file_count": 168,
+    "total_file_count": 174,
     "total_dandiset_count": 10,
     "total_dandisets": [
       "000248",
@@ -7508,7 +7508,7 @@
     "acronym": "ACAd5",
     "name": "Anterior cingulate area, dorsal part, layer 5",
     "color_hex_triplet": "40A666",
-    "file_count": 89,
+    "file_count": 92,
     "dandiset_count": 7,
     "dandisets": [
       "000473",
@@ -7519,7 +7519,7 @@
       "001417",
       "001637"
     ],
-    "total_file_count": 89,
+    "total_file_count": 92,
     "total_dandiset_count": 7,
     "total_dandisets": [
       "000473",
@@ -7608,7 +7608,7 @@
     "acronym": "LGd-ip",
     "name": "Dorsal part of the lateral geniculate complex, ipsilateral zone",
     "color_hex_triplet": "FF8084",
-    "file_count": 49,
+    "file_count": 52,
     "dandiset_count": 6,
     "dandisets": [
       "000248",
@@ -7618,7 +7618,7 @@
       "001417",
       "001637"
     ],
-    "total_file_count": 49,
+    "total_file_count": 52,
     "total_dandiset_count": 6,
     "total_dandisets": [
       "000248",
@@ -7633,7 +7633,7 @@
     "acronym": "LSr",
     "name": "Lateral septal nucleus, rostral (rostroventral) part",
     "color_hex_triplet": "90CBED",
-    "file_count": 233,
+    "file_count": 239,
     "dandiset_count": 10,
     "dandisets": [
       "000017",
@@ -7647,7 +7647,7 @@
       "001417",
       "001637"
     ],
-    "total_file_count": 233,
+    "total_file_count": 239,
     "total_dandiset_count": 10,
     "total_dandisets": [
       "000017",
@@ -7666,7 +7666,7 @@
     "acronym": "MOs1",
     "name": "Secondary motor area, layer 1",
     "color_hex_triplet": "1F9D5A",
-    "file_count": 132,
+    "file_count": 139,
     "dandiset_count": 7,
     "dandisets": [
       "000473",
@@ -7677,7 +7677,7 @@
       "001417",
       "001637"
     ],
-    "total_file_count": 132,
+    "total_file_count": 139,
     "total_dandiset_count": 7,
     "total_dandisets": [
       "000473",
@@ -7693,7 +7693,7 @@
     "acronym": "MOs2/3",
     "name": "Secondary motor area, layer 2/3",
     "color_hex_triplet": "1F9D5A",
-    "file_count": 176,
+    "file_count": 183,
     "dandiset_count": 7,
     "dandisets": [
       "000473",
@@ -7704,7 +7704,7 @@
       "001417",
       "001637"
     ],
-    "total_file_count": 176,
+    "total_file_count": 183,
     "total_dandiset_count": 7,
     "total_dandisets": [
       "000473",
@@ -7720,7 +7720,7 @@
     "acronym": "MOs5",
     "name": "Secondary motor area, layer 5",
     "color_hex_triplet": "1F9D5A",
-    "file_count": 196,
+    "file_count": 203,
     "dandiset_count": 7,
     "dandisets": [
       "000473",
@@ -7731,7 +7731,7 @@
       "001417",
       "001637"
     ],
-    "total_file_count": 196,
+    "total_file_count": 203,
     "total_dandiset_count": 7,
     "total_dandisets": [
       "000473",
@@ -7747,7 +7747,7 @@
     "acronym": "PL5",
     "name": "Prelimbic area, layer 5",
     "color_hex_triplet": "2FA850",
-    "file_count": 86,
+    "file_count": 89,
     "dandiset_count": 6,
     "dandisets": [
       "000473",
@@ -7757,7 +7757,7 @@
       "001417",
       "001637"
     ],
-    "total_file_count": 86,
+    "total_file_count": 89,
     "total_dandiset_count": 6,
     "total_dandisets": [
       "000473",
@@ -7793,7 +7793,7 @@
     "acronym": "SSp-bfd2/3",
     "name": "Primary somatosensory area, barrel field, layer 2/3",
     "color_hex_triplet": "188064",
-    "file_count": 89,
+    "file_count": 90,
     "dandiset_count": 5,
     "dandisets": [
       "000563",
@@ -7802,7 +7802,7 @@
       "001417",
       "001637"
     ],
-    "total_file_count": 89,
+    "total_file_count": 90,
     "total_dandiset_count": 5,
     "total_dandisets": [
       "000563",
@@ -7816,7 +7816,7 @@
     "acronym": "SSp-bfd4",
     "name": "Primary somatosensory area, barrel field, layer 4",
     "color_hex_triplet": "188064",
-    "file_count": 99,
+    "file_count": 102,
     "dandiset_count": 5,
     "dandisets": [
       "000563",
@@ -7825,7 +7825,7 @@
       "001417",
       "001637"
     ],
-    "total_file_count": 99,
+    "total_file_count": 102,
     "total_dandiset_count": 5,
     "total_dandisets": [
       "000563",
@@ -7839,7 +7839,7 @@
     "acronym": "SSp-bfd5",
     "name": "Primary somatosensory area, barrel field, layer 5",
     "color_hex_triplet": "188064",
-    "file_count": 115,
+    "file_count": 119,
     "dandiset_count": 5,
     "dandisets": [
       "000563",
@@ -7848,7 +7848,7 @@
       "001417",
       "001637"
     ],
-    "total_file_count": 115,
+    "total_file_count": 119,
     "total_dandiset_count": 5,
     "total_dandisets": [
       "000563",
@@ -7862,7 +7862,7 @@
     "acronym": "SSp-bfd6a",
     "name": "Primary somatosensory area, barrel field, layer 6a",
     "color_hex_triplet": "188064",
-    "file_count": 120,
+    "file_count": 124,
     "dandiset_count": 5,
     "dandisets": [
       "000563",
@@ -7871,7 +7871,7 @@
       "001417",
       "001637"
     ],
-    "total_file_count": 120,
+    "total_file_count": 124,
     "total_dandiset_count": 5,
     "total_dandisets": [
       "000563",
@@ -7885,7 +7885,7 @@
     "acronym": "SSp-bfd6b",
     "name": "Primary somatosensory area, barrel field, layer 6b",
     "color_hex_triplet": "188064",
-    "file_count": 114,
+    "file_count": 118,
     "dandiset_count": 5,
     "dandisets": [
       "000563",
@@ -7894,7 +7894,7 @@
       "001417",
       "001637"
     ],
-    "total_file_count": 114,
+    "total_file_count": 118,
     "total_dandiset_count": 5,
     "total_dandisets": [
       "000563",
@@ -7908,13 +7908,13 @@
     "acronym": "VISa1",
     "name": "Anterior area, layer 1",
     "color_hex_triplet": "009FAC",
-    "file_count": 63,
+    "file_count": 69,
     "dandiset_count": 2,
     "dandisets": [
       "001417",
       "001637"
     ],
-    "total_file_count": 63,
+    "total_file_count": 69,
     "total_dandiset_count": 2,
     "total_dandisets": [
       "001417",
@@ -7925,14 +7925,14 @@
     "acronym": "VISa2/3",
     "name": "Anterior area, layer 2/3",
     "color_hex_triplet": "009FAC",
-    "file_count": 59,
+    "file_count": 64,
     "dandiset_count": 3,
     "dandisets": [
       "001260",
       "001417",
       "001637"
     ],
-    "total_file_count": 59,
+    "total_file_count": 64,
     "total_dandiset_count": 3,
     "total_dandisets": [
       "001260",
@@ -7943,6 +7943,25 @@
   "312782558": {
     "acronym": "VISa4",
     "name": "Anterior area, layer 4",
+    "color_hex_triplet": "009FAC",
+    "file_count": 46,
+    "dandiset_count": 3,
+    "dandisets": [
+      "001260",
+      "001417",
+      "001637"
+    ],
+    "total_file_count": 46,
+    "total_dandiset_count": 3,
+    "total_dandisets": [
+      "001260",
+      "001417",
+      "001637"
+    ]
+  },
+  "312782562": {
+    "acronym": "VISa5",
+    "name": "Anterior area, layer 5",
     "color_hex_triplet": "009FAC",
     "file_count": 42,
     "dandiset_count": 3,
@@ -7959,30 +7978,11 @@
       "001637"
     ]
   },
-  "312782562": {
-    "acronym": "VISa5",
-    "name": "Anterior area, layer 5",
-    "color_hex_triplet": "009FAC",
-    "file_count": 38,
-    "dandiset_count": 3,
-    "dandisets": [
-      "001260",
-      "001417",
-      "001637"
-    ],
-    "total_file_count": 38,
-    "total_dandiset_count": 3,
-    "total_dandisets": [
-      "001260",
-      "001417",
-      "001637"
-    ]
-  },
   "312782566": {
     "acronym": "VISa6a",
     "name": "Anterior area, layer 6a",
     "color_hex_triplet": "009FAC",
-    "file_count": 28,
+    "file_count": 30,
     "dandiset_count": 4,
     "dandisets": [
       "000690",
@@ -7990,7 +7990,7 @@
       "001417",
       "001637"
     ],
-    "total_file_count": 28,
+    "total_file_count": 30,
     "total_dandiset_count": 4,
     "total_dandisets": [
       "000690",
@@ -8003,7 +8003,7 @@
     "acronym": "VISa6b",
     "name": "Anterior area, layer 6b",
     "color_hex_triplet": "009FAC",
-    "file_count": 22,
+    "file_count": 24,
     "dandiset_count": 4,
     "dandisets": [
       "000690",
@@ -8011,7 +8011,7 @@
       "001417",
       "001637"
     ],
-    "total_file_count": 22,
+    "total_file_count": 24,
     "total_dandiset_count": 4,
     "total_dandisets": [
       "000690",
@@ -8024,7 +8024,7 @@
     "acronym": "ccs",
     "name": "corpus callosum, splenium",
     "color_hex_triplet": "CCCCCC",
-    "file_count": 76,
+    "file_count": 83,
     "dandiset_count": 5,
     "dandisets": [
       "000458",
@@ -8033,7 +8033,7 @@
       "001417",
       "001637"
     ],
-    "total_file_count": 76,
+    "total_file_count": 83,
     "total_dandiset_count": 5,
     "total_dandisets": [
       "000458",
@@ -8047,7 +8047,7 @@
     "acronym": "fp",
     "name": "corpus callosum, posterior forceps",
     "color_hex_triplet": "CCCCCC",
-    "file_count": 97,
+    "file_count": 104,
     "dandiset_count": 5,
     "dandisets": [
       "000458",
@@ -8056,7 +8056,7 @@
       "001417",
       "001637"
     ],
-    "total_file_count": 97,
+    "total_file_count": 104,
     "total_dandiset_count": 5,
     "total_dandisets": [
       "000458",
@@ -8095,7 +8095,7 @@
     "acronym": "PL2/3",
     "name": "Prelimbic area, layer 2/3",
     "color_hex_triplet": "2FA850",
-    "file_count": 24,
+    "file_count": 26,
     "dandiset_count": 6,
     "dandisets": [
       "000473",
@@ -8105,7 +8105,7 @@
       "001417",
       "001637"
     ],
-    "total_file_count": 24,
+    "total_file_count": 26,
     "total_dandiset_count": 6,
     "total_dandisets": [
       "000473",
@@ -8120,7 +8120,7 @@
     "acronym": "fa",
     "name": "corpus callosum, anterior forceps",
     "color_hex_triplet": "CCCCCC",
-    "file_count": 65,
+    "file_count": 69,
     "dandiset_count": 6,
     "dandisets": [
       "000458",
@@ -8130,7 +8130,7 @@
       "001417",
       "001637"
     ],
-    "total_file_count": 157,
+    "total_file_count": 161,
     "total_dandiset_count": 8,
     "total_dandisets": [
       "000409",
@@ -8147,7 +8147,7 @@
     "acronym": "ACAd6a",
     "name": "Anterior cingulate area, dorsal part, layer 6a",
     "color_hex_triplet": "40A666",
-    "file_count": 88,
+    "file_count": 95,
     "dandiset_count": 6,
     "dandisets": [
       "000473",
@@ -8157,7 +8157,7 @@
       "001417",
       "001637"
     ],
-    "total_file_count": 88,
+    "total_file_count": 95,
     "total_dandiset_count": 6,
     "total_dandisets": [
       "000473",
@@ -8172,7 +8172,7 @@
     "acronym": "ILA5",
     "name": "Infralimbic area, layer 5",
     "color_hex_triplet": "59B363",
-    "file_count": 52,
+    "file_count": 54,
     "dandiset_count": 6,
     "dandisets": [
       "000473",
@@ -8182,7 +8182,7 @@
       "001417",
       "001637"
     ],
-    "total_file_count": 52,
+    "total_file_count": 54,
     "total_dandiset_count": 6,
     "total_dandisets": [
       "000473",
@@ -8197,7 +8197,7 @@
     "acronym": "MOs6a",
     "name": "Secondary motor area, layer 6a",
     "color_hex_triplet": "1F9D5A",
-    "file_count": 120,
+    "file_count": 127,
     "dandiset_count": 7,
     "dandisets": [
       "000473",
@@ -8208,7 +8208,7 @@
       "001417",
       "001637"
     ],
-    "total_file_count": 120,
+    "total_file_count": 127,
     "total_dandiset_count": 7,
     "total_dandisets": [
       "000473",
@@ -8224,7 +8224,7 @@
     "acronym": "PL6a",
     "name": "Prelimbic area, layer 6a",
     "color_hex_triplet": "2FA850",
-    "file_count": 97,
+    "file_count": 101,
     "dandiset_count": 6,
     "dandisets": [
       "000473",
@@ -8234,7 +8234,7 @@
       "001417",
       "001637"
     ],
-    "total_file_count": 97,
+    "total_file_count": 101,
     "total_dandiset_count": 6,
     "total_dandisets": [
       "000473",
@@ -8249,7 +8249,7 @@
     "acronym": "TTd",
     "name": "Taenia tecta, dorsal part",
     "color_hex_triplet": "62D09F",
-    "file_count": 83,
+    "file_count": 86,
     "dandiset_count": 8,
     "dandisets": [
       "000458",
@@ -8261,7 +8261,7 @@
       "001417",
       "001637"
     ],
-    "total_file_count": 83,
+    "total_file_count": 86,
     "total_dandiset_count": 8,
     "total_dandisets": [
       "000458",
@@ -8278,7 +8278,7 @@
     "acronym": "ACAv6a",
     "name": "Anterior cingulate area, ventral part, 6a",
     "color_hex_triplet": "40A666",
-    "file_count": 39,
+    "file_count": 44,
     "dandiset_count": 6,
     "dandisets": [
       "000563",
@@ -8288,7 +8288,7 @@
       "001417",
       "001637"
     ],
-    "total_file_count": 39,
+    "total_file_count": 44,
     "total_dandiset_count": 6,
     "total_dandisets": [
       "000563",
@@ -8303,7 +8303,7 @@
     "acronym": "ACAv6b",
     "name": "Anterior cingulate area, ventral part, 6b",
     "color_hex_triplet": "40A666",
-    "file_count": 24,
+    "file_count": 28,
     "dandiset_count": 5,
     "dandisets": [
       "000563",
@@ -8312,7 +8312,7 @@
       "001417",
       "001637"
     ],
-    "total_file_count": 24,
+    "total_file_count": 28,
     "total_dandiset_count": 5,
     "total_dandisets": [
       "000563",
@@ -8376,7 +8376,7 @@
     "acronym": "LSc",
     "name": "Lateral septal nucleus, caudal (caudodorsal) part",
     "color_hex_triplet": "90CBED",
-    "file_count": 100,
+    "file_count": 103,
     "dandiset_count": 7,
     "dandisets": [
       "000017",
@@ -8387,7 +8387,7 @@
       "001417",
       "001637"
     ],
-    "total_file_count": 100,
+    "total_file_count": 103,
     "total_dandiset_count": 7,
     "total_dandisets": [
       "000017",
@@ -8428,7 +8428,7 @@
     "acronym": "ccb",
     "name": "corpus callosum, body",
     "color_hex_triplet": "CCCCCC",
-    "file_count": 156,
+    "file_count": 163,
     "dandiset_count": 7,
     "dandisets": [
       "000302",
@@ -8439,7 +8439,7 @@
       "001637",
       "001701"
     ],
-    "total_file_count": 156,
+    "total_file_count": 163,
     "total_dandiset_count": 7,
     "total_dandisets": [
       "000302",
@@ -8455,7 +8455,7 @@
     "acronym": "ILA1",
     "name": "Infralimbic area, layer 1",
     "color_hex_triplet": "59B363",
-    "file_count": 20,
+    "file_count": 23,
     "dandiset_count": 5,
     "dandisets": [
       "000690",
@@ -8464,7 +8464,7 @@
       "001417",
       "001637"
     ],
-    "total_file_count": 20,
+    "total_file_count": 23,
     "total_dandiset_count": 5,
     "total_dandisets": [
       "000690",
@@ -8478,7 +8478,7 @@
     "acronym": "ILA2/3",
     "name": "Infralimbic area, layer 2/3",
     "color_hex_triplet": "59B363",
-    "file_count": 34,
+    "file_count": 37,
     "dandiset_count": 6,
     "dandisets": [
       "000473",
@@ -8488,7 +8488,7 @@
       "001417",
       "001637"
     ],
-    "total_file_count": 34,
+    "total_file_count": 37,
     "total_dandiset_count": 6,
     "total_dandisets": [
       "000473",
@@ -8503,7 +8503,7 @@
     "acronym": "PL6b",
     "name": "Prelimbic area, layer 6b",
     "color_hex_triplet": "2FA850",
-    "file_count": 30,
+    "file_count": 33,
     "dandiset_count": 5,
     "dandisets": [
       "000473",
@@ -8512,7 +8512,7 @@
       "001417",
       "001637"
     ],
-    "total_file_count": 30,
+    "total_file_count": 33,
     "total_dandiset_count": 5,
     "total_dandisets": [
       "000473",
@@ -8526,7 +8526,7 @@
     "acronym": "MOs6b",
     "name": "Secondary motor area, layer 6b",
     "color_hex_triplet": "1F9D5A",
-    "file_count": 39,
+    "file_count": 43,
     "dandiset_count": 5,
     "dandisets": [
       "000473",
@@ -8535,7 +8535,7 @@
       "001417",
       "001637"
     ],
-    "total_file_count": 39,
+    "total_file_count": 43,
     "total_dandiset_count": 5,
     "total_dandisets": [
       "000473",
@@ -8572,7 +8572,7 @@
     "acronym": "MOp1",
     "name": "Primary motor area, Layer 1",
     "color_hex_triplet": "1F9D5A",
-    "file_count": 66,
+    "file_count": 71,
     "dandiset_count": 5,
     "dandisets": [
       "000563",
@@ -8581,7 +8581,7 @@
       "001326",
       "001637"
     ],
-    "total_file_count": 66,
+    "total_file_count": 71,
     "total_dandiset_count": 5,
     "total_dandisets": [
       "000563",
@@ -8595,7 +8595,7 @@
     "acronym": "MOp2/3",
     "name": "Primary motor area, Layer 2/3",
     "color_hex_triplet": "1F9D5A",
-    "file_count": 69,
+    "file_count": 74,
     "dandiset_count": 5,
     "dandisets": [
       "000563",
@@ -8604,7 +8604,7 @@
       "001326",
       "001637"
     ],
-    "total_file_count": 69,
+    "total_file_count": 74,
     "total_dandiset_count": 5,
     "total_dandisets": [
       "000563",
@@ -8617,6 +8617,29 @@
   "648": {
     "acronym": "MOp5",
     "name": "Primary motor area, Layer 5",
+    "color_hex_triplet": "1F9D5A",
+    "file_count": 71,
+    "dandiset_count": 5,
+    "dandisets": [
+      "000563",
+      "000690",
+      "001260",
+      "001326",
+      "001637"
+    ],
+    "total_file_count": 71,
+    "total_dandiset_count": 5,
+    "total_dandisets": [
+      "000563",
+      "000690",
+      "001260",
+      "001326",
+      "001637"
+    ]
+  },
+  "844": {
+    "acronym": "MOp6a",
+    "name": "Primary motor area, Layer 6a",
     "color_hex_triplet": "1F9D5A",
     "file_count": 66,
     "dandiset_count": 5,
@@ -8637,34 +8660,11 @@
       "001637"
     ]
   },
-  "844": {
-    "acronym": "MOp6a",
-    "name": "Primary motor area, Layer 6a",
-    "color_hex_triplet": "1F9D5A",
-    "file_count": 61,
-    "dandiset_count": 5,
-    "dandisets": [
-      "000563",
-      "000690",
-      "001260",
-      "001326",
-      "001637"
-    ],
-    "total_file_count": 61,
-    "total_dandiset_count": 5,
-    "total_dandisets": [
-      "000563",
-      "000690",
-      "001260",
-      "001326",
-      "001637"
-    ]
-  },
   "882": {
     "acronym": "MOp6b",
     "name": "Primary motor area, Layer 6b",
     "color_hex_triplet": "1F9D5A",
-    "file_count": 46,
+    "file_count": 48,
     "dandiset_count": 4,
     "dandisets": [
       "000563",
@@ -8672,7 +8672,7 @@
       "001326",
       "001637"
     ],
-    "total_file_count": 46,
+    "total_file_count": 48,
     "total_dandiset_count": 4,
     "total_dandisets": [
       "000563",
@@ -8685,13 +8685,13 @@
     "acronym": "SSp-tr5",
     "name": "Primary somatosensory area, trunk, layer 5",
     "color_hex_triplet": "188064",
-    "file_count": 17,
+    "file_count": 19,
     "dandiset_count": 2,
     "dandisets": [
       "001260",
       "001637"
     ],
-    "total_file_count": 17,
+    "total_file_count": 19,
     "total_dandiset_count": 2,
     "total_dandisets": [
       "001260",
@@ -8702,7 +8702,7 @@
     "acronym": "ILA6a",
     "name": "Infralimbic area, layer 6a",
     "color_hex_triplet": "59B363",
-    "file_count": 56,
+    "file_count": 57,
     "dandiset_count": 4,
     "dandisets": [
       "000473",
@@ -8710,7 +8710,7 @@
       "001260",
       "001637"
     ],
-    "total_file_count": 56,
+    "total_file_count": 57,
     "total_dandiset_count": 4,
     "total_dandisets": [
       "000473",
@@ -8723,13 +8723,13 @@
     "acronym": "ACAd6b",
     "name": "Anterior cingulate area, dorsal part, layer 6b",
     "color_hex_triplet": "40A666",
-    "file_count": 8,
+    "file_count": 9,
     "dandiset_count": 2,
     "dandisets": [
       "001326",
       "001637"
     ],
-    "total_file_count": 8,
+    "total_file_count": 9,
     "total_dandiset_count": 2,
     "total_dandisets": [
       "001326",
@@ -8740,13 +8740,13 @@
     "acronym": "AMd",
     "name": "Anteromedial nucleus, dorsal part",
     "color_hex_triplet": "FF909F",
-    "file_count": 14,
+    "file_count": 15,
     "dandiset_count": 2,
     "dandisets": [
       "001051",
       "001637"
     ],
-    "total_file_count": 14,
+    "total_file_count": 15,
     "total_dandiset_count": 2,
     "total_dandisets": [
       "001051",
@@ -8757,7 +8757,7 @@
     "acronym": "ORBm6a",
     "name": "Orbital area, medial part, layer 6a",
     "color_hex_triplet": "248A5E",
-    "file_count": 37,
+    "file_count": 38,
     "dandiset_count": 5,
     "dandisets": [
       "000473",
@@ -8766,7 +8766,7 @@
       "001326",
       "001637"
     ],
-    "total_file_count": 37,
+    "total_file_count": 38,
     "total_dandiset_count": 5,
     "total_dandisets": [
       "000473",
@@ -8780,7 +8780,7 @@
     "acronym": "ORBvl6a",
     "name": "Orbital area, ventrolateral part, layer 6a",
     "color_hex_triplet": "248A5E",
-    "file_count": 27,
+    "file_count": 28,
     "dandiset_count": 4,
     "dandisets": [
       "000473",
@@ -8788,7 +8788,7 @@
       "001260",
       "001637"
     ],
-    "total_file_count": 27,
+    "total_file_count": 28,
     "total_dandiset_count": 4,
     "total_dandisets": [
       "000473",
@@ -8801,14 +8801,14 @@
     "acronym": "SSp-ll6a",
     "name": "Primary somatosensory area, lower limb, layer 6a",
     "color_hex_triplet": "188064",
-    "file_count": 5,
+    "file_count": 6,
     "dandiset_count": 3,
     "dandisets": [
       "001260",
       "001326",
       "001637"
     ],
-    "total_file_count": 5,
+    "total_file_count": 6,
     "total_dandiset_count": 3,
     "total_dandisets": [
       "001260",
@@ -8820,14 +8820,14 @@
     "acronym": "SSp-ll6b",
     "name": "Primary somatosensory area, lower limb, layer 6b",
     "color_hex_triplet": "188064",
-    "file_count": 5,
+    "file_count": 6,
     "dandiset_count": 3,
     "dandisets": [
       "001260",
       "001326",
       "001637"
     ],
-    "total_file_count": 5,
+    "total_file_count": 6,
     "total_dandiset_count": 3,
     "total_dandisets": [
       "001260",
@@ -8839,12 +8839,12 @@
     "acronym": "SSp-tr1",
     "name": "Primary somatosensory area, trunk, layer 1",
     "color_hex_triplet": "188064",
-    "file_count": 4,
+    "file_count": 6,
     "dandiset_count": 1,
     "dandisets": [
       "001637"
     ],
-    "total_file_count": 4,
+    "total_file_count": 6,
     "total_dandiset_count": 1,
     "total_dandisets": [
       "001637"
@@ -8853,23 +8853,6 @@
   "670": {
     "acronym": "SSp-tr2/3",
     "name": "Primary somatosensory area, trunk, layer 2/3",
-    "color_hex_triplet": "188064",
-    "file_count": 10,
-    "dandiset_count": 2,
-    "dandisets": [
-      "001260",
-      "001637"
-    ],
-    "total_file_count": 10,
-    "total_dandiset_count": 2,
-    "total_dandisets": [
-      "001260",
-      "001637"
-    ]
-  },
-  "1086": {
-    "acronym": "SSp-tr4",
-    "name": "Primary somatosensory area, trunk, layer 4",
     "color_hex_triplet": "188064",
     "file_count": 12,
     "dandiset_count": 2,
@@ -8884,18 +8867,35 @@
       "001637"
     ]
   },
+  "1086": {
+    "acronym": "SSp-tr4",
+    "name": "Primary somatosensory area, trunk, layer 4",
+    "color_hex_triplet": "188064",
+    "file_count": 13,
+    "dandiset_count": 2,
+    "dandisets": [
+      "001260",
+      "001637"
+    ],
+    "total_file_count": 13,
+    "total_dandiset_count": 2,
+    "total_dandisets": [
+      "001260",
+      "001637"
+    ]
+  },
   "9": {
     "acronym": "SSp-tr6a",
     "name": "Primary somatosensory area, trunk, layer 6a",
     "color_hex_triplet": "188064",
-    "file_count": 32,
+    "file_count": 34,
     "dandiset_count": 3,
     "dandisets": [
       "001260",
       "001637",
       "001701"
     ],
-    "total_file_count": 32,
+    "total_file_count": 34,
     "total_dandiset_count": 3,
     "total_dandisets": [
       "001260",
@@ -8937,14 +8937,14 @@
     "acronym": "SSp-tr6b",
     "name": "Primary somatosensory area, trunk, layer 6b",
     "color_hex_triplet": "188064",
-    "file_count": 46,
+    "file_count": 47,
     "dandiset_count": 3,
     "dandisets": [
       "001260",
       "001637",
       "001701"
     ],
-    "total_file_count": 46,
+    "total_file_count": 47,
     "total_dandiset_count": 3,
     "total_dandisets": [
       "001260",
@@ -9146,7 +9146,7 @@
       "000458",
       "001868"
     ],
-    "total_file_count": 219,
+    "total_file_count": 229,
     "total_dandiset_count": 5,
     "total_dandisets": [
       "000458",
@@ -9166,7 +9166,7 @@
       "000458",
       "001791"
     ],
-    "total_file_count": 667,
+    "total_file_count": 683,
     "total_dandiset_count": 7,
     "total_dandisets": [
       "000458",
@@ -9187,7 +9187,7 @@
     "dandisets": [
       "000017"
     ],
-    "total_file_count": 583,
+    "total_file_count": 603,
     "total_dandiset_count": 10,
     "total_dandisets": [
       "000017",
@@ -9216,7 +9216,7 @@
       "000690",
       "001051"
     ],
-    "total_file_count": 1789,
+    "total_file_count": 1809,
     "total_dandiset_count": 16,
     "total_dandisets": [
       "000017",
@@ -9246,7 +9246,7 @@
     "dandisets": [
       "000017"
     ],
-    "total_file_count": 387,
+    "total_file_count": 396,
     "total_dandiset_count": 10,
     "total_dandisets": [
       "000017",
@@ -9272,7 +9272,7 @@
       "000458",
       "001051"
     ],
-    "total_file_count": 890,
+    "total_file_count": 922,
     "total_dandiset_count": 10,
     "total_dandisets": [
       "000017",
@@ -9296,7 +9296,7 @@
     "dandisets": [
       "000017"
     ],
-    "total_file_count": 497,
+    "total_file_count": 503,
     "total_dandiset_count": 14,
     "total_dandisets": [
       "000017",
@@ -9346,7 +9346,7 @@
       "000022",
       "001051"
     ],
-    "total_file_count": 583,
+    "total_file_count": 598,
     "total_dandiset_count": 14,
     "total_dandisets": [
       "000017",
@@ -9377,7 +9377,7 @@
       "000579",
       "001051"
     ],
-    "total_file_count": 379,
+    "total_file_count": 402,
     "total_dandiset_count": 8,
     "total_dandisets": [
       "000017",
@@ -9399,7 +9399,7 @@
     "dandisets": [
       "000017"
     ],
-    "total_file_count": 214,
+    "total_file_count": 216,
     "total_dandiset_count": 7,
     "total_dandisets": [
       "000017",
@@ -9422,7 +9422,7 @@
       "000458",
       "001051"
     ],
-    "total_file_count": 309,
+    "total_file_count": 321,
     "total_dandiset_count": 9,
     "total_dandisets": [
       "000017",
@@ -9462,7 +9462,7 @@
       "000017",
       "001051"
     ],
-    "total_file_count": 1163,
+    "total_file_count": 1191,
     "total_dandiset_count": 12,
     "total_dandisets": [
       "000017",
@@ -9511,7 +9511,7 @@
       "000458",
       "001051"
     ],
-    "total_file_count": 212,
+    "total_file_count": 221,
     "total_dandiset_count": 9,
     "total_dandisets": [
       "000017",
@@ -9534,7 +9534,7 @@
     "dandisets": [
       "000017"
     ],
-    "total_file_count": 93,
+    "total_file_count": 96,
     "total_dandiset_count": 9,
     "total_dandisets": [
       "000017",
@@ -9558,7 +9558,7 @@
       "000017",
       "001051"
     ],
-    "total_file_count": 74,
+    "total_file_count": 75,
     "total_dandiset_count": 7,
     "total_dandisets": [
       "000017",
@@ -9624,7 +9624,7 @@
       "000458",
       "001051"
     ],
-    "total_file_count": 462,
+    "total_file_count": 484,
     "total_dandiset_count": 8,
     "total_dandisets": [
       "000017",
@@ -9669,7 +9669,7 @@
       "000017",
       "000488"
     ],
-    "total_file_count": 1089,
+    "total_file_count": 1093,
     "total_dandiset_count": 14,
     "total_dandisets": [
       "000017",
@@ -9803,7 +9803,7 @@
     "dandisets": [
       "000017"
     ],
-    "total_file_count": 3756,
+    "total_file_count": 3777,
     "total_dandiset_count": 30,
     "total_dandisets": [
       "000017",
@@ -9848,7 +9848,7 @@
       "000021",
       "000022"
     ],
-    "total_file_count": 10205,
+    "total_file_count": 10267,
     "total_dandiset_count": 28,
     "total_dandisets": [
       "000017",
@@ -9992,7 +9992,7 @@
     "dandisets": [
       "000165"
     ],
-    "total_file_count": 1165,
+    "total_file_count": 1195,
     "total_dandiset_count": 10,
     "total_dandisets": [
       "000165",
@@ -10434,7 +10434,7 @@
       "000458",
       "001051"
     ],
-    "total_file_count": 352,
+    "total_file_count": 356,
     "total_dandiset_count": 11,
     "total_dandisets": [
       "000021",
@@ -10459,7 +10459,7 @@
     "dandisets": [
       "000458"
     ],
-    "total_file_count": 41,
+    "total_file_count": 43,
     "total_dandiset_count": 4,
     "total_dandisets": [
       "000458",
@@ -10478,7 +10478,7 @@
       "000458",
       "001051"
     ],
-    "total_file_count": 330,
+    "total_file_count": 341,
     "total_dandiset_count": 9,
     "total_dandisets": [
       "000458",
@@ -10502,7 +10502,7 @@
       "000458",
       "001051"
     ],
-    "total_file_count": 231,
+    "total_file_count": 240,
     "total_dandiset_count": 9,
     "total_dandisets": [
       "000458",
@@ -10983,7 +10983,7 @@
     "dandisets": [
       "000579"
     ],
-    "total_file_count": 62,
+    "total_file_count": 63,
     "total_dandiset_count": 3,
     "total_dandisets": [
       "000579",
@@ -11437,7 +11437,7 @@
     "dandisets": [
       "001051"
     ],
-    "total_file_count": 79,
+    "total_file_count": 80,
     "total_dandiset_count": 6,
     "total_dandisets": [
       "000473",
@@ -12427,7 +12427,7 @@
     "file_count": 0,
     "dandiset_count": 0,
     "dandisets": [],
-    "total_file_count": 16841,
+    "total_file_count": 17060,
     "total_dandiset_count": 33,
     "total_dandisets": [
       "000017",
@@ -12472,7 +12472,7 @@
     "file_count": 0,
     "dandiset_count": 0,
     "dandisets": [],
-    "total_file_count": 25332,
+    "total_file_count": 25606,
     "total_dandiset_count": 47,
     "total_dandisets": [
       "000017",
@@ -12531,7 +12531,7 @@
     "file_count": 0,
     "dandiset_count": 0,
     "dandisets": [],
-    "total_file_count": 25462,
+    "total_file_count": 25736,
     "total_dandiset_count": 47,
     "total_dandisets": [
       "000017",
@@ -12590,7 +12590,7 @@
     "file_count": 0,
     "dandiset_count": 0,
     "dandisets": [],
-    "total_file_count": 27694,
+    "total_file_count": 27989,
     "total_dandiset_count": 49,
     "total_dandisets": [
       "000017",
@@ -12651,7 +12651,7 @@
     "file_count": 0,
     "dandiset_count": 0,
     "dandisets": [],
-    "total_file_count": 39616,
+    "total_file_count": 39978,
     "total_dandiset_count": 54,
     "total_dandisets": [
       "000017",
@@ -12717,7 +12717,7 @@
     "file_count": 0,
     "dandiset_count": 0,
     "dandisets": [],
-    "total_file_count": 45305,
+    "total_file_count": 45765,
     "total_dandiset_count": 56,
     "total_dandisets": [
       "000017",
@@ -12785,7 +12785,7 @@
     "file_count": 0,
     "dandiset_count": 0,
     "dandisets": [],
-    "total_file_count": 1560,
+    "total_file_count": 1588,
     "total_dandiset_count": 18,
     "total_dandisets": [
       "000017",
@@ -12815,7 +12815,7 @@
     "file_count": 0,
     "dandiset_count": 0,
     "dandisets": [],
-    "total_file_count": 276,
+    "total_file_count": 277,
     "total_dandiset_count": 11,
     "total_dandisets": [
       "000017",
@@ -12838,7 +12838,7 @@
     "file_count": 0,
     "dandiset_count": 0,
     "dandisets": [],
-    "total_file_count": 6454,
+    "total_file_count": 6515,
     "total_dandiset_count": 22,
     "total_dandisets": [
       "000017",
@@ -12872,7 +12872,7 @@
     "file_count": 0,
     "dandiset_count": 0,
     "dandisets": [],
-    "total_file_count": 11233,
+    "total_file_count": 11300,
     "total_dandiset_count": 25,
     "total_dandisets": [
       "000017",
@@ -12938,7 +12938,7 @@
     "file_count": 0,
     "dandiset_count": 0,
     "dandisets": [],
-    "total_file_count": 1753,
+    "total_file_count": 1794,
     "total_dandiset_count": 11,
     "total_dandisets": [
       "000165",
@@ -12961,7 +12961,7 @@
     "file_count": 0,
     "dandiset_count": 0,
     "dandisets": [],
-    "total_file_count": 953,
+    "total_file_count": 967,
     "total_dandiset_count": 12,
     "total_dandisets": [
       "000021",
@@ -12985,7 +12985,7 @@
     "file_count": 0,
     "dandiset_count": 0,
     "dandisets": [],
-    "total_file_count": 81,
+    "total_file_count": 82,
     "total_dandiset_count": 4,
     "total_dandisets": [
       "000302",
@@ -13001,7 +13001,7 @@
     "file_count": 0,
     "dandiset_count": 0,
     "dandisets": [],
-    "total_file_count": 200,
+    "total_file_count": 201,
     "total_dandiset_count": 6,
     "total_dandisets": [
       "000302",
@@ -13019,7 +13019,7 @@
     "file_count": 0,
     "dandiset_count": 0,
     "dandisets": [],
-    "total_file_count": 1499,
+    "total_file_count": 1528,
     "total_dandiset_count": 12,
     "total_dandisets": [
       "000165",
@@ -13057,7 +13057,7 @@
     "file_count": 0,
     "dandiset_count": 0,
     "dandisets": [],
-    "total_file_count": 563,
+    "total_file_count": 569,
     "total_dandiset_count": 10,
     "total_dandisets": [
       "000302",
@@ -13079,7 +13079,7 @@
     "file_count": 0,
     "dandiset_count": 0,
     "dandisets": [],
-    "total_file_count": 1347,
+    "total_file_count": 1354,
     "total_dandiset_count": 17,
     "total_dandisets": [
       "000017",
@@ -13108,7 +13108,7 @@
     "file_count": 0,
     "dandiset_count": 0,
     "dandisets": [],
-    "total_file_count": 3029,
+    "total_file_count": 3057,
     "total_dandiset_count": 18,
     "total_dandisets": [
       "000017",
@@ -13138,7 +13138,7 @@
     "file_count": 0,
     "dandiset_count": 0,
     "dandisets": [],
-    "total_file_count": 1911,
+    "total_file_count": 1916,
     "total_dandiset_count": 17,
     "total_dandisets": [
       "000017",
@@ -13167,7 +13167,7 @@
     "file_count": 0,
     "dandiset_count": 0,
     "dandisets": [],
-    "total_file_count": 903,
+    "total_file_count": 920,
     "total_dandiset_count": 9,
     "total_dandisets": [
       "000165",
@@ -13188,7 +13188,7 @@
     "file_count": 0,
     "dandiset_count": 0,
     "dandisets": [],
-    "total_file_count": 1299,
+    "total_file_count": 1327,
     "total_dandiset_count": 10,
     "total_dandisets": [
       "000165",
@@ -13210,7 +13210,7 @@
     "file_count": 0,
     "dandiset_count": 0,
     "dandisets": [],
-    "total_file_count": 272,
+    "total_file_count": 278,
     "total_dandiset_count": 5,
     "total_dandisets": [
       "000409",
@@ -13227,7 +13227,7 @@
     "file_count": 0,
     "dandiset_count": 0,
     "dandisets": [],
-    "total_file_count": 141,
+    "total_file_count": 144,
     "total_dandiset_count": 5,
     "total_dandisets": [
       "000409",
@@ -13244,7 +13244,7 @@
     "file_count": 0,
     "dandiset_count": 0,
     "dandisets": [],
-    "total_file_count": 458,
+    "total_file_count": 467,
     "total_dandiset_count": 7,
     "total_dandisets": [
       "000409",
@@ -13301,7 +13301,7 @@
     "file_count": 0,
     "dandiset_count": 0,
     "dandisets": [],
-    "total_file_count": 1125,
+    "total_file_count": 1131,
     "total_dandiset_count": 5,
     "total_dandisets": [
       "000409",
@@ -13362,7 +13362,7 @@
     "file_count": 0,
     "dandiset_count": 0,
     "dandisets": [],
-    "total_file_count": 5600,
+    "total_file_count": 5641,
     "total_dandiset_count": 30,
     "total_dandisets": [
       "000017",
@@ -13428,7 +13428,7 @@
     "file_count": 0,
     "dandiset_count": 0,
     "dandisets": [],
-    "total_file_count": 452,
+    "total_file_count": 460,
     "total_dandiset_count": 13,
     "total_dandisets": [
       "000017",
@@ -13453,7 +13453,7 @@
     "file_count": 0,
     "dandiset_count": 0,
     "dandisets": [],
-    "total_file_count": 186,
+    "total_file_count": 187,
     "total_dandiset_count": 7,
     "total_dandisets": [
       "000017",
@@ -13472,7 +13472,7 @@
     "file_count": 0,
     "dandiset_count": 0,
     "dandisets": [],
-    "total_file_count": 151,
+    "total_file_count": 154,
     "total_dandiset_count": 8,
     "total_dandisets": [
       "000017",
@@ -13492,7 +13492,7 @@
     "file_count": 0,
     "dandiset_count": 0,
     "dandisets": [],
-    "total_file_count": 668,
+    "total_file_count": 673,
     "total_dandiset_count": 16,
     "total_dandisets": [
       "000017",
@@ -13520,7 +13520,7 @@
     "file_count": 0,
     "dandiset_count": 0,
     "dandisets": [],
-    "total_file_count": 1820,
+    "total_file_count": 1846,
     "total_dandiset_count": 17,
     "total_dandisets": [
       "000017",
@@ -13549,7 +13549,7 @@
     "file_count": 0,
     "dandiset_count": 0,
     "dandisets": [],
-    "total_file_count": 420,
+    "total_file_count": 424,
     "total_dandiset_count": 13,
     "total_dandisets": [
       "000017",
@@ -13845,7 +13845,7 @@
     "file_count": 0,
     "dandiset_count": 0,
     "dandisets": [],
-    "total_file_count": 237,
+    "total_file_count": 240,
     "total_dandiset_count": 14,
     "total_dandisets": [
       "000017",
@@ -13885,7 +13885,7 @@
     "file_count": 0,
     "dandiset_count": 0,
     "dandisets": [],
-    "total_file_count": 394,
+    "total_file_count": 398,
     "total_dandiset_count": 12,
     "total_dandisets": [
       "000017",
@@ -13909,7 +13909,7 @@
     "file_count": 0,
     "dandiset_count": 0,
     "dandisets": [],
-    "total_file_count": 2232,
+    "total_file_count": 2253,
     "total_dandiset_count": 15,
     "total_dandisets": [
       "000017",
@@ -14013,7 +14013,7 @@
     "file_count": 0,
     "dandiset_count": 0,
     "dandisets": [],
-    "total_file_count": 162,
+    "total_file_count": 168,
     "total_dandiset_count": 4,
     "total_dandisets": [
       "000409",
@@ -14073,7 +14073,7 @@
     "file_count": 0,
     "dandiset_count": 0,
     "dandisets": [],
-    "total_file_count": 511,
+    "total_file_count": 521,
     "total_dandiset_count": 12,
     "total_dandisets": [
       "000017",
@@ -14129,7 +14129,7 @@
     "file_count": 0,
     "dandiset_count": 0,
     "dandisets": [],
-    "total_file_count": 382,
+    "total_file_count": 386,
     "total_dandiset_count": 12,
     "total_dandisets": [
       "000021",
@@ -14166,7 +14166,7 @@
     "file_count": 0,
     "dandiset_count": 0,
     "dandisets": [],
-    "total_file_count": 46,
+    "total_file_count": 47,
     "total_dandiset_count": 8,
     "total_dandisets": [
       "000017",
@@ -14186,7 +14186,7 @@
     "file_count": 0,
     "dandiset_count": 0,
     "dandisets": [],
-    "total_file_count": 93,
+    "total_file_count": 94,
     "total_dandiset_count": 9,
     "total_dandisets": [
       "000017",
@@ -14276,7 +14276,7 @@
     "file_count": 0,
     "dandiset_count": 0,
     "dandisets": [],
-    "total_file_count": 1080,
+    "total_file_count": 1101,
     "total_dandiset_count": 15,
     "total_dandisets": [
       "000017",
@@ -14303,7 +14303,7 @@
     "file_count": 0,
     "dandiset_count": 0,
     "dandisets": [],
-    "total_file_count": 1352,
+    "total_file_count": 1406,
     "total_dandiset_count": 10,
     "total_dandisets": [
       "000017",
@@ -14325,7 +14325,7 @@
     "file_count": 0,
     "dandiset_count": 0,
     "dandisets": [],
-    "total_file_count": 1182,
+    "total_file_count": 1210,
     "total_dandiset_count": 12,
     "total_dandisets": [
       "000017",
