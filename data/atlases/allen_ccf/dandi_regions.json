@@ -6306,138 +6306,332 @@
       "001417"
     ]
   },
-  "1072": {
-    "acronym": "MGd",
-    "name": "Medial geniculate complex, dorsal part",
-    "color_hex_triplet": "FF8084",
-    "file_count": 192,
-    "dandiset_count": 13,
+  "39": {
+    "acronym": "ACAd",
+    "name": "Anterior cingulate area, dorsal part",
+    "color_hex_triplet": "40A666",
+    "file_count": 130,
+    "dandiset_count": 2,
     "dandisets": [
-      "000021",
-      "000022",
-      "000248",
-      "000253",
       "000458",
-      "000563",
-      "000690",
-      "001051",
-      "001191",
-      "001326",
-      "001417",
-      "001421",
-      "001637"
+      "001051"
     ],
-    "total_file_count": 192,
-    "total_dandiset_count": 13,
+    "total_file_count": 411,
+    "total_dandiset_count": 9,
     "total_dandisets": [
-      "000021",
-      "000022",
-      "000248",
-      "000253",
       "000458",
+      "000473",
       "000563",
       "000690",
       "001051",
-      "001191",
+      "001260",
       "001326",
       "001417",
-      "001421",
       "001637"
     ]
   },
-  "671": {
-    "acronym": "RSPagl1",
-    "name": "Retrosplenial area, lateral agranular part, layer 1",
-    "color_hex_triplet": "1AA698",
-    "file_count": 31,
-    "dandiset_count": 5,
+  "726": {
+    "acronym": "DG",
+    "name": "Dentate gyrus",
+    "color_hex_triplet": "7ED04B",
+    "file_count": 646,
+    "dandiset_count": 6,
     "dandisets": [
+      "000017",
+      "000021",
+      "000022",
+      "000248",
+      "000690",
+      "001051"
+    ],
+    "total_file_count": 1941,
+    "total_dandiset_count": 16,
+    "total_dandisets": [
+      "000017",
+      "000021",
+      "000022",
+      "000248",
+      "000253",
+      "000302",
+      "000458",
       "000563",
       "000690",
+      "001051",
       "001191",
-      "001420",
-      "001637"
+      "001260",
+      "001326",
+      "001417",
+      "001637",
+      "001701"
+    ]
+  },
+  "184": {
+    "acronym": "FRP",
+    "name": "Frontal pole, cerebral cortex",
+    "color_hex_triplet": "268F45",
+    "file_count": 7,
+    "dandiset_count": 1,
+    "dandisets": [
+      "001051"
     ],
-    "total_file_count": 31,
+    "total_file_count": 40,
     "total_dandiset_count": 5,
     "total_dandisets": [
-      "000563",
+      "000473",
       "000690",
-      "001191",
-      "001420",
+      "001051",
+      "001260",
+      "001326"
+    ]
+  },
+  "44": {
+    "acronym": "ILA",
+    "name": "Infralimbic area",
+    "color_hex_triplet": "59B363",
+    "file_count": 40,
+    "dandiset_count": 3,
+    "dandisets": [
+      "000017",
+      "000458",
+      "001051"
+    ],
+    "total_file_count": 268,
+    "total_dandiset_count": 9,
+    "total_dandisets": [
+      "000017",
+      "000458",
+      "000473",
+      "000690",
+      "001051",
+      "001260",
+      "001326",
+      "001417",
       "001637"
     ]
   },
-  "965": {
-    "acronym": "RSPagl2/3",
-    "name": "Retrosplenial area, lateral agranular part, layer 2/3",
-    "color_hex_triplet": "1AA698",
-    "file_count": 33,
-    "dandiset_count": 6,
+  "170": {
+    "acronym": "LGd",
+    "name": "Dorsal part of the lateral geniculate complex",
+    "color_hex_triplet": "FF8084",
+    "file_count": 212,
+    "dandiset_count": 4,
     "dandisets": [
+      "000017",
+      "000021",
+      "000022",
+      "001051"
+    ],
+    "total_file_count": 704,
+    "total_dandiset_count": 14,
+    "total_dandisets": [
+      "000017",
+      "000021",
+      "000022",
+      "000248",
+      "000253",
+      "000458",
       "000563",
       "000690",
+      "001051",
       "001191",
+      "001260",
       "001326",
-      "001420",
+      "001417",
+      "001637"
+    ]
+  },
+  "993": {
+    "acronym": "MOs",
+    "name": "Secondary motor area",
+    "color_hex_triplet": "1F9D5A",
+    "file_count": 227,
+    "dandiset_count": 3,
+    "dandisets": [
+      "000017",
+      "000458",
+      "001051"
+    ],
+    "total_file_count": 1148,
+    "total_dandiset_count": 10,
+    "total_dandisets": [
+      "000017",
+      "000458",
+      "000473",
+      "000563",
+      "000690",
+      "001051",
+      "001260",
+      "001326",
+      "001417",
+      "001637"
+    ]
+  },
+  "731": {
+    "acronym": "ORBm",
+    "name": "Orbital area, medial part",
+    "color_hex_triplet": "248A5E",
+    "file_count": 12,
+    "dandiset_count": 2,
+    "dandisets": [
+      "000017",
+      "001051"
+    ],
+    "total_file_count": 75,
+    "total_dandiset_count": 7,
+    "total_dandisets": [
+      "000017",
+      "000473",
+      "000690",
+      "001051",
+      "001260",
+      "001326",
+      "001637"
+    ]
+  },
+  "972": {
+    "acronym": "PL",
+    "name": "Prelimbic area",
+    "color_hex_triplet": "2FA850",
+    "file_count": 59,
+    "dandiset_count": 3,
+    "dandisets": [
+      "000017",
+      "000458",
+      "001051"
+    ],
+    "total_file_count": 405,
+    "total_dandiset_count": 9,
+    "total_dandisets": [
+      "000017",
+      "000458",
+      "000473",
+      "000690",
+      "001051",
+      "001260",
+      "001326",
+      "001417",
+      "001637"
+    ]
+  },
+  "322": {
+    "acronym": "SSp",
+    "name": "Primary somatosensory area",
+    "color_hex_triplet": "188064",
+    "file_count": 202,
+    "dandiset_count": 2,
+    "dandisets": [
+      "000017",
+      "001051"
+    ],
+    "total_file_count": 1389,
+    "total_dandiset_count": 12,
+    "total_dandisets": [
+      "000017",
+      "000458",
+      "000563",
+      "000690",
+      "001051",
+      "001260",
+      "001326",
+      "001417",
+      "001637",
+      "001701",
+      "001791",
+      "001868"
+    ]
+  },
+  "597": {
+    "acronym": "TTd",
+    "name": "Taenia tecta, dorsal part",
+    "color_hex_triplet": "62D09F",
+    "file_count": 104,
+    "dandiset_count": 8,
+    "dandisets": [
+      "000458",
+      "000473",
+      "000690",
+      "001051",
+      "001260",
+      "001326",
+      "001417",
       "001637"
     ],
-    "total_file_count": 33,
-    "total_dandiset_count": 6,
+    "total_file_count": 104,
+    "total_dandiset_count": 8,
     "total_dandisets": [
-      "000563",
+      "000458",
+      "000473",
       "000690",
-      "001191",
+      "001051",
+      "001260",
       "001326",
-      "001420",
+      "001417",
       "001637"
     ]
   },
-  "774": {
-    "acronym": "RSPagl5",
-    "name": "Retrosplenial area, lateral agranular part, layer 5",
-    "color_hex_triplet": "1AA698",
-    "file_count": 34,
-    "dandiset_count": 6,
+  "48": {
+    "acronym": "ACAv",
+    "name": "Anterior cingulate area, ventral part",
+    "color_hex_triplet": "40A666",
+    "file_count": 89,
+    "dandiset_count": 2,
     "dandisets": [
-      "000563",
-      "000690",
-      "001191",
-      "001326",
-      "001420",
-      "001637"
+      "000458",
+      "001051"
     ],
-    "total_file_count": 34,
-    "total_dandiset_count": 6,
+    "total_file_count": 296,
+    "total_dandiset_count": 9,
     "total_dandisets": [
+      "000458",
+      "000473",
       "000563",
       "000690",
-      "001191",
+      "001051",
+      "001260",
       "001326",
-      "001420",
+      "001417",
       "001637"
     ]
   },
-  "590": {
-    "acronym": "RSPv6a",
-    "name": "Retrosplenial area, ventral part, layer 6a",
+  "879": {
+    "acronym": "RSPd",
+    "name": "Retrosplenial area, dorsal part",
     "color_hex_triplet": "1AA698",
-    "file_count": 43,
-    "dandiset_count": 6,
+    "file_count": 122,
+    "dandiset_count": 1,
     "dandisets": [
+      "001051"
+    ],
+    "total_file_count": 412,
+    "total_dandiset_count": 9,
+    "total_dandisets": [
       "000248",
       "000563",
       "000690",
+      "001051",
       "001191",
       "001326",
-      "001637"
+      "001420",
+      "001637",
+      "001701"
+    ]
+  },
+  "886": {
+    "acronym": "RSPv",
+    "name": "Retrosplenial area, ventral part",
+    "color_hex_triplet": "1AA698",
+    "file_count": 90,
+    "dandiset_count": 1,
+    "dandisets": [
+      "001051"
     ],
-    "total_file_count": 43,
-    "total_dandiset_count": 6,
+    "total_file_count": 303,
+    "total_dandiset_count": 7,
     "total_dandisets": [
       "000248",
       "000563",
       "000690",
+      "001051",
       "001191",
       "001326",
       "001637"
@@ -6580,6 +6774,691 @@
       "001191",
       "001326",
       "001420"
+    ]
+  },
+  "1079": {
+    "acronym": "MGv",
+    "name": "Medial geniculate complex, ventral part",
+    "color_hex_triplet": "FF8084",
+    "file_count": 191,
+    "dandiset_count": 13,
+    "dandisets": [
+      "000021",
+      "000022",
+      "000248",
+      "000253",
+      "000458",
+      "000563",
+      "000690",
+      "001051",
+      "001191",
+      "001326",
+      "001417",
+      "001421",
+      "001637"
+    ],
+    "total_file_count": 191,
+    "total_dandiset_count": 13,
+    "total_dandisets": [
+      "000021",
+      "000022",
+      "000248",
+      "000253",
+      "000458",
+      "000563",
+      "000690",
+      "001051",
+      "001191",
+      "001326",
+      "001417",
+      "001421",
+      "001637"
+    ]
+  },
+  "985": {
+    "acronym": "MOp",
+    "name": "Primary motor area",
+    "color_hex_triplet": "1F9D5A",
+    "file_count": 154,
+    "dandiset_count": 3,
+    "dandisets": [
+      "000017",
+      "000458",
+      "001051"
+    ],
+    "total_file_count": 676,
+    "total_dandiset_count": 8,
+    "total_dandisets": [
+      "000017",
+      "000458",
+      "000563",
+      "000690",
+      "001051",
+      "001260",
+      "001326",
+      "001637"
+    ]
+  },
+  "894": {
+    "acronym": "RSPagl",
+    "name": "Retrosplenial area, lateral agranular part",
+    "color_hex_triplet": "1AA698",
+    "file_count": 129,
+    "dandiset_count": 2,
+    "dandisets": [
+      "000458",
+      "001051"
+    ],
+    "total_file_count": 360,
+    "total_dandiset_count": 11,
+    "total_dandisets": [
+      "000021",
+      "000022",
+      "000458",
+      "000563",
+      "000690",
+      "001051",
+      "001191",
+      "001326",
+      "001420",
+      "001637",
+      "001701"
+    ]
+  },
+  "312782546": {
+    "acronym": "VISa",
+    "name": "Anterior area",
+    "color_hex_triplet": "009FAC",
+    "file_count": 127,
+    "dandiset_count": 4,
+    "dandisets": [
+      "000017",
+      "000458",
+      "000579",
+      "001051"
+    ],
+    "total_file_count": 534,
+    "total_dandiset_count": 8,
+    "total_dandisets": [
+      "000017",
+      "000458",
+      "000579",
+      "000690",
+      "001051",
+      "001260",
+      "001417",
+      "001637"
+    ]
+  },
+  "312782574": {
+    "acronym": "VISli",
+    "name": "Laterointermediate area",
+    "color_hex_triplet": "08858C",
+    "file_count": 24,
+    "dandiset_count": 3,
+    "dandisets": [
+      "000021",
+      "000022",
+      "001051"
+    ],
+    "total_file_count": 57,
+    "total_dandiset_count": 5,
+    "total_dandisets": [
+      "000021",
+      "000022",
+      "000690",
+      "001051",
+      "001260"
+    ]
+  },
+  "66": {
+    "acronym": "LT",
+    "name": "Lateral terminal nucleus of the accessory optic tract",
+    "color_hex_triplet": "FF90FF",
+    "file_count": 22,
+    "dandiset_count": 6,
+    "dandisets": [
+      "000022",
+      "000253",
+      "001051",
+      "001326",
+      "001417",
+      "001637"
+    ],
+    "total_file_count": 22,
+    "total_dandiset_count": 6,
+    "total_dandisets": [
+      "000022",
+      "000253",
+      "001051",
+      "001326",
+      "001417",
+      "001637"
+    ]
+  },
+  "1072": {
+    "acronym": "MGd",
+    "name": "Medial geniculate complex, dorsal part",
+    "color_hex_triplet": "FF8084",
+    "file_count": 192,
+    "dandiset_count": 13,
+    "dandisets": [
+      "000021",
+      "000022",
+      "000248",
+      "000253",
+      "000458",
+      "000563",
+      "000690",
+      "001051",
+      "001191",
+      "001326",
+      "001417",
+      "001421",
+      "001637"
+    ],
+    "total_file_count": 192,
+    "total_dandiset_count": 13,
+    "total_dandisets": [
+      "000021",
+      "000022",
+      "000248",
+      "000253",
+      "000458",
+      "000563",
+      "000690",
+      "001051",
+      "001191",
+      "001326",
+      "001417",
+      "001421",
+      "001637"
+    ]
+  },
+  "26": {
+    "acronym": "SCdg",
+    "name": "Superior colliculus, motor related, deep gray layer",
+    "color_hex_triplet": "FF90FF",
+    "file_count": 27,
+    "dandiset_count": 5,
+    "dandisets": [
+      "000253",
+      "000563",
+      "000690",
+      "001051",
+      "001326"
+    ],
+    "total_file_count": 27,
+    "total_dandiset_count": 5,
+    "total_dandisets": [
+      "000253",
+      "000563",
+      "000690",
+      "001051",
+      "001326"
+    ]
+  },
+  "42": {
+    "acronym": "SCdw",
+    "name": "Superior colliculus, motor related, deep white layer",
+    "color_hex_triplet": "FF90FF",
+    "file_count": 13,
+    "dandiset_count": 4,
+    "dandisets": [
+      "000563",
+      "000690",
+      "001051",
+      "001326"
+    ],
+    "total_file_count": 13,
+    "total_dandiset_count": 4,
+    "total_dandisets": [
+      "000563",
+      "000690",
+      "001051",
+      "001326"
+    ]
+  },
+  "926": {
+    "acronym": "ENTm",
+    "name": "Entorhinal area, medial part, dorsal zone",
+    "color_hex_triplet": "32B825",
+    "file_count": 2,
+    "dandiset_count": 1,
+    "dandisets": [
+      "001051"
+    ],
+    "total_file_count": 409,
+    "total_dandiset_count": 4,
+    "total_dandisets": [
+      "000248",
+      "000690",
+      "001051",
+      "001701"
+    ]
+  },
+  "312782628": {
+    "acronym": "VISpor",
+    "name": "Postrhinal area",
+    "color_hex_triplet": "08858C",
+    "file_count": 4,
+    "dandiset_count": 1,
+    "dandisets": [
+      "001051"
+    ],
+    "total_file_count": 67,
+    "total_dandiset_count": 3,
+    "total_dandisets": [
+      "000690",
+      "001051",
+      "001701"
+    ]
+  },
+  "541": {
+    "acronym": "TEa",
+    "name": "Temporal association areas",
+    "color_hex_triplet": "15B0B3",
+    "file_count": 2,
+    "dandiset_count": 1,
+    "dandisets": [
+      "001051"
+    ],
+    "total_file_count": 11,
+    "total_dandiset_count": 3,
+    "total_dandisets": [
+      "001051",
+      "001191",
+      "001260"
+    ]
+  },
+  "1088": {
+    "acronym": "MGm",
+    "name": "Medial geniculate complex, medial part",
+    "color_hex_triplet": "FF8084",
+    "file_count": 148,
+    "dandiset_count": 13,
+    "dandisets": [
+      "000021",
+      "000022",
+      "000248",
+      "000253",
+      "000458",
+      "000563",
+      "000690",
+      "001051",
+      "001191",
+      "001326",
+      "001417",
+      "001421",
+      "001637"
+    ],
+    "total_file_count": 148,
+    "total_dandiset_count": 13,
+    "total_dandisets": [
+      "000021",
+      "000022",
+      "000248",
+      "000253",
+      "000458",
+      "000563",
+      "000690",
+      "001051",
+      "001191",
+      "001326",
+      "001417",
+      "001421",
+      "001637"
+    ]
+  },
+  "1096": {
+    "acronym": "AMd",
+    "name": "Anteromedial nucleus, dorsal part",
+    "color_hex_triplet": "FF909F",
+    "file_count": 17,
+    "dandiset_count": 2,
+    "dandisets": [
+      "001051",
+      "001637"
+    ],
+    "total_file_count": 17,
+    "total_dandiset_count": 2,
+    "total_dandisets": [
+      "001051",
+      "001637"
+    ]
+  },
+  "378": {
+    "acronym": "SSs",
+    "name": "Supplemental somatosensory area",
+    "color_hex_triplet": "188064",
+    "file_count": 8,
+    "dandiset_count": 2,
+    "dandisets": [
+      "000017",
+      "001051"
+    ],
+    "total_file_count": 19,
+    "total_dandiset_count": 4,
+    "total_dandisets": [
+      "000017",
+      "001051",
+      "001260",
+      "001326"
+    ]
+  },
+  "442": {
+    "acronym": "RSPd1",
+    "name": "Retrosplenial area, dorsal part, layer 1",
+    "color_hex_triplet": "1AA698",
+    "file_count": 54,
+    "dandiset_count": 6,
+    "dandisets": [
+      "000248",
+      "000563",
+      "000690",
+      "001051",
+      "001326",
+      "001420"
+    ],
+    "total_file_count": 54,
+    "total_dandiset_count": 6,
+    "total_dandisets": [
+      "000248",
+      "000563",
+      "000690",
+      "001051",
+      "001326",
+      "001420"
+    ]
+  },
+  "434": {
+    "acronym": "RSPd2/3",
+    "name": "Retrosplenial area, dorsal part, layer 2/3",
+    "color_hex_triplet": "1AA698",
+    "file_count": 62,
+    "dandiset_count": 6,
+    "dandisets": [
+      "000248",
+      "000563",
+      "000690",
+      "001051",
+      "001326",
+      "001420"
+    ],
+    "total_file_count": 62,
+    "total_dandiset_count": 6,
+    "total_dandisets": [
+      "000248",
+      "000563",
+      "000690",
+      "001051",
+      "001326",
+      "001420"
+    ]
+  },
+  "610": {
+    "acronym": "RSPd5",
+    "name": "Retrosplenial area, dorsal part, layer 5",
+    "color_hex_triplet": "1AA698",
+    "file_count": 68,
+    "dandiset_count": 6,
+    "dandisets": [
+      "000563",
+      "000690",
+      "001051",
+      "001326",
+      "001420",
+      "001637"
+    ],
+    "total_file_count": 68,
+    "total_dandiset_count": 6,
+    "total_dandisets": [
+      "000563",
+      "000690",
+      "001051",
+      "001326",
+      "001420",
+      "001637"
+    ]
+  },
+  "274": {
+    "acronym": "RSPd6a",
+    "name": "Retrosplenial area, dorsal part, layer 6a",
+    "color_hex_triplet": "1AA698",
+    "file_count": 73,
+    "dandiset_count": 7,
+    "dandisets": [
+      "000248",
+      "000563",
+      "000690",
+      "001051",
+      "001191",
+      "001326",
+      "001701"
+    ],
+    "total_file_count": 73,
+    "total_dandiset_count": 7,
+    "total_dandisets": [
+      "000248",
+      "000563",
+      "000690",
+      "001051",
+      "001191",
+      "001326",
+      "001701"
+    ]
+  },
+  "330": {
+    "acronym": "RSPd6b",
+    "name": "Retrosplenial area, dorsal part, layer 6b",
+    "color_hex_triplet": "1AA698",
+    "file_count": 33,
+    "dandiset_count": 3,
+    "dandisets": [
+      "000690",
+      "001051",
+      "001701"
+    ],
+    "total_file_count": 33,
+    "total_dandiset_count": 3,
+    "total_dandisets": [
+      "000690",
+      "001051",
+      "001701"
+    ]
+  },
+  "746": {
+    "acronym": "ORBvl",
+    "name": "Orbital area, ventrolateral part",
+    "color_hex_triplet": "248A5E",
+    "file_count": 8,
+    "dandiset_count": 1,
+    "dandisets": [
+      "001051"
+    ],
+    "total_file_count": 80,
+    "total_dandiset_count": 6,
+    "total_dandisets": [
+      "000473",
+      "000690",
+      "001051",
+      "001260",
+      "001326",
+      "001637"
+    ]
+  },
+  "723": {
+    "acronym": "ORBl",
+    "name": "Orbital area, lateral part",
+    "color_hex_triplet": "248A5E",
+    "file_count": 2,
+    "dandiset_count": 1,
+    "dandisets": [
+      "001051"
+    ],
+    "total_file_count": 51,
+    "total_dandiset_count": 5,
+    "total_dandisets": [
+      "000473",
+      "000690",
+      "001051",
+      "001260",
+      "001326"
+    ]
+  },
+  "1104": {
+    "acronym": "AMv",
+    "name": "Anteromedial nucleus, ventral part",
+    "color_hex_triplet": "FF909F",
+    "file_count": 5,
+    "dandiset_count": 2,
+    "dandisets": [
+      "001051",
+      "001637"
+    ],
+    "total_file_count": 5,
+    "total_dandiset_count": 2,
+    "total_dandisets": [
+      "001051",
+      "001637"
+    ]
+  },
+  "1022": {
+    "acronym": "GPe",
+    "name": "Globus pallidus, external segment",
+    "color_hex_triplet": "8599CC",
+    "file_count": 9,
+    "dandiset_count": 3,
+    "dandisets": [
+      "000017",
+      "001051",
+      "001260"
+    ],
+    "total_file_count": 9,
+    "total_dandiset_count": 3,
+    "total_dandisets": [
+      "000017",
+      "001051",
+      "001260"
+    ]
+  },
+  "422": {
+    "acronym": "SPFp",
+    "name": "Subparafascicular nucleus, parvicellular part",
+    "color_hex_triplet": "FF8084",
+    "file_count": 10,
+    "dandiset_count": 4,
+    "dandisets": [
+      "000248",
+      "001051",
+      "001191",
+      "001326"
+    ],
+    "total_file_count": 10,
+    "total_dandiset_count": 4,
+    "total_dandisets": [
+      "000248",
+      "001051",
+      "001191",
+      "001326"
+    ]
+  },
+  "671": {
+    "acronym": "RSPagl1",
+    "name": "Retrosplenial area, lateral agranular part, layer 1",
+    "color_hex_triplet": "1AA698",
+    "file_count": 31,
+    "dandiset_count": 5,
+    "dandisets": [
+      "000563",
+      "000690",
+      "001191",
+      "001420",
+      "001637"
+    ],
+    "total_file_count": 31,
+    "total_dandiset_count": 5,
+    "total_dandisets": [
+      "000563",
+      "000690",
+      "001191",
+      "001420",
+      "001637"
+    ]
+  },
+  "965": {
+    "acronym": "RSPagl2/3",
+    "name": "Retrosplenial area, lateral agranular part, layer 2/3",
+    "color_hex_triplet": "1AA698",
+    "file_count": 33,
+    "dandiset_count": 6,
+    "dandisets": [
+      "000563",
+      "000690",
+      "001191",
+      "001326",
+      "001420",
+      "001637"
+    ],
+    "total_file_count": 33,
+    "total_dandiset_count": 6,
+    "total_dandisets": [
+      "000563",
+      "000690",
+      "001191",
+      "001326",
+      "001420",
+      "001637"
+    ]
+  },
+  "774": {
+    "acronym": "RSPagl5",
+    "name": "Retrosplenial area, lateral agranular part, layer 5",
+    "color_hex_triplet": "1AA698",
+    "file_count": 34,
+    "dandiset_count": 6,
+    "dandisets": [
+      "000563",
+      "000690",
+      "001191",
+      "001326",
+      "001420",
+      "001637"
+    ],
+    "total_file_count": 34,
+    "total_dandiset_count": 6,
+    "total_dandisets": [
+      "000563",
+      "000690",
+      "001191",
+      "001326",
+      "001420",
+      "001637"
+    ]
+  },
+  "590": {
+    "acronym": "RSPv6a",
+    "name": "Retrosplenial area, ventral part, layer 6a",
+    "color_hex_triplet": "1AA698",
+    "file_count": 43,
+    "dandiset_count": 6,
+    "dandisets": [
+      "000248",
+      "000563",
+      "000690",
+      "001191",
+      "001326",
+      "001637"
+    ],
+    "total_file_count": 43,
+    "total_dandiset_count": 6,
+    "total_dandisets": [
+      "000248",
+      "000563",
+      "000690",
+      "001191",
+      "001326",
+      "001637"
     ]
   },
   "1074": {
@@ -7515,84 +8394,6 @@
       "001637"
     ]
   },
-  "1088": {
-    "acronym": "MGm",
-    "name": "Medial geniculate complex, medial part",
-    "color_hex_triplet": "FF8084",
-    "file_count": 148,
-    "dandiset_count": 13,
-    "dandisets": [
-      "000021",
-      "000022",
-      "000248",
-      "000253",
-      "000458",
-      "000563",
-      "000690",
-      "001051",
-      "001191",
-      "001326",
-      "001417",
-      "001421",
-      "001637"
-    ],
-    "total_file_count": 148,
-    "total_dandiset_count": 13,
-    "total_dandisets": [
-      "000021",
-      "000022",
-      "000248",
-      "000253",
-      "000458",
-      "000563",
-      "000690",
-      "001051",
-      "001191",
-      "001326",
-      "001417",
-      "001421",
-      "001637"
-    ]
-  },
-  "1079": {
-    "acronym": "MGv",
-    "name": "Medial geniculate complex, ventral part",
-    "color_hex_triplet": "FF8084",
-    "file_count": 191,
-    "dandiset_count": 13,
-    "dandisets": [
-      "000021",
-      "000022",
-      "000248",
-      "000253",
-      "000458",
-      "000563",
-      "000690",
-      "001051",
-      "001191",
-      "001326",
-      "001417",
-      "001421",
-      "001637"
-    ],
-    "total_file_count": 191,
-    "total_dandiset_count": 13,
-    "total_dandisets": [
-      "000021",
-      "000022",
-      "000248",
-      "000253",
-      "000458",
-      "000563",
-      "000690",
-      "001051",
-      "001191",
-      "001326",
-      "001417",
-      "001421",
-      "001637"
-    ]
-  },
   "828": {
     "acronym": "ICe",
     "name": "Inferior colliculus, external nucleus",
@@ -7633,54 +8434,6 @@
       "001191",
       "001326",
       "001701"
-    ]
-  },
-  "274": {
-    "acronym": "RSPd6a",
-    "name": "Retrosplenial area, dorsal part, layer 6a",
-    "color_hex_triplet": "1AA698",
-    "file_count": 73,
-    "dandiset_count": 7,
-    "dandisets": [
-      "000248",
-      "000563",
-      "000690",
-      "001051",
-      "001191",
-      "001326",
-      "001701"
-    ],
-    "total_file_count": 73,
-    "total_dandiset_count": 7,
-    "total_dandisets": [
-      "000248",
-      "000563",
-      "000690",
-      "001051",
-      "001191",
-      "001326",
-      "001701"
-    ]
-  },
-  "422": {
-    "acronym": "SPFp",
-    "name": "Subparafascicular nucleus, parvicellular part",
-    "color_hex_triplet": "FF8084",
-    "file_count": 10,
-    "dandiset_count": 4,
-    "dandisets": [
-      "000248",
-      "001051",
-      "001191",
-      "001326"
-    ],
-    "total_file_count": 10,
-    "total_dandiset_count": 4,
-    "total_dandisets": [
-      "000248",
-      "001051",
-      "001191",
-      "001326"
     ]
   },
   "496345668": {
@@ -8471,35 +9224,6 @@
       "001637"
     ]
   },
-  "597": {
-    "acronym": "TTd",
-    "name": "Taenia tecta, dorsal part",
-    "color_hex_triplet": "62D09F",
-    "file_count": 104,
-    "dandiset_count": 8,
-    "dandisets": [
-      "000458",
-      "000473",
-      "000690",
-      "001051",
-      "001260",
-      "001326",
-      "001417",
-      "001637"
-    ],
-    "total_file_count": 104,
-    "total_dandiset_count": 8,
-    "total_dandisets": [
-      "000458",
-      "000473",
-      "000690",
-      "001051",
-      "001260",
-      "001326",
-      "001417",
-      "001637"
-    ]
-  },
   "810": {
     "acronym": "ACAv6a",
     "name": "Anterior cingulate area, ventral part, 6a",
@@ -8569,31 +9293,6 @@
       "001260",
       "001326",
       "001417"
-    ]
-  },
-  "66": {
-    "acronym": "LT",
-    "name": "Lateral terminal nucleus of the accessory optic tract",
-    "color_hex_triplet": "FF90FF",
-    "file_count": 22,
-    "dandiset_count": 6,
-    "dandisets": [
-      "000022",
-      "000253",
-      "001051",
-      "001326",
-      "001417",
-      "001637"
-    ],
-    "total_file_count": 22,
-    "total_dandiset_count": 6,
-    "total_dandisets": [
-      "000022",
-      "000253",
-      "001051",
-      "001326",
-      "001417",
-      "001637"
     ]
   },
   "707": {
@@ -8881,23 +9580,6 @@
       "001637"
     ]
   },
-  "1096": {
-    "acronym": "AMd",
-    "name": "Anteromedial nucleus, dorsal part",
-    "color_hex_triplet": "FF909F",
-    "file_count": 17,
-    "dandiset_count": 2,
-    "dandisets": [
-      "001051",
-      "001637"
-    ],
-    "total_file_count": 17,
-    "total_dandiset_count": 2,
-    "total_dandisets": [
-      "001051",
-      "001637"
-    ]
-  },
   "910": {
     "acronym": "ORBm6a",
     "name": "Orbital area, medial part, layer 6a",
@@ -9097,23 +9779,6 @@
       "001701"
     ]
   },
-  "1104": {
-    "acronym": "AMv",
-    "name": "Anteromedial nucleus, ventral part",
-    "color_hex_triplet": "FF909F",
-    "file_count": 5,
-    "dandiset_count": 2,
-    "dandisets": [
-      "001051",
-      "001637"
-    ],
-    "total_file_count": 5,
-    "total_dandiset_count": 2,
-    "total_dandisets": [
-      "001051",
-      "001637"
-    ]
-  },
   "1030": {
     "acronym": "SSp-ll1",
     "name": "Primary somatosensory area, lower limb, layer 1",
@@ -9194,31 +9859,6 @@
       "000563",
       "000690",
       "001326",
-      "001637"
-    ]
-  },
-  "610": {
-    "acronym": "RSPd5",
-    "name": "Retrosplenial area, dorsal part, layer 5",
-    "color_hex_triplet": "1AA698",
-    "file_count": 68,
-    "dandiset_count": 6,
-    "dandisets": [
-      "000563",
-      "000690",
-      "001051",
-      "001326",
-      "001420",
-      "001637"
-    ],
-    "total_file_count": 68,
-    "total_dandiset_count": 6,
-    "total_dandisets": [
-      "000563",
-      "000690",
-      "001051",
-      "001326",
-      "001420",
       "001637"
     ]
   },
@@ -9347,41 +9987,6 @@
       "001637"
     ]
   },
-  "726": {
-    "acronym": "DG",
-    "name": "Dentate gyrus",
-    "color_hex_triplet": "7ED04B",
-    "file_count": 646,
-    "dandiset_count": 6,
-    "dandisets": [
-      "000017",
-      "000021",
-      "000022",
-      "000248",
-      "000690",
-      "001051"
-    ],
-    "total_file_count": 1941,
-    "total_dandiset_count": 16,
-    "total_dandisets": [
-      "000017",
-      "000021",
-      "000022",
-      "000248",
-      "000253",
-      "000302",
-      "000458",
-      "000563",
-      "000690",
-      "001051",
-      "001191",
-      "001260",
-      "001326",
-      "001417",
-      "001637",
-      "001701"
-    ]
-  },
   "242": {
     "acronym": "LS",
     "name": "Lateral septal nucleus",
@@ -9398,32 +10003,6 @@
       "000302",
       "000458",
       "000473",
-      "000690",
-      "001051",
-      "001260",
-      "001326",
-      "001417",
-      "001637"
-    ]
-  },
-  "993": {
-    "acronym": "MOs",
-    "name": "Secondary motor area",
-    "color_hex_triplet": "1F9D5A",
-    "file_count": 227,
-    "dandiset_count": 3,
-    "dandisets": [
-      "000017",
-      "000458",
-      "001051"
-    ],
-    "total_file_count": 1148,
-    "total_dandiset_count": 10,
-    "total_dandisets": [
-      "000017",
-      "000458",
-      "000473",
-      "000563",
       "000690",
       "001051",
       "001260",
@@ -9479,62 +10058,6 @@
       "001326"
     ]
   },
-  "170": {
-    "acronym": "LGd",
-    "name": "Dorsal part of the lateral geniculate complex",
-    "color_hex_triplet": "FF8084",
-    "file_count": 212,
-    "dandiset_count": 4,
-    "dandisets": [
-      "000017",
-      "000021",
-      "000022",
-      "001051"
-    ],
-    "total_file_count": 704,
-    "total_dandiset_count": 14,
-    "total_dandisets": [
-      "000017",
-      "000021",
-      "000022",
-      "000248",
-      "000253",
-      "000458",
-      "000563",
-      "000690",
-      "001051",
-      "001191",
-      "001260",
-      "001326",
-      "001417",
-      "001637"
-    ]
-  },
-  "312782546": {
-    "acronym": "VISa",
-    "name": "Anterior area",
-    "color_hex_triplet": "009FAC",
-    "file_count": 127,
-    "dandiset_count": 4,
-    "dandisets": [
-      "000017",
-      "000458",
-      "000579",
-      "001051"
-    ],
-    "total_file_count": 534,
-    "total_dandiset_count": 8,
-    "total_dandisets": [
-      "000017",
-      "000458",
-      "000579",
-      "000690",
-      "001051",
-      "001260",
-      "001417",
-      "001637"
-    ]
-  },
   "714": {
     "acronym": "ORB",
     "name": "Orbital area",
@@ -9556,31 +10079,6 @@
       "001637"
     ]
   },
-  "972": {
-    "acronym": "PL",
-    "name": "Prelimbic area",
-    "color_hex_triplet": "2FA850",
-    "file_count": 59,
-    "dandiset_count": 3,
-    "dandisets": [
-      "000017",
-      "000458",
-      "001051"
-    ],
-    "total_file_count": 405,
-    "total_dandiset_count": 9,
-    "total_dandisets": [
-      "000017",
-      "000458",
-      "000473",
-      "000690",
-      "001051",
-      "001260",
-      "001326",
-      "001417",
-      "001637"
-    ]
-  },
   "247": {
     "acronym": "AUD",
     "name": "Auditory areas",
@@ -9595,33 +10093,6 @@
     "total_dandisets": [
       "000017",
       "001260"
-    ]
-  },
-  "322": {
-    "acronym": "SSp",
-    "name": "Primary somatosensory area",
-    "color_hex_triplet": "188064",
-    "file_count": 202,
-    "dandiset_count": 2,
-    "dandisets": [
-      "000017",
-      "001051"
-    ],
-    "total_file_count": 1389,
-    "total_dandiset_count": 12,
-    "total_dandisets": [
-      "000017",
-      "000458",
-      "000563",
-      "000690",
-      "001051",
-      "001260",
-      "001326",
-      "001417",
-      "001637",
-      "001701",
-      "001791",
-      "001868"
     ]
   },
   "952": {
@@ -9643,31 +10114,6 @@
       "000473",
       "001260",
       "001326"
-    ]
-  },
-  "44": {
-    "acronym": "ILA",
-    "name": "Infralimbic area",
-    "color_hex_triplet": "59B363",
-    "file_count": 40,
-    "dandiset_count": 3,
-    "dandisets": [
-      "000017",
-      "000458",
-      "001051"
-    ],
-    "total_file_count": 268,
-    "total_dandiset_count": 9,
-    "total_dandisets": [
-      "000017",
-      "000458",
-      "000473",
-      "000690",
-      "001051",
-      "001260",
-      "001326",
-      "001417",
-      "001637"
     ]
   },
   "589": {
@@ -9693,47 +10139,6 @@
       "001637"
     ]
   },
-  "731": {
-    "acronym": "ORBm",
-    "name": "Orbital area, medial part",
-    "color_hex_triplet": "248A5E",
-    "file_count": 12,
-    "dandiset_count": 2,
-    "dandisets": [
-      "000017",
-      "001051"
-    ],
-    "total_file_count": 75,
-    "total_dandiset_count": 7,
-    "total_dandisets": [
-      "000017",
-      "000473",
-      "000690",
-      "001051",
-      "001260",
-      "001326",
-      "001637"
-    ]
-  },
-  "1022": {
-    "acronym": "GPe",
-    "name": "Globus pallidus, external segment",
-    "color_hex_triplet": "8599CC",
-    "file_count": 9,
-    "dandiset_count": 3,
-    "dandisets": [
-      "000017",
-      "001051",
-      "001260"
-    ],
-    "total_file_count": 9,
-    "total_dandiset_count": 3,
-    "total_dandisets": [
-      "000017",
-      "001051",
-      "001260"
-    ]
-  },
   "294": {
     "acronym": "SCm",
     "name": "Superior colliculus, motor related",
@@ -9756,30 +10161,6 @@
       "001051",
       "001191",
       "001326"
-    ]
-  },
-  "985": {
-    "acronym": "MOp",
-    "name": "Primary motor area",
-    "color_hex_triplet": "1F9D5A",
-    "file_count": 154,
-    "dandiset_count": 3,
-    "dandisets": [
-      "000017",
-      "000458",
-      "001051"
-    ],
-    "total_file_count": 676,
-    "total_dandiset_count": 8,
-    "total_dandisets": [
-      "000017",
-      "000458",
-      "000563",
-      "000690",
-      "001051",
-      "001260",
-      "001326",
-      "001637"
     ]
   },
   "302": {
@@ -9846,25 +10227,6 @@
     "total_dandiset_count": 2,
     "total_dandisets": [
       "000017",
-      "001326"
-    ]
-  },
-  "378": {
-    "acronym": "SSs",
-    "name": "Supplemental somatosensory area",
-    "color_hex_triplet": "188064",
-    "file_count": 8,
-    "dandiset_count": 2,
-    "dandisets": [
-      "000017",
-      "001051"
-    ],
-    "total_file_count": 19,
-    "total_dandiset_count": 4,
-    "total_dandisets": [
-      "000017",
-      "001051",
-      "001260",
       "001326"
     ]
   },
@@ -10041,27 +10403,6 @@
     "total_dandisets": [
       "000021",
       "000022"
-    ]
-  },
-  "312782574": {
-    "acronym": "VISli",
-    "name": "Laterointermediate area",
-    "color_hex_triplet": "08858C",
-    "file_count": 24,
-    "dandiset_count": 3,
-    "dandisets": [
-      "000021",
-      "000022",
-      "001051"
-    ],
-    "total_file_count": 57,
-    "total_dandiset_count": 5,
-    "total_dandisets": [
-      "000021",
-      "000022",
-      "000690",
-      "001051",
-      "001260"
     ]
   },
   "480149286": {
@@ -10330,56 +10671,6 @@
       "000253"
     ]
   },
-  "442": {
-    "acronym": "RSPd1",
-    "name": "Retrosplenial area, dorsal part, layer 1",
-    "color_hex_triplet": "1AA698",
-    "file_count": 54,
-    "dandiset_count": 6,
-    "dandisets": [
-      "000248",
-      "000563",
-      "000690",
-      "001051",
-      "001326",
-      "001420"
-    ],
-    "total_file_count": 54,
-    "total_dandiset_count": 6,
-    "total_dandisets": [
-      "000248",
-      "000563",
-      "000690",
-      "001051",
-      "001326",
-      "001420"
-    ]
-  },
-  "434": {
-    "acronym": "RSPd2/3",
-    "name": "Retrosplenial area, dorsal part, layer 2/3",
-    "color_hex_triplet": "1AA698",
-    "file_count": 62,
-    "dandiset_count": 6,
-    "dandisets": [
-      "000248",
-      "000563",
-      "000690",
-      "001051",
-      "001326",
-      "001420"
-    ],
-    "total_file_count": 62,
-    "total_dandiset_count": 6,
-    "total_dandisets": [
-      "000248",
-      "000563",
-      "000690",
-      "001051",
-      "001326",
-      "001420"
-    ]
-  },
   "430": {
     "acronym": "RSPv2/3",
     "name": "Retrosplenial area, ventral part, layer 2/3",
@@ -10401,55 +10692,6 @@
       "001326"
     ]
   },
-  "26": {
-    "acronym": "SCdg",
-    "name": "Superior colliculus, motor related, deep gray layer",
-    "color_hex_triplet": "FF90FF",
-    "file_count": 27,
-    "dandiset_count": 5,
-    "dandisets": [
-      "000253",
-      "000563",
-      "000690",
-      "001051",
-      "001326"
-    ],
-    "total_file_count": 27,
-    "total_dandiset_count": 5,
-    "total_dandisets": [
-      "000253",
-      "000563",
-      "000690",
-      "001051",
-      "001326"
-    ]
-  },
-  "894": {
-    "acronym": "RSPagl",
-    "name": "Retrosplenial area, lateral agranular part",
-    "color_hex_triplet": "1AA698",
-    "file_count": 129,
-    "dandiset_count": 2,
-    "dandisets": [
-      "000458",
-      "001051"
-    ],
-    "total_file_count": 360,
-    "total_dandiset_count": 11,
-    "total_dandisets": [
-      "000021",
-      "000022",
-      "000458",
-      "000563",
-      "000690",
-      "001051",
-      "001191",
-      "001326",
-      "001420",
-      "001637",
-      "001701"
-    ]
-  },
   "337": {
     "acronym": "SSp-ll",
     "name": "Primary somatosensory area, lower limb",
@@ -10465,54 +10707,6 @@
       "000458",
       "001260",
       "001326",
-      "001637"
-    ]
-  },
-  "39": {
-    "acronym": "ACAd",
-    "name": "Anterior cingulate area, dorsal part",
-    "color_hex_triplet": "40A666",
-    "file_count": 130,
-    "dandiset_count": 2,
-    "dandisets": [
-      "000458",
-      "001051"
-    ],
-    "total_file_count": 411,
-    "total_dandiset_count": 9,
-    "total_dandisets": [
-      "000458",
-      "000473",
-      "000563",
-      "000690",
-      "001051",
-      "001260",
-      "001326",
-      "001417",
-      "001637"
-    ]
-  },
-  "48": {
-    "acronym": "ACAv",
-    "name": "Anterior cingulate area, ventral part",
-    "color_hex_triplet": "40A666",
-    "file_count": 89,
-    "dandiset_count": 2,
-    "dandisets": [
-      "000458",
-      "001051"
-    ],
-    "total_file_count": 296,
-    "total_dandiset_count": 9,
-    "total_dandisets": [
-      "000458",
-      "000473",
-      "000563",
-      "000690",
-      "001051",
-      "001260",
-      "001326",
-      "001417",
       "001637"
     ]
   },
@@ -10848,27 +11042,6 @@
       "001326"
     ]
   },
-  "42": {
-    "acronym": "SCdw",
-    "name": "Superior colliculus, motor related, deep white layer",
-    "color_hex_triplet": "FF90FF",
-    "file_count": 13,
-    "dandiset_count": 4,
-    "dandisets": [
-      "000563",
-      "000690",
-      "001051",
-      "001326"
-    ],
-    "total_file_count": 13,
-    "total_dandiset_count": 4,
-    "total_dandisets": [
-      "000563",
-      "000690",
-      "001051",
-      "001326"
-    ]
-  },
   "480149206": {
     "acronym": "VISrll1",
     "name": "Rostrolateral lateral visual area, layer 1",
@@ -11132,25 +11305,6 @@
       "000690"
     ]
   },
-  "330": {
-    "acronym": "RSPd6b",
-    "name": "Retrosplenial area, dorsal part, layer 6b",
-    "color_hex_triplet": "1AA698",
-    "file_count": 33,
-    "dandiset_count": 3,
-    "dandisets": [
-      "000690",
-      "001051",
-      "001701"
-    ],
-    "total_file_count": 33,
-    "total_dandiset_count": 3,
-    "total_dandisets": [
-      "000690",
-      "001051",
-      "001701"
-    ]
-  },
   "526": {
     "acronym": "ENTm1",
     "name": "Entorhinal area, medial part, dorsal zone, layer 1",
@@ -11309,160 +11463,6 @@
     "total_dandiset_count": 3,
     "total_dandisets": [
       "000690",
-      "001260",
-      "001326"
-    ]
-  },
-  "184": {
-    "acronym": "FRP",
-    "name": "Frontal pole, cerebral cortex",
-    "color_hex_triplet": "268F45",
-    "file_count": 7,
-    "dandiset_count": 1,
-    "dandisets": [
-      "001051"
-    ],
-    "total_file_count": 40,
-    "total_dandiset_count": 5,
-    "total_dandisets": [
-      "000473",
-      "000690",
-      "001051",
-      "001260",
-      "001326"
-    ]
-  },
-  "879": {
-    "acronym": "RSPd",
-    "name": "Retrosplenial area, dorsal part",
-    "color_hex_triplet": "1AA698",
-    "file_count": 122,
-    "dandiset_count": 1,
-    "dandisets": [
-      "001051"
-    ],
-    "total_file_count": 412,
-    "total_dandiset_count": 9,
-    "total_dandisets": [
-      "000248",
-      "000563",
-      "000690",
-      "001051",
-      "001191",
-      "001326",
-      "001420",
-      "001637",
-      "001701"
-    ]
-  },
-  "886": {
-    "acronym": "RSPv",
-    "name": "Retrosplenial area, ventral part",
-    "color_hex_triplet": "1AA698",
-    "file_count": 90,
-    "dandiset_count": 1,
-    "dandisets": [
-      "001051"
-    ],
-    "total_file_count": 303,
-    "total_dandiset_count": 7,
-    "total_dandisets": [
-      "000248",
-      "000563",
-      "000690",
-      "001051",
-      "001191",
-      "001326",
-      "001637"
-    ]
-  },
-  "926": {
-    "acronym": "ENTm",
-    "name": "Entorhinal area, medial part, dorsal zone",
-    "color_hex_triplet": "32B825",
-    "file_count": 2,
-    "dandiset_count": 1,
-    "dandisets": [
-      "001051"
-    ],
-    "total_file_count": 409,
-    "total_dandiset_count": 4,
-    "total_dandisets": [
-      "000248",
-      "000690",
-      "001051",
-      "001701"
-    ]
-  },
-  "312782628": {
-    "acronym": "VISpor",
-    "name": "Postrhinal area",
-    "color_hex_triplet": "08858C",
-    "file_count": 4,
-    "dandiset_count": 1,
-    "dandisets": [
-      "001051"
-    ],
-    "total_file_count": 67,
-    "total_dandiset_count": 3,
-    "total_dandisets": [
-      "000690",
-      "001051",
-      "001701"
-    ]
-  },
-  "541": {
-    "acronym": "TEa",
-    "name": "Temporal association areas",
-    "color_hex_triplet": "15B0B3",
-    "file_count": 2,
-    "dandiset_count": 1,
-    "dandisets": [
-      "001051"
-    ],
-    "total_file_count": 11,
-    "total_dandiset_count": 3,
-    "total_dandisets": [
-      "001051",
-      "001191",
-      "001260"
-    ]
-  },
-  "746": {
-    "acronym": "ORBvl",
-    "name": "Orbital area, ventrolateral part",
-    "color_hex_triplet": "248A5E",
-    "file_count": 8,
-    "dandiset_count": 1,
-    "dandisets": [
-      "001051"
-    ],
-    "total_file_count": 80,
-    "total_dandiset_count": 6,
-    "total_dandisets": [
-      "000473",
-      "000690",
-      "001051",
-      "001260",
-      "001326",
-      "001637"
-    ]
-  },
-  "723": {
-    "acronym": "ORBl",
-    "name": "Orbital area, lateral part",
-    "color_hex_triplet": "248A5E",
-    "file_count": 2,
-    "dandiset_count": 1,
-    "dandisets": [
-      "001051"
-    ],
-    "total_file_count": 51,
-    "total_dandiset_count": 5,
-    "total_dandisets": [
-      "000473",
-      "000690",
-      "001051",
       "001260",
       "001326"
     ]
@@ -14358,17 +14358,20 @@
       "001868"
     ]
   },
-  "182305689": {
-    "acronym": "SSp-un",
-    "name": "Primary somatosensory area, unassigned",
-    "color_hex_triplet": "188064",
+  "909": {
+    "acronym": "ENT",
+    "name": "Entorhinal area",
+    "color_hex_triplet": "32B825",
     "file_count": 0,
     "dandiset_count": 0,
     "dandisets": [],
-    "total_file_count": 6,
-    "total_dandiset_count": 1,
+    "total_file_count": 440,
+    "total_dandiset_count": 4,
     "total_dandisets": [
-      "001637"
+      "000248",
+      "000690",
+      "001051",
+      "001701"
     ]
   },
   "818": {
@@ -14386,6 +14389,19 @@
       "001260"
     ]
   },
+  "182305689": {
+    "acronym": "SSp-un",
+    "name": "Primary somatosensory area, unassigned",
+    "color_hex_triplet": "188064",
+    "file_count": 0,
+    "dandiset_count": 0,
+    "dandisets": [],
+    "total_file_count": 6,
+    "total_dandiset_count": 1,
+    "total_dandisets": [
+      "001637"
+    ]
+  },
   "647": {
     "acronym": "COAp",
     "name": "Cortical amygdalar area, posterior part",
@@ -14398,22 +14414,6 @@
     "total_dandisets": [
       "000022",
       "001326"
-    ]
-  },
-  "909": {
-    "acronym": "ENT",
-    "name": "Entorhinal area",
-    "color_hex_triplet": "32B825",
-    "file_count": 0,
-    "dandiset_count": 0,
-    "dandisets": [],
-    "total_file_count": 440,
-    "total_dandiset_count": 4,
-    "total_dandisets": [
-      "000248",
-      "000690",
-      "001051",
-      "001701"
     ]
   },
   "119": {
