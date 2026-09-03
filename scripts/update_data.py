@@ -562,6 +562,17 @@ def main():
         total_electrode_assets += len(asset_coords)
     print(f"  electrodes/: {len(dandiset_electrodes)} files, {total_electrode_assets} assets")
 
+    # The viewer reads this list to draw the electrode indicator on dandiset
+    # cards, so it has to track the electrodes/ directory written just above.
+    # It was not written here before, so the committed copy drifted from the
+    # directory and the indicator went missing on newer dandisets.
+    dandisets_with_electrodes = sorted(
+        did for did, asset_coords in dandiset_electrodes.items() if asset_coords
+    )
+    with open(DATA_DIR / "dandisets_with_electrodes.json", "w") as f:
+        json.dump(dandisets_with_electrodes, f)
+    print(f"  dandisets_with_electrodes.json: {len(dandisets_with_electrodes)} dandisets")
+
     # ── Step 7: Rebuild dandi_regions.json ─────────────────────────────────
     print("\nStep 7: Building dandi_regions.json...")
     dandi_regions = build_dandi_regions(dandiset_assets, id_to_structure, parent_map)
