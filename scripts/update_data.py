@@ -13,6 +13,7 @@ Usage:
 
 import argparse
 import json
+import os
 import threading
 import time
 from collections import defaultdict
@@ -89,6 +90,29 @@ def load_electrode_cache():
             key = (entry["dandiset_id"], entry["asset_id"])
             cache[key] = entry
     return cache
+
+
+def _write_cache(path, cache):
+    """Rewrite a JSONL cache file from its in-memory dict.
+
+    The files are otherwise append-only, so this is the only place stale
+    lines are ever dropped. Written to a sibling temp file and renamed so an
+    interrupted run leaves the previous file intact rather than a truncated
+    one, which matters because the CI cache is saved even when the job fails.
+    """
+    tmp = path.with_suffix(path.suffix + ".tmp")
+    with open(tmp, "w") as f:
+        for entry in cache.values():
+            f.write(json.dumps(entry) + "\n")
+    os.replace(tmp, path)
+
+
+def write_label_cache(cache):
+    _write_cache(LABEL_CACHE_FILE, cache)
+
+
+def write_electrode_cache(cache):
+    _write_cache(ELECTRODE_CACHE_FILE, cache)
 
 
 def append_label_cache(entry):
@@ -368,6 +392,10 @@ def main():
 
     # ── Step 4: Load caches ───────────────────────────────────────────────
     print(f"\nStep 4: Loading caches...")
+    # Dandisets whose cached assets had region matches before this run. The
+    # early-stop probe in step 5 is skipped for these, since skipping the rest
+    # of a dandiset that used to match would drop its regions from the map.
+    previously_matched = set()
     if is_full:
         label_cache = {}
         electrode_cache = {}
@@ -377,11 +405,24 @@ def main():
         electrode_cache = load_electrode_cache()
         print(f"  Loaded {len(label_cache)} label entries, {len(electrode_cache)} electrode entries")
 
+        previously_matched = {
+            ds_id for (ds_id, _), entry in label_cache.items()
+            if ds_id in mouse_ids and entry.get("status") == "matched"
+        }
+
         # Invalidate cache entries for modified dandisets
         n_label = invalidate_cache_for_dandisets(label_cache, mouse_ids)
         n_elec = invalidate_cache_for_dandisets(electrode_cache, mouse_ids)
         if n_label or n_elec:
             print(f"  Invalidated {n_label} label + {n_elec} electrode cache entries for modified dandisets")
+
+    # Bring the files into line with memory. Until now the files were only
+    # ever appended to, so the invalidated lines stayed on disk, and step 6
+    # reloaded them and put deleted or re-uploaded assets back into the
+    # output. This also stops the files growing by a full copy of every
+    # modified dandiset per run.
+    write_label_cache(label_cache)
+    write_electrode_cache(electrode_cache)
 
     # ── Step 5: Process each dandiset ─────────────────────────────────────
     print(f"\nStep 5: Processing {len(mouse_ids)} dandisets ({args.workers} workers)...")
@@ -475,7 +516,7 @@ def main():
             if status == "matched":
                 found_match = True
 
-        if not found_match and remaining_items:
+        if not found_match and remaining_items and ds_id not in previously_matched:
             print(f"  Skipping remaining {len(remaining_items)} assets "
                   f"(no matches in first {len(probe_items)})")
             continue
@@ -504,24 +545,23 @@ def main():
         return result
 
     if not is_full and not args.dandiset:
-        # Incremental: merge with existing data
+        # Incremental: build from the in-memory caches, which step 4 wrote to
+        # disk after invalidation and step 5 extended, then carry over any
+        # committed dandiset the cache no longer knows about (for example
+        # after the CI cache aged out) as long as it was not one of the
+        # dandisets reprocessed this run.
         existing_assets_path = DATA_DIR / "dandiset_assets.json"
 
+        dandiset_assets = build_dandiset_assets(label_cache)
         if existing_assets_path.exists():
             with open(existing_assets_path) as f:
                 existing_assets = json.load(f)
-            full_label_cache = load_label_cache()
-            dandiset_assets = build_dandiset_assets(full_label_cache)
             for did in existing_assets:
                 if did not in dandiset_assets and did not in mouse_ids:
                     dandiset_assets[did] = existing_assets[did]
-        else:
-            full_label_cache = load_label_cache()
-            dandiset_assets = build_dandiset_assets(full_label_cache)
 
         existing_electrodes = load_existing_electrodes()
-        full_electrode_cache = load_electrode_cache()
-        dandiset_electrodes = build_dandiset_electrodes(full_electrode_cache)
+        dandiset_electrodes = build_dandiset_electrodes(electrode_cache)
         for did in existing_electrodes:
             if did not in dandiset_electrodes and did not in mouse_ids:
                 dandiset_electrodes[did] = existing_electrodes[did]
