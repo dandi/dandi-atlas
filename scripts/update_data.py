@@ -54,6 +54,12 @@ LABEL_CACHE_FILE = SCRIPT_DIR / "label_cache.jsonl"
 ELECTRODE_CACHE_FILE = SCRIPT_DIR / "electrode_cache.jsonl"
 LAST_UPDATED_FILE = PROJECT_ROOT / "data" / "last_updated.json"
 
+# An asset whose stream failed is retried on later incremental runs until it
+# has failed this many times in total. Keeps a transient DANDI or S3 error
+# from leaving an asset with no regions until its dandiset next changes, while
+# a file that is actually unreadable is not re-streamed every night forever.
+MAX_ERROR_ATTEMPTS = 3
+
 
 # ---------------------------------------------------------------------------
 # Cache helpers
@@ -133,6 +139,41 @@ def invalidate_cache_for_dandisets(cache, dandiset_ids):
     return len(to_remove)
 
 
+def _entry_failed(label_entry, electrode_entry):
+    """True if either extraction for an asset ended in an exception."""
+    if label_entry.get("status") == "error":
+        return True
+    return bool(electrode_entry and electrode_entry.get("error"))
+
+
+def drop_retryable_errors(label_cache, electrode_cache, skip_ids):
+    """Remove cached error entries that still have retries left (in-place).
+
+    Returns (dandiset_ids, attempts): the dandisets that need to be
+    re-targeted so the dropped assets are streamed again, and a map from
+    cache key to how many times that asset has failed so far, which
+    process_one carries forward into the new entry. Entries for dandisets in
+    `skip_ids` are left alone because those are being invalidated wholesale
+    anyway. Error entries written before the attempt counter existed count
+    as one failure.
+    """
+    dandiset_ids = set()
+    attempts = {}
+    for key, label_entry in list(label_cache.items()):
+        if key[0] in skip_ids:
+            continue
+        if not _entry_failed(label_entry, electrode_cache.get(key)):
+            continue
+        n = label_entry.get("attempts", 1)
+        if n >= MAX_ERROR_ATTEMPTS:
+            continue
+        attempts[key] = n
+        dandiset_ids.add(key[0])
+        del label_cache[key]
+        electrode_cache.pop(key, None)
+    return dandiset_ids, attempts
+
+
 # ---------------------------------------------------------------------------
 # Asset processing
 # ---------------------------------------------------------------------------
@@ -209,6 +250,9 @@ def process_asset_electrodes(dandiset_id, asset):
         coords = extract_electrode_coords(url)
         entry["coords"] = coords
     except Exception as exc:
+        # Recorded so a failed stream can be told apart from a file that has
+        # no electrode coordinates, and retried on a later run.
+        entry["error"] = str(exc)
         tqdm.write(f"  Electrode error {dandiset_id}/{path}: {exc}")
 
     return entry
@@ -404,6 +448,7 @@ def main():
     # early-stop probe in step 5 is skipped for these, since skipping the rest
     # of a dandiset that used to match would drop its regions from the map.
     previously_matched = set()
+    retry_attempts = {}
     if is_full:
         label_cache = {}
         electrode_cache = {}
@@ -412,6 +457,18 @@ def main():
         label_cache = load_label_cache()
         electrode_cache = load_electrode_cache()
         print(f"  Loaded {len(label_cache)} label entries, {len(electrode_cache)} electrode entries")
+
+        # Assets that errored on an earlier run get another attempt. Only
+        # the failed entries are dropped, so step 5 re-streams just those
+        # assets and returns the cached status for the rest of the dandiset.
+        if not args.dandiset:
+            retry_ids, retry_attempts = drop_retryable_errors(
+                label_cache, electrode_cache, skip_ids=mouse_ids
+            )
+            if retry_attempts:
+                print(f"  Retrying {len(retry_attempts)} asset(s) across "
+                      f"{len(retry_ids)} dandiset(s) that errored on earlier runs")
+                mouse_ids |= retry_ids
 
         previously_matched = {
             ds_id for (ds_id, _), entry in label_cache.items()
@@ -491,6 +548,9 @@ def main():
 
             # Process electrodes
             electrode_result = process_asset_electrodes(ds_id, asset)
+
+            if _entry_failed(label_result, electrode_result):
+                label_result["attempts"] = retry_attempts.get(cache_key, 0) + 1
 
             with cache_lock:
                 # Store in caches
