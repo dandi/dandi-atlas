@@ -160,6 +160,14 @@ const ATLAS_COORD_LABELS = {
 let activeAtlasKey = 'allen_ccf';
 let activeAtlas = ATLAS_CONFIGS.allen_ccf;
 
+// Bumped by every loadAtlas call. Async work that touches the scene or the
+// panels after an await captures the value first and bails out if it has
+// moved on, so a superseded atlas load cannot add its meshes to the atlas
+// that replaced it, and a view transition started on one atlas cannot apply
+// its selection to the next.
+let atlasLoadGeneration = 0;
+function atlasChangedSince(gen) { return gen !== atlasLoadGeneration; }
+
 // Single source of truth for which view the user is currently in. Set by the
 // navigation functions (enterRegionView, enterDandisetView, enterSubjectViewFromURL,
 // applyURLState's no-hash branch). Read by view-conditional logic such as
@@ -223,6 +231,7 @@ const SESSION_ELECTRODE_COLORS = [
 
 // ── Atlas Loading ──────────────────────────────────────────────────────────
 async function loadAtlas(atlasKey) {
+  const gen = ++atlasLoadGeneration;
   activeAtlasKey = atlasKey;
   activeAtlas = ATLAS_CONFIGS[atlasKey];
 
@@ -276,6 +285,7 @@ async function loadAtlas(atlasKey) {
     fetch(`${activeAtlas.dataPrefix}dandiset_assets.json${v}`).then(r => r.json()),
     fetch(`${activeAtlas.dataPrefix}dandisets_with_electrodes.json${v}`).then(r => r.json()).catch(() => []),
   ]);
+  if (atlasChangedSince(gen)) return;
 
   structureGraph = graphResp;
   dandiRegions = regionsResp;
@@ -314,7 +324,8 @@ async function loadAtlas(atlasKey) {
   buildHierarchyTree();
 
   updateLoadingText('Loading brain meshes...');
-  await loadInitialMeshes();
+  await loadInitialMeshes(gen);
+  if (atlasChangedSince(gen)) return;
 
   // Select root BEFORE hiding the loading overlay so the user never sees
   // the undimmed "speckled brain" state between the last mesh load and
@@ -327,7 +338,7 @@ async function loadAtlas(atlasKey) {
   hideLoading();
 
   // Fetch dandiset titles in background
-  fetchDandisetTitles();
+  fetchDandisetTitles(gen);
 }
 
 // ── Initialization ─────────────────────────────────────────────────────────
@@ -520,10 +531,11 @@ function flattenTree(nodes) {
   }
 }
 
-async function fetchDandisetTitles() {
+async function fetchDandisetTitles(gen) {
   const ids = Object.keys(dandisetToStructures);
   const batchSize = 10;
   for (let i = 0; i < ids.length; i += batchSize) {
+    if (atlasChangedSince(gen)) return;
     const batch = ids.slice(i, i + batchSize);
     await Promise.all(batch.map(async (did) => {
       try {
@@ -626,10 +638,14 @@ function loadMesh(structureId) {
       return;
     }
 
+    const gen = atlasLoadGeneration;
     const path = `${activeAtlas.dataPrefix}meshes/${structureId}.glb?v=${DATA_VERSION}`;
     gltfLoader.load(
       path,
       (gltf) => {
+        // Requested under an atlas that has since been replaced: drop it
+        // rather than add it to the new atlas's scene.
+        if (atlasChangedSince(gen)) { resolve(null); return; }
         let mesh = null;
         gltf.scene.traverse((child) => {
           if (!mesh && child.isMesh) mesh = child;
@@ -715,7 +731,13 @@ function loadMesh(structureId) {
         resolve(mesh);
       },
       undefined,
-      () => { failedMeshIds.add(structureId); resolve(null); }
+      () => {
+        // A superseded load's misses must not be recorded against the new
+        // atlas; structure IDs overlap between atlases (9999 is root on
+        // every non-Allen atlas), so they would block on-demand loads later.
+        if (!atlasChangedSince(gen)) failedMeshIds.add(structureId);
+        resolve(null);
+      }
     );
   });
 }
@@ -726,9 +748,10 @@ async function ensureMeshLoaded(structureId) {
   return loadMesh(structureId);
 }
 
-async function loadInitialMeshes() {
+async function loadInitialMeshes(gen) {
   // Load root brain outline first
   await loadMesh(meshManifest.root_id);
+  if (atlasChangedSince(gen)) return;
 
   // Determine which meshes to load
   let allToLoad;
@@ -751,6 +774,7 @@ async function loadInitialMeshes() {
   for (let i = 0; i < allToLoad.length; i += batchSize) {
     const batch = allToLoad.slice(i, i + batchSize);
     await Promise.all(batch.map(id => loadMesh(id)));
+    if (atlasChangedSince(gen)) return;
     updateLoadingText(`Loading meshes... ${Math.min(i + batchSize, allToLoad.length)}/${allToLoad.length}`);
   }
 
@@ -1153,7 +1177,11 @@ function spotlightRegion(structureId) {
       toLoad.push(ensureMeshLoaded(id));
     }
   }
-  Promise.all(toLoad).then(() => syncSceneToSelection(activeSet));
+  const gen = atlasLoadGeneration;
+  Promise.all(toLoad).then(() => {
+    if (atlasChangedSince(gen)) return;
+    syncSceneToSelection(activeSet);
+  });
 
   // Apply immediately to already-loaded meshes
   syncSceneToSelection(activeSet);
@@ -1297,6 +1325,7 @@ async function enterDandisetView(dandisetId, { pushState = true, initialSubjectD
     const activeSet = new Set(structureIds);
 
     // Ensure meshes are loaded for all structures in this dandiset
+    const gen = atlasLoadGeneration;
     const toLoad = [];
     for (const sid of structureIds) {
       if (!meshObjects[sid] && !failedMeshIds.has(sid) && !noMeshIds.has(sid)) {
@@ -1304,6 +1333,7 @@ async function enterDandisetView(dandisetId, { pushState = true, initialSubjectD
       }
     }
     if (toLoad.length > 0) await Promise.all(toLoad);
+    if (atlasChangedSince(gen)) return;
 
     // Build mapping: meshId -> [regionIds it represents]
     const meshToRegions = new Map();
@@ -1329,6 +1359,7 @@ async function enterDandisetView(dandisetId, { pushState = true, initialSubjectD
     // the electrode fetch, so without the await a subject deep link would
     // look for its card before the card exists.
     await updateDandisetPanel(dandisetId, structureIds, { initialSubjectDir });
+    if (atlasChangedSince(gen)) return;
     filterTreeByDandiset(dandisetId);
     updateTreeBadges();
     syncTreeCheckboxes();
@@ -1531,7 +1562,9 @@ async function updateDandisetPanel(dandisetId, structureIds, { initialSubjectDir
   const assets = dandisetAssets[dandisetId] || [];
 
   // Pre-fetch electrode data for this dandiset (lazy, cached)
+  const gen = atlasLoadGeneration;
   await fetchElectrodes(dandisetId);
+  if (atlasChangedSince(gen)) return;
 
   const title = dandisetTitles[dandisetId] || '';
 
@@ -2004,6 +2037,7 @@ async function spotlightRegions(structureIds) {
   const activeSet = new Set(structureIds);
 
   // Ensure meshes are loaded
+  const gen = atlasLoadGeneration;
   const toLoad = [];
   for (const sid of structureIds) {
     if (!meshObjects[sid] && !failedMeshIds.has(sid) && !noMeshIds.has(sid)) {
@@ -2011,6 +2045,7 @@ async function spotlightRegions(structureIds) {
     }
   }
   if (toLoad.length > 0) await Promise.all(toLoad);
+  if (atlasChangedSince(gen)) return;
 
   // Build mapping: meshId -> [regionIds it represents]
   const meshToRegions = new Map();
@@ -2214,8 +2249,9 @@ async function showElectrodePoints(dandisetId, assetId) {
 
 async function showElectrodePointsForAssets(dandisetId, assetRefs, { colorBySession = false } = {}) {
   clearElectrodePoints();
+  const gen = atlasLoadGeneration;
   const assetCoords = await fetchElectrodes(dandisetId);
-  if (!assetCoords) return;
+  if (!assetCoords || atlasChangedSince(gen)) return;
 
   const subjectLabel = document.getElementById('subject-filter-label')?.textContent || `Dandiset ${dandisetId}`;
   const assets = assetRefs.map(ref => (
@@ -2469,7 +2505,9 @@ async function enterMultiRegionView(ids, { pushState = true, expandTree = true }
 
     if (pushState) setHash(`region=${uniqueIds.join(',')}`);
 
+    const gen = atlasLoadGeneration;
     await spotlightRegions(uniqueIds);
+    if (atlasChangedSince(gen)) return;
 
     if (expandTree) {
       for (const rid of uniqueIds) expandToNode(rid);
@@ -2829,7 +2867,9 @@ function createTreeNode(node, depth) {
         } else {
           if (checkbox.checked) {
             dandisetExtraRegionIds.add(node.id);
+            const gen = atlasLoadGeneration;
             await ensureMeshLoaded(node.id);
+            if (atlasChangedSince(gen)) return;
           } else {
             dandisetExtraRegionIds.delete(node.id);
           }
