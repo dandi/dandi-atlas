@@ -1464,7 +1464,10 @@ function enterInitView() {
 
 function clearDandisetFilter() {
   enterInitView();
-  history.pushState(null, '', window.location.pathname);
+  // Drop only the hash. The query string carries ?atlas=, and pushing the
+  // bare pathname lost it, so a reload landed on the landing page instead of
+  // the atlas the user was in.
+  history.pushState(null, '', window.location.pathname + window.location.search);
 }
 
 function filterDandisetPanelByRegion(structureId, { pushState = true } = {}) {
