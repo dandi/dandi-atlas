@@ -361,8 +361,6 @@ function ensureSceneInitialized() {
   setupSearch();
   animate();
 
-  window.addEventListener('hashchange', () => applyURLState());
-
   const selector = document.getElementById('atlas-selector');
   if (selector) {
     selector.addEventListener('change', (e) => {
@@ -3244,6 +3242,12 @@ async function applyURLState() {
   }
 }
 
+// popstate alone covers every history step, including fragment-only ones
+// (back, forward, and editing the hash in the address bar), because the
+// browser fires popstate before hashchange for those. A second hashchange
+// listener used to call applyURLState as well, which ran every view
+// transition twice per navigation. setHash uses pushState, which fires
+// neither event, so nothing depends on hashchange.
 window.addEventListener('popstate', () => applyURLState());
 
 // ── Start ──────────────────────────────────────────────────────────────────
