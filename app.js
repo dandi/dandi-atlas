@@ -1731,7 +1731,11 @@ async function updateDandisetPanel(dandisetId, structureIds, { initialSubjectDir
           // Single-session subject card (original behavior)
           const singleAsset = entry.assets[0];
           const singleHasElectrodes = electrodeData[singleAsset.asset_id]?.length > 0;
-          html += `<div class="asset-card" data-region-ids='${regionIds}' data-subject-dir="${entry.subjectDir}" data-asset-id="${singleAsset.asset_id}">`;
+          // The session label is carried on the card so the session view can
+          // name it in the filter bar, matching the rows of multi-session
+          // subjects. Empty when the filename has no _ses- part.
+          const singleSessionLabel = singleAsset.session ? `ses-${singleAsset.session}` : '';
+          html += `<div class="asset-card" data-region-ids='${regionIds}' data-subject-dir="${entry.subjectDir}" data-asset-id="${singleAsset.asset_id}" data-session-label="${singleSessionLabel}">`;
           if (singleHasElectrodes) html += `<span class="electrode-indicator" title="Has electrode coordinates"></span>`;
           html += `<span class="asset-card-filename">${subjectId}</span>`;
           html += `<span class="asset-card-region-count">${regionCount} region${regionCount !== 1 ? 's' : ''}</span>`;
@@ -1844,7 +1848,7 @@ async function updateDandisetPanel(dandisetId, structureIds, { initialSubjectDir
             subjectDir: card.dataset.subjectDir,
             assetId: card.dataset.assetId,
             regionIds: JSON.parse(card.dataset.regionIds || '[]'),
-            sessionLabel: '',
+            sessionLabel: card.dataset.sessionLabel || '',
           });
         } else {
           enterSubjectView({
@@ -2082,7 +2086,11 @@ function enterSubjectView({ dandisetId, subjectDir, regionIds, electrodeAssets, 
 function enterSessionView({ dandisetId, subjectDir, assetId, regionIds, sessionLabel }) {
   transitionView('session', () => {
     filterTreeByStructureIds(regionIds);
-    showSubjectFilter(`${subjectDir.replace(/^sub-/, '')} / ${sessionLabel}`);
+    // A single-file subject whose filename carries no session ID has nothing
+    // to put after the separator, so it gets the subject view's label rather
+    // than "name / " with a dangling slash.
+    const subjectName = subjectDir.replace(/^sub-/, '');
+    showSubjectFilter(sessionLabel ? `${subjectName} / ${sessionLabel}` : `Subject: ${subjectName}`);
 
     if (assetId) {
       showElectrodePoints(dandisetId, assetId);
@@ -2171,7 +2179,7 @@ function enterSubjectViewFromURL(dandisetId, subjectDir, sessionAssetId) {
     const regionIds = JSON.parse(card.dataset.regionIds || '[]');
     const subjectName = card.querySelector('.asset-card-filename')?.textContent || '';
     if (assetId) {
-      enterSessionView({ dandisetId, subjectDir, assetId, regionIds, sessionLabel: '' });
+      enterSessionView({ dandisetId, subjectDir, assetId, regionIds, sessionLabel: card.dataset.sessionLabel || '' });
     } else {
       enterSubjectView({ dandisetId, subjectDir, regionIds, electrodeAssets: [], subjectName });
     }
