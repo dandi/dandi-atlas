@@ -335,6 +335,12 @@ def main():
     # ── Step 2: Determine target dandisets ────────────────────────────────
     is_full = args.mode == "full"
     since = ""
+    # When the dandiset listing was fetched. This, not the completion time,
+    # becomes the next incremental run's cutoff: the Allen step takes hours,
+    # and a dandiset modified while it runs is not in the listing it acted
+    # on. Stays None for --dandiset runs, which do not scan the listing and
+    # so must not move the cutoff.
+    scanned_at = None
 
     if args.dandiset:
         # Specific dandisets requested
@@ -342,6 +348,7 @@ def main():
         print(f"\nStep 2: Targeting {len(target_ids)} specified dandiset(s)")
     elif is_full:
         print("\nStep 2: Full rebuild — fetching all dandisets...")
+        scanned_at = _utcnow_iso()
         target_ids = set()
         for ds in iter_all_dandisets():
             target_ids.add(ds["identifier"])
@@ -356,6 +363,7 @@ def main():
             print("  No usable watermark found — falling back to full mode")
             is_full = True
 
+        scanned_at = _utcnow_iso()
         if since:
             target_ids = set()
             for ds in iter_dandisets_modified_since(since):
@@ -363,7 +371,7 @@ def main():
             print(f"  {len(target_ids)} dandisets modified since last update")
             if not target_ids:
                 print("  No changes detected. Writing timestamp and exiting.")
-                _write_last_updated("incremental", 0, 0, 0, since=since)
+                _write_last_updated("incremental", 0, 0, 0, since=since, scanned_at=scanned_at)
                 print("Done!")
                 return
         else:
@@ -386,7 +394,7 @@ def main():
 
     if not mouse_ids:
         print("  No mouse dandisets to process.")
-        _write_last_updated(args.mode, len(target_ids), 0, 0, since=since)
+        _write_last_updated(args.mode, len(target_ids), 0, 0, since=since, scanned_at=scanned_at)
         print("Done!")
         return
 
@@ -663,7 +671,10 @@ def main():
     print(f"  data: {len(data_ids)}, ancestors: {len(ancestor_ids - data_ids)}, no_mesh: {len(all_failed)}")
 
     # ── Step 10: Write last_updated.json ───────────────────────────────────
-    _write_last_updated(args.mode, len(target_ids), len(mouse_ids), total_assets_processed, since=since)
+    _write_last_updated(
+        args.mode, len(target_ids), len(mouse_ids), total_assets_processed,
+        since=since, scanned_at=scanned_at,
+    )
 
     elapsed = time.time() - start_time
     print(f"\nDone! ({elapsed:.0f}s)")
@@ -676,11 +687,17 @@ def main():
 ATLAS_KEY = "allen_ccf"
 
 
+def _utcnow_iso():
+    return datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ")
+
+
 def _read_since():
     """Return this atlas's incremental cutoff, or "" if there isn't one.
 
-    Reads per_atlas[ATLAS_KEY].timestamp, falling back to the top-level
-    timestamp for files written before per-atlas watermarks existed.
+    Reads per_atlas[ATLAS_KEY].watermark, which is when the last run fetched
+    the dandiset listing. Falls back to that record's completion timestamp
+    for files written before the watermark field existed, and then to the
+    top-level timestamp for files older than the per-atlas records.
 
     The per-atlas record matters because every atlas script writes to this one
     file. The top-level `timestamp` is whatever ran last (the rat step), not
@@ -695,11 +712,12 @@ def _read_since():
         return ""
     per_atlas = record.get("per_atlas") or {}
     mine = per_atlas.get(ATLAS_KEY) or {}
-    return mine.get("timestamp") or record.get("timestamp") or ""
+    return mine.get("watermark") or mine.get("timestamp") or record.get("timestamp") or ""
 
 
 def _write_last_updated(
-    mode, dandisets_checked, dandisets_updated, assets_processed, since=None
+    mode, dandisets_checked, dandisets_updated, assets_processed,
+    since=None, scanned_at=None,
 ):
     """Merge this atlas's results into last_updated.json.
 
@@ -709,7 +727,10 @@ def _write_last_updated(
     file never carried an allen_ccf entry at all).
 
     `since` is the cutoff this run scanned from, recorded so a run can be
-    audited after the fact.
+    audited after the fact. `scanned_at` is when this run fetched the
+    dandiset listing and becomes the next run's cutoff (`watermark`). A run
+    that did not scan the listing (--dandiset) passes None and the previous
+    watermark is carried forward unchanged.
     """
     record = {}
     if LAST_UPDATED_FILE.exists():
@@ -718,7 +739,7 @@ def _write_last_updated(
         except (OSError, json.JSONDecodeError):
             record = {}
 
-    timestamp = datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ")
+    timestamp = _utcnow_iso()
     record["timestamp"] = timestamp
     record["mode"] = mode
     record["dandisets_checked"] = dandisets_checked
@@ -726,8 +747,11 @@ def _write_last_updated(
     record["assets_processed"] = assets_processed
 
     per_atlas = record.get("per_atlas") or {}
+    previous = per_atlas.get(ATLAS_KEY) or {}
+    watermark = scanned_at or previous.get("watermark") or previous.get("timestamp") or ""
     per_atlas[ATLAS_KEY] = {
         "timestamp": timestamp,
+        "watermark": watermark,
         "mode": mode,
         "dandisets_checked": dandisets_checked,
         "dandisets_updated": dandisets_updated,
