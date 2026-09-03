@@ -1274,7 +1274,10 @@ function updateTreeBadges() {
   });
 }
 
-async function enterDandisetView(dandisetId, { pushState = true } = {}) {
+// initialSubjectDir: when a deep link names a subject, the panel renders the
+// page that contains that subject so enterSubjectViewFromURL can find its
+// card. Otherwise the panel starts on page zero.
+async function enterDandisetView(dandisetId, { pushState = true, initialSubjectDir = null } = {}) {
   return transitionView('dandiset', async () => {
     // Capture prior region(s) so the dandiset panel can offer a back button.
     // Empty selection (deep-link entry) leaves this empty and suppresses the
@@ -1323,7 +1326,11 @@ async function enterDandisetView(dandisetId, { pushState = true } = {}) {
       return regions.every(rid => hiddenRegionIds.has(rid));
     });
 
-    updateDandisetPanel(dandisetId, structureIds);
+    // Awaited so that callers (applyURLState in particular) can rely on the
+    // panel's cards being in the DOM when this resolves. The render waits on
+    // the electrode fetch, so without the await a subject deep link would
+    // look for its card before the card exists.
+    await updateDandisetPanel(dandisetId, structureIds, { initialSubjectDir });
     filterTreeByDandiset(dandisetId);
     updateTreeBadges();
     syncTreeCheckboxes();
@@ -1512,7 +1519,7 @@ function hideSubjectFilter() {
   document.getElementById('subject-filter-bar').classList.add('hidden');
 }
 
-async function updateDandisetPanel(dandisetId, structureIds) {
+async function updateDandisetPanel(dandisetId, structureIds, { initialSubjectDir = null } = {}) {
   const panel = document.getElementById('region-panel');
   const assets = dandisetAssets[dandisetId] || [];
 
@@ -1567,6 +1574,15 @@ async function updateDandisetPanel(dandisetId, structureIds) {
   const PAGE_SIZE = 20;
   let currentPage = 0;
   const totalPages = Math.ceil(subjects.length / PAGE_SIZE);
+
+  // Open on the page that holds the requested subject, if any. Subjects are
+  // paginated, so a deep link to one on a later page would otherwise have no
+  // card in the DOM for enterSubjectViewFromURL to select.
+  let initialPage = 0;
+  if (initialSubjectDir) {
+    const idx = subjects.findIndex(([, entry]) => entry.subjectDir === initialSubjectDir);
+    if (idx >= 0) initialPage = Math.floor(idx / PAGE_SIZE);
+  }
 
   function render(page) {
     currentPage = page;
@@ -1937,7 +1953,7 @@ async function updateDandisetPanel(dandisetId, structureIds) {
     }
   }
 
-  render(0);
+  render(initialPage);
 }
 
 function filterTreeByStructureIds(structureIds) {
@@ -3226,7 +3242,7 @@ async function applyURLState() {
   const session = params.get('session');
 
   if (did && dandisetToStructures[did]) {
-    await enterDandisetView(did, { pushState: false });
+    await enterDandisetView(did, { pushState: false, initialSubjectDir: subject });
     if (region) {
       const rid = parseInt(region);
       if (idToStructure[rid]) filterDandisetPanelByRegion(rid, { pushState: false });
