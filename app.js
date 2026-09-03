@@ -1470,43 +1470,49 @@ function clearDandisetFilter() {
   history.pushState(null, '', window.location.pathname + window.location.search);
 }
 
+// Narrow the current dandiset view to one region. This is a dandiset
+// sub-state, so it routes through transitionView('dandiset') like the other
+// returns to the dandiset view: reached from a subject or session view it
+// used to leave currentView as 'subject' / 'session', and the tree checkboxes
+// (which branch on currentView === 'dandiset') then treated a tick as a
+// multi-region selection and dropped the user out of the dandiset.
 function filterDandisetPanelByRegion(structureId, { pushState = true } = {}) {
   if (!selectedDandiset) return;
 
-  dandisetRegionFilter = structureId;
+  transitionView('dandiset', () => {
+    // Set after transitionView, which resets the filter on every transition.
+    dandisetRegionFilter = structureId;
 
-  // Update URL hash to include region
-  if (pushState) {
-    setHash(`dandiset=${selectedDandiset}&region=${structureId}`);
-  }
+    // Update URL hash to include region
+    if (pushState) {
+      setHash(`dandiset=${selectedDandiset}&region=${structureId}`);
+    }
 
-  // Re-render the panel with the region filter active
-  const structureIds = dandisetToStructures[selectedDandiset] || [];
-  updateDandisetPanel(selectedDandiset, structureIds);
+    // Re-render the panel with the region filter active
+    const structureIds = dandisetToStructures[selectedDandiset] || [];
+    updateDandisetPanel(selectedDandiset, structureIds);
 
-  // Show region filter indicator
-  const s = idToStructure[structureId];
-  const regionName = s ? (s.name || s.acronym) : `Region ${structureId}`;
-  showSubjectFilter(`Region: ${regionName}`);
+    // Show region filter indicator
+    const s = idToStructure[structureId];
+    const regionName = s ? (s.name || s.acronym) : `Region ${structureId}`;
+    showSubjectFilter(`Region: ${regionName}`);
 
-  // Clear electrodes (no specific subject selected)
-  clearElectrodePoints();
+    // Clear electrodes (no specific subject selected)
+    clearElectrodePoints();
 
-  // Update 3D view: isolate to matching structures within this dandiset
-  const descendantIds = getDescendantIds(structureId);
-  const dandiStructures = dandisetToStructures[selectedDandiset] || [];
-  const matchingStructures = dandiStructures.filter(id => descendantIds.has(id));
-  if (matchingStructures.length > 0) {
-    spotlightRegions(matchingStructures);
-  } else {
-    spotlightRegions([structureId]);
-  }
+    // Update 3D view: isolate to matching structures within this dandiset
+    const descendantIds = getDescendantIds(structureId);
+    const matchingStructures = structureIds.filter(id => descendantIds.has(id));
+    if (matchingStructures.length > 0) {
+      spotlightRegions(matchingStructures);
+    } else {
+      spotlightRegions([structureId]);
+    }
 
-  // Highlight region in tree
-  const prevEl = document.querySelector('.tree-node-content.selected');
-  if (prevEl) prevEl.classList.remove('selected');
-  const el = document.querySelector(`.tree-node-content[data-id="${structureId}"]`);
-  if (el) el.classList.add('selected');
+    // Highlight region in tree. transitionView already cleared .selected.
+    const el = document.querySelector(`.tree-node-content[data-id="${structureId}"]`);
+    if (el) el.classList.add('selected');
+  });
 }
 
 function showSubjectFilter(filterText) {
