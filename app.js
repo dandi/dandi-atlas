@@ -2708,6 +2708,9 @@ function createTreeNode(node, depth) {
   const el = document.createElement('div');
   el.className = 'tree-node';
   el.dataset.id = node.id;
+  // Recorded so lazy renderers (expandAllForSearch) can pass depth + 1 to
+  // children instead of reverse-engineering it from the row's padding.
+  el.dataset.depth = depth;
 
   const hasChildren = node.children && node.children.length > 0;
   const region = dandiRegions[String(node.id)];
@@ -3011,10 +3014,13 @@ function expandAllForSearch() {
 
     // Lazy-render children
     if (childrenEl.children.length === 0 && s && s.children) {
-      const parentContent = node.querySelector(':scope > .tree-node-content');
-      const depth = parseInt(parentContent?.style.paddingLeft || '8') / 16;
+      // Children sit one level below this node. The previous version divided
+      // the row's paddingLeft by 16, which yields depth + 0.5 (padding is
+      // depth * 16 + 8) and was then passed as the child depth, so
+      // search-rendered rows sat 8px short of toggle-rendered ones.
+      const depth = parseInt(node.dataset.depth || '0', 10);
       for (const child of s.children) {
-        childrenEl.appendChild(createTreeNode(child, depth));
+        childrenEl.appendChild(createTreeNode(child, depth + 1));
       }
     }
 
