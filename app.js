@@ -276,6 +276,7 @@ async function loadAtlas(atlasKey) {
   }
   meshObjects = {};
   failedMeshIds.clear();
+  pendingMeshLoads.clear();
 
   const v = `?v=${DATA_VERSION}`;
   const [graphResp, regionsResp, manifestResp, assetsResp, electrodeManifestResp] = await Promise.all([
@@ -631,13 +632,17 @@ function onResize() {
 const gltfLoader = new GLTFLoader();
 const failedMeshIds = new Set();
 
-function loadMesh(structureId) {
-  return new Promise((resolve) => {
-    if (meshObjects[structureId]) {
-      resolve(meshObjects[structureId]);
-      return;
-    }
+// In-flight GLB requests by structure ID. A second caller asking for a mesh
+// that is already loading gets the same promise; two separate loads would
+// both add a mesh to worldRoot and only the later one would be tracked in
+// meshObjects, leaving an orphan in the scene.
+const pendingMeshLoads = new Map();
 
+function loadMesh(structureId) {
+  if (meshObjects[structureId]) return Promise.resolve(meshObjects[structureId]);
+  if (pendingMeshLoads.has(structureId)) return pendingMeshLoads.get(structureId);
+
+  const promise = new Promise((resolve) => {
     const gen = atlasLoadGeneration;
     const path = `${activeAtlas.dataPrefix}meshes/${structureId}.glb?v=${DATA_VERSION}`;
     gltfLoader.load(
@@ -739,7 +744,9 @@ function loadMesh(structureId) {
         resolve(null);
       }
     );
-  });
+  }).finally(() => pendingMeshLoads.delete(structureId));
+  pendingMeshLoads.set(structureId, promise);
+  return promise;
 }
 
 async function ensureMeshLoaded(structureId) {
@@ -1159,32 +1166,36 @@ function findNearestAncestorWithMesh(structureId) {
   return null;
 }
 
-function spotlightRegion(structureId) {
-  // Resolve the mesh ID to spotlight: the structure itself if its mesh is loaded,
-  // otherwise the nearest ancestor that has a loaded mesh.
-  const targetId = meshObjects[structureId] ? structureId : findNearestAncestorWithMesh(structureId);
-  const activeSet = targetId != null ? new Set([targetId]) : new Set();
+// Spotlight one region: its own mesh if it has one, otherwise the nearest
+// ancestor with a loaded mesh. Allen preloads only the data structures, so a
+// region without DANDI data usually has to be fetched here first. Deciding on
+// the ancestor before that fetch resolved (and, from a hash link, never
+// fetching at all) was what let the region and its ancestor race each other
+// for visibility. Descendants are warmed for later navigation but never made
+// visible here: loadMesh dims late arrivals against the current selection.
+async function spotlightRegion(structureId) {
+  const gen = atlasLoadGeneration;
+  const applyToLoaded = () => {
+    const targetId = meshObjects[structureId] ? structureId : findNearestAncestorWithMesh(structureId);
+    syncSceneToSelection(targetId != null ? new Set([targetId]) : new Set());
+  };
 
-  // Speculatively pre-load descendant meshes so navigation into the subtree is
-  // instant. Note: descendants are NOT made visible in region view (only the
-  // clicked mesh is — see syncSceneToSelection). The pre-load is a cache warm,
-  // not a visibility decision.
-  const subtreeIds = getDescendantIds(structureId);
-  if (targetId != null) subtreeIds.add(targetId);
-  const toLoad = [];
-  for (const id of subtreeIds) {
+  // Immediate pass on what is already loaded so the view responds at once.
+  applyToLoaded();
+
+  if (!meshObjects[structureId]) {
+    await ensureMeshLoaded(structureId);
+    // The selection may have moved on while the mesh was in flight.
+    if (atlasChangedSince(gen) || selectedId !== structureId) return;
+    applyToLoaded();
+    highlightMesh(structureId);
+  }
+
+  for (const id of getDescendantIds(structureId)) {
     if (!meshObjects[id] && (dataStructureIds.has(id) || ancestorStructureIds.has(id))) {
-      toLoad.push(ensureMeshLoaded(id));
+      ensureMeshLoaded(id);
     }
   }
-  const gen = atlasLoadGeneration;
-  Promise.all(toLoad).then(() => {
-    if (atlasChangedSince(gen)) return;
-    syncSceneToSelection(activeSet);
-  });
-
-  // Apply immediately to already-loaded meshes
-  syncSceneToSelection(activeSet);
 }
 
 // Scene-level orchestrator. Brings every loaded mesh's display mode into
