@@ -13,6 +13,13 @@ writes a per-atlas record with:
   - regions_with_data
   - dandisets      : sorted IDs of the dandisets counted by dandiset_count
 
+It also writes data/dandiset_titles.json, a flat {dandiset_id: title} map
+covering every dandiset any atlas lists, so the viewer can show titles
+without one DANDI API request per dandiset on every atlas load. Titles come
+from the DANDI API here; a dandiset whose request fails keeps the title from
+the previous file, and --skip-titles leaves the file untouched for offline
+runs.
+
 The aggregate counts are read from the root entry of dandi_regions.json,
 which already carries total_dandiset_count / total_file_count /
 total_dandisets. The "regions_with_data" count is computed by filtering
@@ -29,7 +36,9 @@ update_macaque_data.py for the macaque atlases). Idempotent.
 
 from __future__ import annotations
 
+import argparse
 import json
+import time
 from datetime import datetime
 from pathlib import Path
 
@@ -37,6 +46,8 @@ REPO_ROOT = Path(__file__).resolve().parent.parent
 ATLASES_DIR = REPO_ROOT / "data" / "atlases"
 INDEX_PATH = REPO_ROOT / "data" / "atlases_index.json"
 LAST_UPDATED_PATH = REPO_ROOT / "data" / "last_updated.json"
+TITLES_PATH = REPO_ROOT / "data" / "dandiset_titles.json"
+DANDI_API = "https://api.dandiarchive.org/api"
 
 # Display metadata not derivable from the per-atlas JSON files. Order in
 # this list defines the order of cards on the landing page.
@@ -108,7 +119,70 @@ def stamp_last_updated_date() -> None:
     print(f"  last_updated.json date = {record['date']}")
 
 
+def fetch_dandiset_titles(dandiset_ids: set[str], previous: dict) -> dict:
+    """Return {dandiset_id: title} for the given IDs.
+
+    One request per dandiset. The draft name is preferred, matching what the
+    viewer used to fetch at runtime, with the latest published name as the
+    fallback. A request that fails, or a dandiset with no name, keeps whatever
+    the previous file had so a flaky night does not blank titles out.
+    """
+    import requests  # local import so the index can still build without it
+
+    titles = {did: previous[did] for did in dandiset_ids if did in previous}
+    failed = 0
+    for did in sorted(dandiset_ids):
+        url = f"{DANDI_API}/dandisets/{did}/"
+        name = None
+        for attempt in range(3):
+            try:
+                resp = requests.get(url, timeout=30)
+            except requests.RequestException:
+                resp = None
+            if resp is not None and resp.status_code == 200:
+                data = resp.json()
+                name = (
+                    (data.get("draft_version") or {}).get("name")
+                    or (data.get("most_recent_published_version") or {}).get("name")
+                )
+                break
+            if resp is not None and resp.status_code not in (429,) and resp.status_code < 500:
+                break
+            time.sleep(2 * (attempt + 1))
+        if name:
+            titles[did] = name
+        else:
+            failed += 1
+    if failed:
+        print(f"  warning: {failed} title request(s) failed; previous titles kept where available")
+    return titles
+
+
+def write_dandiset_titles(atlases: list) -> None:
+    ids = set()
+    for atlas in atlases:
+        ids.update(atlas.get("dandisets", []))
+    previous = {}
+    if TITLES_PATH.exists():
+        try:
+            previous = json.loads(TITLES_PATH.read_text())
+        except (OSError, json.JSONDecodeError):
+            previous = {}
+    titles = fetch_dandiset_titles(ids, previous)
+    TITLES_PATH.write_text(
+        json.dumps(dict(sorted(titles.items())), indent=2, ensure_ascii=False) + "\n"
+    )
+    print(f"Wrote {TITLES_PATH.relative_to(REPO_ROOT)} ({len(titles)} of {len(ids)} dandisets titled)")
+
+
 def main() -> None:
+    parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument(
+        "--skip-titles", action="store_true",
+        help="Do not refresh data/dandiset_titles.json (no network needed)",
+    )
+    args = parser.parse_args()
+
     atlases = []
     for entry in ATLAS_DISPLAY:
         atlas_dir = ATLASES_DIR / entry["key"]
@@ -130,6 +204,9 @@ def main() -> None:
 
     INDEX_PATH.write_text(json.dumps({"atlases": atlases}, indent=2) + "\n")
     print(f"\nWrote {INDEX_PATH.relative_to(REPO_ROOT)} ({len(atlases)} atlases)")
+
+    if not args.skip_titles:
+        write_dandiset_titles(atlases)
 
     stamp_last_updated_date()
 

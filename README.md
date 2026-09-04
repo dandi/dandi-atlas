@@ -66,7 +66,7 @@ Then open [http://localhost:8000](http://localhost:8000). A server is required r
 
 ## Updating the Data
 
-A [nightly GitHub Actions workflow](.github/workflows/update-data.yml) runs at 03:00 UTC, refreshes each atlas in turn, rebuilds the landing-page index, and commits any changes. Each atlas is allowed to fail without taking the others down, and the run is only marked failed if every atlas fails. You can also trigger it manually from the Actions tab and choose `full` instead of `incremental` for a complete rebuild.
+A [nightly GitHub Actions workflow](.github/workflows/update-data.yml) runs at 03:00 UTC, refreshes each atlas in turn, rebuilds the landing-page index and the dandiset title map, and commits any changes. Each atlas is allowed to fail without taking the others down, and the run is only marked failed if every atlas fails. You can also trigger it manually from the Actions tab and choose `full` instead of `incremental` for a complete rebuild.
 
 The same scripts run locally:
 
@@ -104,6 +104,7 @@ The Allen pipeline predates this arrangement. `update_data.py --mode full` rebui
 ├── app.js                           # Three.js scene, hierarchy tree, panels, routing
 ├── data/
 │   ├── atlases_index.json           # Landing-page summary, one record per atlas
+│   ├── dandiset_titles.json         # Dandiset ID to title, for every dandiset any atlas lists
 │   ├── last_updated.json            # Timestamps and counts from the last nightly run
 │   └── atlases/<atlas>/
 │       ├── structure_graph.json     # Region hierarchy

@@ -143,10 +143,10 @@ jobs:
       - name: Commit and push if changed
         if: always()
         run: |
-          git diff --quiet data/atlases/ data/atlases_index.json data/last_updated.json && exit 0
+          git diff --quiet data/atlases/ data/atlases_index.json data/dandiset_titles.json data/last_updated.json && exit 0
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
-          git add data/atlases/ data/atlases_index.json data/last_updated.json
+          git add data/atlases/ data/atlases_index.json data/dandiset_titles.json data/last_updated.json
           git commit -m "Update DANDI data (${{ steps.mode.outputs.mode }})"
           git pull --rebase
           git push
