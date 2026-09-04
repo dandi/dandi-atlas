@@ -2,8 +2,11 @@ import * as THREE from 'three';
 import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
 import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
 
-// Bump this string after any data rebuild to force browsers to drop cached GLBs and JSONs.
-const DATA_VERSION = '20260519';
+// Cache key for the GLB meshes. They change only when an atlas is rebuilt
+// from source, so this stays a manual constant: bump it in the PR that
+// commits new meshes. The JSON data files change nightly and are keyed off
+// the pipeline's own timestamp instead; see dataVersion().
+const MESH_VERSION = '20260519';
 
 // ── State ──────────────────────────────────────────────────────────────────
 let scene, camera, renderer, controls, raycaster, mouse;
@@ -282,7 +285,8 @@ async function loadAtlas(atlasKey) {
   failedMeshIds.clear();
   pendingMeshLoads.clear();
 
-  const v = `?v=${DATA_VERSION}`;
+  const v = `?v=${await dataVersion()}`;
+  if (atlasChangedSince(gen)) return;
   if (!dandisetTitlesPromise) {
     dandisetTitlesPromise = fetch(`data/dandiset_titles.json${v}`)
       .then(r => (r.ok ? r.json() : {}))
@@ -410,13 +414,35 @@ function ensureSceneInitialized() {
 // fetch is shared rather than repeated per call site.
 let lastUpdatedPromise = null;
 
+function fetchLastUpdated() {
+  if (!lastUpdatedPromise) {
+    // Revalidated on every page load (the file is tiny) so the data key
+    // derived from it is current; the files it keys can then sit in the
+    // browser cache until the pipeline next runs.
+    lastUpdatedPromise = fetch('data/last_updated.json', { cache: 'no-cache' })
+      .then(r => (r.ok ? r.json() : null))
+      .catch(() => null);
+  }
+  return lastUpdatedPromise;
+}
+
+// Query-string cache key for the JSON data files: the pipeline's completion
+// timestamp reduced to its digits, so every file fetched in one page load
+// is keyed to the same run and a new run invalidates them all together.
+// Falls back to MESH_VERSION when the timestamp is unavailable, which only
+// costs the cache busting, not the data.
+async function dataVersion() {
+  const resp = await fetchLastUpdated();
+  // Digits down to the second (YYYYMMDDhhmmss); sub-second precision adds
+  // nothing to a cache key.
+  const stamp = resp?.timestamp ? String(resp.timestamp).replace(/\D/g, '').slice(0, 14) : '';
+  return stamp || MESH_VERSION;
+}
+
 async function showLastUpdated(elementId, label) {
   const el = document.getElementById(elementId);
   if (!el) return;
-  if (!lastUpdatedPromise) {
-    lastUpdatedPromise = fetch('data/last_updated.json').then(r => r.json()).catch(() => null);
-  }
-  const resp = await lastUpdatedPromise;
+  const resp = await fetchLastUpdated();
   if (!resp || !resp.timestamp) return;
   const date = new Date(resp.timestamp);
   if (Number.isNaN(date.getTime())) return;
@@ -460,7 +486,7 @@ async function setupLanding() {
   }
   let index;
   try {
-    const resp = await fetch('data/atlases_index.json');
+    const resp = await fetch(`data/atlases_index.json?v=${await dataVersion()}`);
     index = await resp.json();
   } catch (err) {
     console.error('Failed to load atlases_index.json', err);
@@ -660,7 +686,7 @@ function loadMesh(structureId) {
 
   const promise = new Promise((resolve) => {
     const gen = atlasLoadGeneration;
-    const path = `${activeAtlas.dataPrefix}meshes/${structureId}.glb?v=${DATA_VERSION}`;
+    const path = `${activeAtlas.dataPrefix}meshes/${structureId}.glb?v=${MESH_VERSION}`;
     gltfLoader.load(
       path,
       (gltf) => {
@@ -2262,7 +2288,7 @@ function enterSubjectViewFromURL(dandisetId, subjectDir, sessionAssetId) {
 async function fetchElectrodes(dandisetId) {
   if (dandisetElectrodes[dandisetId]) return dandisetElectrodes[dandisetId];
   try {
-    const resp = await fetch(`${activeAtlas.dataPrefix}electrodes/${dandisetId}.json`);
+    const resp = await fetch(`${activeAtlas.dataPrefix}electrodes/${dandisetId}.json?v=${await dataVersion()}`);
     if (!resp.ok) return null;
     const data = await resp.json();
     dandisetElectrodes[dandisetId] = data;
