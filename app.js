@@ -237,6 +237,16 @@ const SESSION_ELECTRODE_COLORS = [
 ];
 
 // ── Atlas Loading ──────────────────────────────────────────────────────────
+
+// fetch plus JSON decode with a failure that names the file. Without the
+// status check a missing data file surfaced as a JSON parse error
+// ("Unexpected token <" from the 404 page) with no hint which URL it was.
+async function fetchJson(url) {
+  const resp = await fetch(url);
+  if (!resp.ok) throw new Error(`${resp.status} ${resp.statusText} fetching ${url}`);
+  return resp.json();
+}
+
 async function loadAtlas(atlasKey) {
   const gen = ++atlasLoadGeneration;
   activeAtlasKey = atlasKey;
@@ -292,14 +302,25 @@ async function loadAtlas(atlasKey) {
       .then(r => (r.ok ? r.json() : {}))
       .catch(() => ({}));
   }
-  const [graphResp, regionsResp, manifestResp, assetsResp, electrodeManifestResp, titlesResp] = await Promise.all([
-    fetch(`${activeAtlas.dataPrefix}structure_graph.json${v}`).then(r => r.json()),
-    fetch(`${activeAtlas.dataPrefix}dandi_regions.json${v}`).then(r => r.json()),
-    fetch(`${activeAtlas.dataPrefix}mesh_manifest.json${v}`).then(r => r.json()),
-    fetch(`${activeAtlas.dataPrefix}dandiset_assets.json${v}`).then(r => r.json()),
-    fetch(`${activeAtlas.dataPrefix}dandisets_with_electrodes.json${v}`).then(r => r.json()).catch(() => []),
-    dandisetTitlesPromise,
-  ]);
+  let graphResp, regionsResp, manifestResp, assetsResp, electrodeManifestResp, titlesResp;
+  try {
+    [graphResp, regionsResp, manifestResp, assetsResp, electrodeManifestResp, titlesResp] = await Promise.all([
+      fetchJson(`${activeAtlas.dataPrefix}structure_graph.json${v}`),
+      fetchJson(`${activeAtlas.dataPrefix}dandi_regions.json${v}`),
+      fetchJson(`${activeAtlas.dataPrefix}mesh_manifest.json${v}`),
+      fetchJson(`${activeAtlas.dataPrefix}dandiset_assets.json${v}`),
+      // Optional: an atlas without electrode data has no manifest.
+      fetchJson(`${activeAtlas.dataPrefix}dandisets_with_electrodes.json${v}`).catch(() => []),
+      dandisetTitlesPromise,
+    ]);
+  } catch (err) {
+    // Leave the overlay up with the message so the failure is visible in the
+    // page, not only in the console; the scene has already been cleared.
+    if (atlasChangedSince(gen)) return;
+    console.error(`Failed to load atlas ${atlasKey}:`, err);
+    updateLoadingText(`Error: ${err.message}`);
+    return;
+  }
   if (atlasChangedSince(gen)) return;
 
   // Titles fetched at runtime (below) win over the file, so merge under them.
@@ -511,8 +532,7 @@ async function setupLanding() {
   }
   let index;
   try {
-    const resp = await fetch(`data/atlases_index.json?v=${await dataVersion()}`);
-    index = await resp.json();
+    index = await fetchJson(`data/atlases_index.json?v=${await dataVersion()}`);
   } catch (err) {
     console.error('Failed to load atlases_index.json', err);
     return;
