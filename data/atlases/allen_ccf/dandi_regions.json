@@ -237,7 +237,7 @@
       "001326",
       "001637"
     ],
-    "total_file_count": 1263,
+    "total_file_count": 932,
     "total_dandiset_count": 16,
     "total_dandisets": [
       "000017",
@@ -3175,13 +3175,13 @@
     "acronym": "SUM",
     "name": "Supramammillary nucleus",
     "color_hex_triplet": "FF4C3E",
-    "file_count": 550,
+    "file_count": 219,
     "dandiset_count": 2,
     "dandisets": [
       "000409",
       "001510"
     ],
-    "total_file_count": 550,
+    "total_file_count": 219,
     "total_dandiset_count": 2,
     "total_dandisets": [
       "000409",
@@ -12477,7 +12477,7 @@
     "file_count": 0,
     "dandiset_count": 0,
     "dandisets": [],
-    "total_file_count": 7206,
+    "total_file_count": 6875,
     "total_dandiset_count": 22,
     "total_dandisets": [
       "000017",
@@ -12511,7 +12511,7 @@
     "file_count": 0,
     "dandiset_count": 0,
     "dandisets": [],
-    "total_file_count": 12002,
+    "total_file_count": 11671,
     "total_dandiset_count": 25,
     "total_dandisets": [
       "000017",
@@ -12548,7 +12548,7 @@
     "file_count": 0,
     "dandiset_count": 0,
     "dandisets": [],
-    "total_file_count": 42800,
+    "total_file_count": 42469,
     "total_dandiset_count": 54,
     "total_dandisets": [
       "000017",
@@ -12614,7 +12614,7 @@
     "file_count": 0,
     "dandiset_count": 0,
     "dandisets": [],
-    "total_file_count": 49248,
+    "total_file_count": 48917,
     "total_dandiset_count": 56,
     "total_dandisets": [
       "000017",
@@ -13409,7 +13409,7 @@
     "file_count": 0,
     "dandiset_count": 0,
     "dandisets": [],
-    "total_file_count": 778,
+    "total_file_count": 447,
     "total_dandiset_count": 6,
     "total_dandisets": [
       "000302",
@@ -14041,7 +14041,7 @@
     "file_count": 0,
     "dandiset_count": 0,
     "dandisets": [],
-    "total_file_count": 630,
+    "total_file_count": 299,
     "total_dandiset_count": 4,
     "total_dandisets": [
       "000409",
