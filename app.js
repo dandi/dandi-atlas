@@ -11,10 +11,11 @@ const MESH_VERSION = '20260519';
 // ── State ──────────────────────────────────────────────────────────────────
 let scene, camera, renderer, controls, raycaster, mouse;
 // Group that wraps every atlas-anchored object (meshes + electrode Points).
-// Lights stay on `scene` so a negative scale on this root mirrors only the
-// rendered geometry, not the light directions. Used to apply a viewer-side
-// X mirror for macaque atlases without touching on-disk vertex coordinates;
-// see neurological_vs_radiological_convention.md for the rationale.
+// Lights stay on `scene`, so a negative scale on this root would mirror only
+// the rendered geometry and not the light directions. No mirror is applied
+// today: every atlas renders in its on-disk orientation (the macaque and rat
+// meshes are RAS, so +X is the subject's right). The group is kept so a
+// viewer-side convention flip could be applied in one place if ever wanted.
 let worldRoot;
 let structureGraph = [];   // Allen hierarchy tree
 let dandiRegions = {};     // structure_id -> {acronym, name, dandisets, ...}

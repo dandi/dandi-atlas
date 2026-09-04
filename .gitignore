@@ -9,6 +9,9 @@ __pycache__/
 .idea/
 .vscode/
 
+# Type-checker cache
+.mypy_cache/
+
 # Data update caches
 scripts/label_cache.jsonl
 scripts/electrode_cache.jsonl
