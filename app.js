@@ -353,6 +353,7 @@ async function loadAtlas(atlasKey) {
   const rootNode = structureGraph[0];
   if (rootNode) enterRegionView(rootNode.id, { expandTree: true, pushState: false });
 
+  loadedAtlasKey = atlasKey;
   hideLoading();
 
   // Fill in any titles the pipeline file lacks, in the background.
@@ -457,6 +458,11 @@ async function showLastUpdated(elementId, label) {
   el.title = resp.timestamp;
 }
 
+// The atlas whose data and meshes are currently in the scene. Set when
+// loadAtlas finishes; null until the first atlas has loaded. Lets a return
+// to an atlas from the landing page skip the reload when nothing changed.
+let loadedAtlasKey = null;
+
 async function enterAtlas(atlasKey, { pushState = true } = {}) {
   document.body.classList.remove('landing-active');
   ensureSceneInitialized();
@@ -467,10 +473,29 @@ async function enterAtlas(atlasKey, { pushState = true } = {}) {
   if (pushState) {
     const url = new URL(window.location);
     url.searchParams.set('atlas', atlasKey);
+    url.hash = '';
     window.history.pushState({}, '', url);
   }
 
+  if (loadedAtlasKey === atlasKey) {
+    // Same atlas the scene already holds (back to the landing, then the
+    // same card again): reset the view rather than refetch everything.
+    activeAtlasKey = atlasKey;
+    activeAtlas = ATLAS_CONFIGS[atlasKey];
+    enterInitView();
+    return;
+  }
   await loadAtlas(atlasKey);
+}
+
+// Bring the landing page back over the viewer. The scene stays initialized
+// underneath (the CSS hides it), so returning to the same atlas is instant.
+// Renders the cards if this page never showed the landing, which happens
+// when the first load was a direct ?atlas= link.
+function showLanding() {
+  const container = document.getElementById('atlas-landing-groups');
+  if (container && container.children.length === 0) setupLanding();
+  document.body.classList.add('landing-active');
 }
 
 async function setupLanding() {
@@ -3340,6 +3365,27 @@ async function applyURLState() {
   // URLSearchParams handles URL-decoding and edge cases like '=' in values.
   // location.hash includes the leading '#' which URLSearchParams doesn't want.
   const params = new URLSearchParams(location.hash.slice(1));
+
+  // The query string names the atlas. enterAtlas pushes ?atlas= when a card
+  // is picked, so history steps can cross from the landing into an atlas
+  // and back, or between atlases; handle those before the hash.
+  const atlasParam = new URLSearchParams(window.location.search).get('atlas');
+  const atlasKey = ATLAS_CONFIGS[atlasParam] ? atlasParam : null;
+  if (!atlasKey && params.size === 0) {
+    showLanding();
+    return;
+  }
+  const wantedKey = atlasKey || activeAtlasKey;
+  if (!sceneInitialized || wantedKey !== loadedAtlasKey) {
+    activeAtlasKey = wantedKey;
+    activeAtlas = ATLAS_CONFIGS[wantedKey];
+    await enterAtlas(wantedKey, { pushState: false });
+    if (params.size === 0) return;
+  } else if (document.body.classList.contains('landing-active')) {
+    // Forward from the landing into the atlas that is already loaded.
+    enterAtlas(wantedKey, { pushState: false });
+    if (params.size === 0) return;
+  }
 
   if (params.size === 0) {
     // No hash — show default (init) view. Guard avoids redundant DOM thrash
