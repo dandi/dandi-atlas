@@ -193,6 +193,10 @@ let ancestorStructureIds = new Set();
 let noMeshIds = new Set();
 let dandisetToStructures = {};  // dandiset_id -> [structure_ids]
 let dandisetTitles = {};        // dandiset_id -> title string
+// The pipeline writes data/dandiset_titles.json for every dandiset any atlas
+// lists. It is fetched once per page and merged into dandisetTitles, so the
+// per-dandiset DANDI API requests are only needed for IDs the file lacks.
+let dandisetTitlesPromise = null;
 let dandisetAssets = {};        // dandiset_id -> [{path, asset_id, regions}]
 let selectedDandiset = null;
 let dandisetElectrodes = {};  // cache: dandiset_id -> {asset_id: [[x,y,z], ...]}
@@ -279,14 +283,23 @@ async function loadAtlas(atlasKey) {
   pendingMeshLoads.clear();
 
   const v = `?v=${DATA_VERSION}`;
-  const [graphResp, regionsResp, manifestResp, assetsResp, electrodeManifestResp] = await Promise.all([
+  if (!dandisetTitlesPromise) {
+    dandisetTitlesPromise = fetch(`data/dandiset_titles.json${v}`)
+      .then(r => (r.ok ? r.json() : {}))
+      .catch(() => ({}));
+  }
+  const [graphResp, regionsResp, manifestResp, assetsResp, electrodeManifestResp, titlesResp] = await Promise.all([
     fetch(`${activeAtlas.dataPrefix}structure_graph.json${v}`).then(r => r.json()),
     fetch(`${activeAtlas.dataPrefix}dandi_regions.json${v}`).then(r => r.json()),
     fetch(`${activeAtlas.dataPrefix}mesh_manifest.json${v}`).then(r => r.json()),
     fetch(`${activeAtlas.dataPrefix}dandiset_assets.json${v}`).then(r => r.json()),
     fetch(`${activeAtlas.dataPrefix}dandisets_with_electrodes.json${v}`).then(r => r.json()).catch(() => []),
+    dandisetTitlesPromise,
   ]);
   if (atlasChangedSince(gen)) return;
+
+  // Titles fetched at runtime (below) win over the file, so merge under them.
+  dandisetTitles = { ...titlesResp, ...dandisetTitles };
 
   structureGraph = graphResp;
   dandiRegions = regionsResp;
@@ -338,7 +351,7 @@ async function loadAtlas(atlasKey) {
 
   hideLoading();
 
-  // Fetch dandiset titles in background
+  // Fill in any titles the pipeline file lacks, in the background.
   fetchDandisetTitles(gen);
 }
 
@@ -533,7 +546,10 @@ function flattenTree(nodes) {
 }
 
 async function fetchDandisetTitles(gen) {
-  const ids = Object.keys(dandisetToStructures);
+  // Only IDs with no title yet. Normally that is none, since the pipeline
+  // writes titles for every dandiset it lists; this covers a title request
+  // that failed on the pipeline side and a viewer running on stale data.
+  const ids = Object.keys(dandisetToStructures).filter(did => !dandisetTitles[did]);
   const batchSize = 10;
   for (let i = 0; i < ids.length; i += batchSize) {
     if (atlasChangedSince(gen)) return;
