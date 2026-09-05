@@ -1552,8 +1552,8 @@
     "acronym": "VISp",
     "name": "Primary visual area",
     "color_hex_triplet": "08858C",
-    "file_count": 2231,
-    "dandiset_count": 19,
+    "file_count": 2240,
+    "dandiset_count": 20,
     "dandisets": [
       "000017",
       "000021",
@@ -1571,12 +1571,13 @@
       "000728",
       "000871",
       "001051",
+      "001196",
       "001701",
       "001791",
       "001876"
     ],
-    "total_file_count": 3864,
-    "total_dandiset_count": 27,
+    "total_file_count": 3873,
+    "total_dandiset_count": 28,
     "total_dandisets": [
       "000017",
       "000021",
@@ -1599,6 +1600,7 @@
       "000871",
       "001051",
       "001191",
+      "001196",
       "001417",
       "001420",
       "001637",
@@ -1611,8 +1613,8 @@
     "acronym": "VISrl",
     "name": "Rostrolateral visual area",
     "color_hex_triplet": "009FAC",
-    "file_count": 467,
-    "dandiset_count": 9,
+    "file_count": 469,
+    "dandiset_count": 10,
     "dandisets": [
       "000017",
       "000021",
@@ -1622,10 +1624,11 @@
       "000402",
       "000458",
       "000728",
-      "001051"
+      "001051",
+      "001196"
     ],
-    "total_file_count": 1239,
-    "total_dandiset_count": 16,
+    "total_file_count": 1241,
+    "total_dandiset_count": 17,
     "total_dandisets": [
       "000017",
       "000021",
@@ -1641,6 +1644,7 @@
       "000728",
       "001051",
       "001191",
+      "001196",
       "001417",
       "001637"
     ]
@@ -1649,8 +1653,8 @@
     "acronym": "VISal",
     "name": "Anterolateral visual area",
     "color_hex_triplet": "08858C",
-    "file_count": 545,
-    "dandiset_count": 9,
+    "file_count": 554,
+    "dandiset_count": 10,
     "dandisets": [
       "000021",
       "000022",
@@ -1660,10 +1664,11 @@
       "000402",
       "000458",
       "000728",
-      "001051"
+      "001051",
+      "001196"
     ],
-    "total_file_count": 1177,
-    "total_dandiset_count": 16,
+    "total_file_count": 1186,
+    "total_dandiset_count": 17,
     "total_dandisets": [
       "000021",
       "000022",
@@ -1679,6 +1684,7 @@
       "000728",
       "001051",
       "001191",
+      "001196",
       "001260",
       "001417"
     ]
@@ -6190,8 +6196,8 @@
     "acronym": "VISpm",
     "name": "posteromedial visual area",
     "color_hex_triplet": "08858C",
-    "file_count": 1133,
-    "dandiset_count": 11,
+    "file_count": 1140,
+    "dandiset_count": 12,
     "dandisets": [
       "000017",
       "000021",
@@ -6203,10 +6209,11 @@
       "000617",
       "000728",
       "000871",
-      "001051"
+      "001051",
+      "001196"
     ],
-    "total_file_count": 1608,
-    "total_dandiset_count": 15,
+    "total_file_count": 1615,
+    "total_dandiset_count": 16,
     "total_dandisets": [
       "000017",
       "000021",
@@ -6222,15 +6229,16 @@
       "000728",
       "000871",
       "001051",
-      "001191"
+      "001191",
+      "001196"
     ]
   },
   "409": {
     "acronym": "VISl",
     "name": "Lateral visual area",
     "color_hex_triplet": "08858C",
-    "file_count": 1329,
-    "dandiset_count": 12,
+    "file_count": 1331,
+    "dandiset_count": 13,
     "dandisets": [
       "000017",
       "000021",
@@ -6243,10 +6251,11 @@
       "000728",
       "000871",
       "001051",
+      "001196",
       "001701"
     ],
-    "total_file_count": 2310,
-    "total_dandiset_count": 18,
+    "total_file_count": 2312,
+    "total_dandiset_count": 19,
     "total_dandisets": [
       "000017",
       "000021",
@@ -6264,6 +6273,7 @@
       "000871",
       "001051",
       "001191",
+      "001196",
       "001637",
       "001701"
     ]
@@ -6272,8 +6282,8 @@
     "acronym": "VISam",
     "name": "Anteromedial visual area",
     "color_hex_triplet": "08858C",
-    "file_count": 803,
-    "dandiset_count": 10,
+    "file_count": 810,
+    "dandiset_count": 11,
     "dandisets": [
       "000017",
       "000021",
@@ -6284,10 +6294,11 @@
       "000617",
       "000728",
       "000871",
-      "001051"
+      "001051",
+      "001196"
     ],
-    "total_file_count": 1347,
-    "total_dandiset_count": 15,
+    "total_file_count": 1354,
+    "total_dandiset_count": 16,
     "total_dandisets": [
       "000017",
       "000021",
@@ -6303,6 +6314,7 @@
       "000871",
       "001051",
       "001191",
+      "001196",
       "001417"
     ]
   },
@@ -10355,8 +10367,8 @@
       "000021",
       "000022"
     ],
-    "total_file_count": 10802,
-    "total_dandiset_count": 28,
+    "total_file_count": 10836,
+    "total_dandiset_count": 29,
     "total_dandisets": [
       "000017",
       "000021",
@@ -10379,6 +10391,7 @@
       "000871",
       "001051",
       "001191",
+      "001196",
       "001260",
       "001417",
       "001420",
@@ -12548,8 +12561,8 @@
     "file_count": 0,
     "dandiset_count": 0,
     "dandisets": [],
-    "total_file_count": 42469,
-    "total_dandiset_count": 54,
+    "total_file_count": 42505,
+    "total_dandiset_count": 55,
     "total_dandisets": [
       "000017",
       "000021",
@@ -12586,6 +12599,7 @@
       "001097",
       "001184",
       "001191",
+      "001196",
       "001260",
       "001326",
       "001361",
@@ -12614,8 +12628,8 @@
     "file_count": 0,
     "dandiset_count": 0,
     "dandisets": [],
-    "total_file_count": 48917,
-    "total_dandiset_count": 56,
+    "total_file_count": 48953,
+    "total_dandiset_count": 57,
     "total_dandisets": [
       "000017",
       "000021",
@@ -12653,6 +12667,7 @@
       "001097",
       "001184",
       "001191",
+      "001196",
       "001260",
       "001326",
       "001361",
@@ -12965,8 +12980,8 @@
     "file_count": 0,
     "dandiset_count": 0,
     "dandisets": [],
-    "total_file_count": 30109,
-    "total_dandiset_count": 49,
+    "total_file_count": 30145,
+    "total_dandiset_count": 50,
     "total_dandisets": [
       "000017",
       "000021",
@@ -13002,6 +13017,7 @@
       "001084",
       "001184",
       "001191",
+      "001196",
       "001260",
       "001326",
       "001361",
@@ -13184,8 +13200,8 @@
     "file_count": 0,
     "dandiset_count": 0,
     "dandisets": [],
-    "total_file_count": 27590,
-    "total_dandiset_count": 47,
+    "total_file_count": 27626,
+    "total_dandiset_count": 48,
     "total_dandisets": [
       "000017",
       "000021",
@@ -13220,6 +13236,7 @@
       "001051",
       "001184",
       "001191",
+      "001196",
       "001260",
       "001326",
       "001361",
@@ -13243,8 +13260,8 @@
     "file_count": 0,
     "dandiset_count": 0,
     "dandisets": [],
-    "total_file_count": 27720,
-    "total_dandiset_count": 47,
+    "total_file_count": 27756,
+    "total_dandiset_count": 48,
     "total_dandisets": [
       "000017",
       "000021",
@@ -13279,6 +13296,7 @@
       "001051",
       "001184",
       "001191",
+      "001196",
       "001260",
       "001326",
       "001361",
@@ -13510,8 +13528,8 @@
     "file_count": 0,
     "dandiset_count": 0,
     "dandisets": [],
-    "total_file_count": 18662,
-    "total_dandiset_count": 33,
+    "total_file_count": 18698,
+    "total_dandiset_count": 34,
     "total_dandisets": [
       "000017",
       "000021",
@@ -13537,6 +13555,7 @@
       "000871",
       "001051",
       "001191",
+      "001196",
       "001260",
       "001326",
       "001417",
@@ -13555,8 +13574,8 @@
     "file_count": 0,
     "dandiset_count": 0,
     "dandisets": [],
-    "total_file_count": 1773,
-    "total_dandiset_count": 18,
+    "total_file_count": 1775,
+    "total_dandiset_count": 19,
     "total_dandisets": [
       "000017",
       "000021",
@@ -13573,6 +13592,7 @@
       "000728",
       "001051",
       "001191",
+      "001196",
       "001260",
       "001417",
       "001637"
