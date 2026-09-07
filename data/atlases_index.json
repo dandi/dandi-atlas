@@ -5,8 +5,8 @@
       "name": "Allen CCF v3",
       "species": "Mouse",
       "preview": "data/atlases/allen_ccf/atlas_card_allen_ccf.png",
-      "dandiset_count": 57,
-      "file_count": 48953,
+      "dandiset_count": 58,
+      "file_count": 49179,
       "regions_with_data": 602,
       "dandisets": [
         "000017",
@@ -54,6 +54,7 @@
         "001420",
         "001421",
         "001430",
+        "001454",
         "001510",
         "001605",
         "001637",

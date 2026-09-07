@@ -3582,15 +3582,16 @@
       "000409",
       "000473"
     ],
-    "total_file_count": 130,
-    "total_dandiset_count": 6,
+    "total_file_count": 356,
+    "total_dandiset_count": 7,
     "total_dandisets": [
       "000017",
       "000022",
       "000409",
       "000473",
       "001260",
-      "001326"
+      "001326",
+      "001454"
     ]
   },
   "1108": {
@@ -9424,6 +9425,24 @@
       "001637"
     ]
   },
+  "295": {
+    "acronym": "BLA",
+    "name": "Basolateral amygdalar nucleus",
+    "color_hex_triplet": "9DE79C",
+    "file_count": 230,
+    "dandiset_count": 2,
+    "dandisets": [
+      "000017",
+      "001454"
+    ],
+    "total_file_count": 232,
+    "total_dandiset_count": 3,
+    "total_dandisets": [
+      "000017",
+      "001326",
+      "001454"
+    ]
+  },
   "320": {
     "acronym": "MOp1",
     "name": "Primary motor area, Layer 1",
@@ -10224,22 +10243,6 @@
       "001420",
       "001637",
       "001701"
-    ]
-  },
-  "295": {
-    "acronym": "BLA",
-    "name": "Basolateral amygdalar nucleus",
-    "color_hex_triplet": "9DE79C",
-    "file_count": 4,
-    "dandiset_count": 1,
-    "dandisets": [
-      "000017"
-    ],
-    "total_file_count": 6,
-    "total_dandiset_count": 2,
-    "total_dandisets": [
-      "000017",
-      "001326"
     ]
   },
   "4": {
@@ -12561,8 +12564,8 @@
     "file_count": 0,
     "dandiset_count": 0,
     "dandisets": [],
-    "total_file_count": 42505,
-    "total_dandiset_count": 55,
+    "total_file_count": 42731,
+    "total_dandiset_count": 56,
     "total_dandisets": [
       "000017",
       "000021",
@@ -12608,6 +12611,7 @@
       "001420",
       "001421",
       "001430",
+      "001454",
       "001510",
       "001637",
       "001676",
@@ -12628,8 +12632,8 @@
     "file_count": 0,
     "dandiset_count": 0,
     "dandisets": [],
-    "total_file_count": 48953,
-    "total_dandiset_count": 57,
+    "total_file_count": 49179,
+    "total_dandiset_count": 58,
     "total_dandisets": [
       "000017",
       "000021",
@@ -12676,6 +12680,7 @@
       "001420",
       "001421",
       "001430",
+      "001454",
       "001510",
       "001605",
       "001637",
@@ -12980,8 +12985,8 @@
     "file_count": 0,
     "dandiset_count": 0,
     "dandisets": [],
-    "total_file_count": 30145,
-    "total_dandiset_count": 50,
+    "total_file_count": 30371,
+    "total_dandiset_count": 51,
     "total_dandisets": [
       "000017",
       "000021",
@@ -13025,6 +13030,7 @@
       "001417",
       "001420",
       "001430",
+      "001454",
       "001637",
       "001676",
       "001701",
@@ -13260,8 +13266,8 @@
     "file_count": 0,
     "dandiset_count": 0,
     "dandisets": [],
-    "total_file_count": 27756,
-    "total_dandiset_count": 48,
+    "total_file_count": 27982,
+    "total_dandiset_count": 49,
     "total_dandisets": [
       "000017",
       "000021",
@@ -13304,6 +13310,7 @@
       "001417",
       "001420",
       "001430",
+      "001454",
       "001637",
       "001676",
       "001701",
