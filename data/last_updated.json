@@ -1,39 +1,39 @@
 {
-  "timestamp": "2026-09-14T03:24:49.675689+00:00",
+  "timestamp": "2026-09-15T03:20:54.957833+00:00",
   "mode": "incremental",
   "dandisets_checked": 3,
-  "dandisets_updated": 1,
-  "assets_processed": 1,
+  "dandisets_updated": 2,
+  "assets_processed": 9,
   "per_atlas": {
     "d99": {
-      "timestamp": "2026-09-14T03:22:28.309220+00:00",
+      "timestamp": "2026-09-15T03:20:19.487494+00:00",
       "mode": "incremental",
       "asset_count": 447
     },
     "nmt": {
-      "timestamp": "2026-09-14T03:23:29.256586+00:00",
+      "timestamp": "2026-09-15T03:20:34.740974+00:00",
       "mode": "incremental",
       "asset_count": 447
     },
     "mebrains": {
-      "timestamp": "2026-09-14T03:24:31.019625+00:00",
+      "timestamp": "2026-09-15T03:20:49.446820+00:00",
       "mode": "incremental",
       "asset_count": 447
     },
     "allen_ccf": {
-      "timestamp": "2026-09-14T03:21:22Z",
-      "watermark": "2026-09-14T03:21:00Z",
+      "timestamp": "2026-09-15T03:20:00Z",
+      "watermark": "2026-09-15T03:19:33Z",
       "mode": "incremental",
       "dandisets_checked": 3,
-      "dandisets_updated": 1,
-      "assets_processed": 1,
-      "scanned_since": "2026-09-13T03:19:07Z"
+      "dandisets_updated": 2,
+      "assets_processed": 9,
+      "scanned_since": "2026-09-14T03:21:00Z"
     },
     "whs_sd": {
-      "timestamp": "2026-09-14T03:24:49.675689+00:00",
+      "timestamp": "2026-09-15T03:20:54.957833+00:00",
       "mode": "incremental",
       "asset_count": 794
     }
   },
-  "date": "2026-09-14"
+  "date": "2026-09-15"
 }
