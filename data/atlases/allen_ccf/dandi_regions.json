@@ -6615,8 +6615,8 @@
       "000017",
       "001051"
     ],
-    "total_file_count": 1401,
-    "total_dandiset_count": 13,
+    "total_file_count": 1402,
+    "total_dandiset_count": 14,
     "total_dandisets": [
       "000017",
       "000458",
@@ -6630,7 +6630,8 @@
       "001637",
       "001701",
       "001791",
-      "001868"
+      "001868",
+      "001960"
     ]
   },
   "597": {
@@ -8856,23 +8857,25 @@
     "acronym": "SSp-bfd1",
     "name": "Primary somatosensory area, barrel field, layer 1",
     "color_hex_triplet": "188064",
-    "file_count": 72,
-    "dandiset_count": 5,
+    "file_count": 73,
+    "dandiset_count": 6,
     "dandisets": [
       "000563",
       "000690",
       "001260",
       "001416",
-      "001417"
+      "001417",
+      "001960"
     ],
-    "total_file_count": 72,
-    "total_dandiset_count": 5,
+    "total_file_count": 73,
+    "total_dandiset_count": 6,
     "total_dandisets": [
       "000563",
       "000690",
       "001260",
       "001416",
-      "001417"
+      "001417",
+      "001960"
     ]
   },
   "201": {
@@ -10173,8 +10176,8 @@
       "000458",
       "001791"
     ],
-    "total_file_count": 830,
-    "total_dandiset_count": 8,
+    "total_file_count": 831,
+    "total_dandiset_count": 9,
     "total_dandisets": [
       "000458",
       "000563",
@@ -10183,7 +10186,8 @@
       "001416",
       "001417",
       "001637",
-      "001791"
+      "001791",
+      "001960"
     ]
   },
   "31": {
@@ -12641,8 +12645,8 @@
     "file_count": 0,
     "dandiset_count": 0,
     "dandisets": [],
-    "total_file_count": 18764,
-    "total_dandiset_count": 35,
+    "total_file_count": 18765,
+    "total_dandiset_count": 36,
     "total_dandisets": [
       "000017",
       "000021",
@@ -12678,7 +12682,8 @@
       "001701",
       "001791",
       "001868",
-      "001876"
+      "001876",
+      "001960"
     ]
   },
   "695": {
@@ -12688,8 +12693,8 @@
     "file_count": 0,
     "dandiset_count": 0,
     "dandisets": [],
-    "total_file_count": 27740,
-    "total_dandiset_count": 50,
+    "total_file_count": 27741,
+    "total_dandiset_count": 51,
     "total_dandisets": [
       "000017",
       "000021",
@@ -12740,7 +12745,8 @@
       "001710",
       "001791",
       "001868",
-      "001876"
+      "001876",
+      "001960"
     ]
   },
   "688": {
@@ -12750,8 +12756,8 @@
     "file_count": 0,
     "dandiset_count": 0,
     "dandisets": [],
-    "total_file_count": 28096,
-    "total_dandiset_count": 51,
+    "total_file_count": 28097,
+    "total_dandiset_count": 52,
     "total_dandisets": [
       "000017",
       "000021",
@@ -12803,7 +12809,8 @@
       "001710",
       "001791",
       "001868",
-      "001876"
+      "001876",
+      "001960"
     ]
   },
   "567": {
@@ -12813,8 +12820,8 @@
     "file_count": 0,
     "dandiset_count": 0,
     "dandisets": [],
-    "total_file_count": 30496,
-    "total_dandiset_count": 54,
+    "total_file_count": 30497,
+    "total_dandiset_count": 55,
     "total_dandisets": [
       "000017",
       "000021",
@@ -12869,7 +12876,8 @@
       "001791",
       "001832",
       "001868",
-      "001876"
+      "001876",
+      "001960"
     ]
   },
   "8": {
@@ -12879,8 +12887,8 @@
     "file_count": 0,
     "dandiset_count": 0,
     "dandisets": [],
-    "total_file_count": 42875,
-    "total_dandiset_count": 59,
+    "total_file_count": 42876,
+    "total_dandiset_count": 60,
     "total_dandisets": [
       "000017",
       "000021",
@@ -12940,7 +12948,8 @@
       "001791",
       "001832",
       "001868",
-      "001876"
+      "001876",
+      "001960"
     ]
   },
   "997": {
@@ -12950,8 +12959,8 @@
     "file_count": 0,
     "dandiset_count": 0,
     "dandisets": [],
-    "total_file_count": 49345,
-    "total_dandiset_count": 61,
+    "total_file_count": 49346,
+    "total_dandiset_count": 62,
     "total_dandisets": [
       "000017",
       "000021",
@@ -13013,7 +13022,8 @@
       "001791",
       "001832",
       "001868",
-      "001876"
+      "001876",
+      "001960"
     ]
   },
   "444": {
@@ -14609,8 +14619,8 @@
     "file_count": 0,
     "dandiset_count": 0,
     "dandisets": [],
-    "total_file_count": 1420,
-    "total_dandiset_count": 13,
+    "total_file_count": 1421,
+    "total_dandiset_count": 14,
     "total_dandisets": [
       "000017",
       "000458",
@@ -14624,7 +14634,8 @@
       "001637",
       "001701",
       "001791",
-      "001868"
+      "001868",
+      "001960"
     ]
   },
   "909": {
