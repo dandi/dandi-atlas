@@ -213,6 +213,11 @@ let sliderElectrodeOpacity = 1;       // mirrors the Electrodes slider value (ra
 // region aren't occluded by it. User can re-raise after; the auto-drop only
 // fires when the slider was higher than this value.
 const ELECTRODE_VIEW_DEFAULT_REGION_OPACITY = 0.5;
+// Regions slider value from before the last auto-drop, or null when the
+// slider was not auto-dropped. clearElectrodePoints puts it back, so leaving
+// an electrode view (to the dandiset, or by browser Back) does not strand the
+// regions at half opacity.
+let regionOpacityBeforeElectrodeDrop = null;
 let dandisetRegionFilter = null; // structure_id when filtering subjects by region within a dandiset
 let dandisetSubjectCounts = null; // { directSubjects, totalSubjects } when a dandiset is selected
 // "Region-of-interest" overlay: in a dandiset view, the user can tick the
@@ -223,6 +228,13 @@ let dandisetSubjectCounts = null; // { directSubjects, totalSubjects } when a da
 // decideDisplayMode can do an O(1) check.
 let dandisetExtraRegionIds = new Set();
 let dandisetExtraMeshIds = new Set();
+// Regions the current dandiset view spotlights: the whole dandiset, the part
+// of it under a region filter, or one subject's or one session's regions. The
+// tree checkboxes mean "shown in 3D" while a dandiset is selected, and this is
+// the set they are checked against, so a subject view's tree matches its
+// scene. Only meaningful while selectedDandiset is set; each view that
+// spotlights part of a dandiset assigns it.
+let dandisetViewRegionIds = [];
 let previousRegionIdsForDandiset = []; // ordered list of region IDs the user came from before entering the current dandiset; powers the "Back to all Dandisets" button
 let hiddenRegionIds = new Set();  // regions toggled off by user in dandiset/subject view
 let dandisetsWithElectrodes = new Set();  // dandiset IDs that have electrode coordinate data
@@ -339,6 +351,16 @@ async function loadAtlas(atlasKey) {
 
   // Build flat lookup from the tree
   flattenTree(structureGraph);
+
+  // The Allen CCF names its root structure "root", which reads as jargon in
+  // the tree, the tooltip, and the right panel, where it heads the list of
+  // every dandiset in the atlas. The other atlases name theirs after the atlas.
+  const rootStructure = idToStructure[meshManifest.root_id];
+  if (rootStructure?.name === 'root') {
+    rootStructure.name = 'Whole brain';
+    const rootRegion = dandiRegions[String(meshManifest.root_id)];
+    if (rootRegion) rootRegion.name = 'Whole brain';
+  }
 
   // Build reverse lookup: dandiset -> structure IDs (direct only)
   for (const [sid, region] of Object.entries(dandiRegions)) {
@@ -581,9 +603,9 @@ function renderAtlasCards(grid, atlases, fmt, plural) {
     card.className = 'atlas-card';
     card.dataset.atlasKey = atlas.key;
     card.innerHTML = `
-      <img class="atlas-card-image" src="${atlas.preview}" alt="${atlas.name} brain preview" loading="lazy">
+      <img class="atlas-card-image" src="${escapeHtml(atlas.preview)}" alt="${escapeHtml(atlas.name)} brain preview" loading="lazy">
       <div class="atlas-card-body">
-        <h3 class="atlas-card-title">${atlas.name}</h3>
+        <h3 class="atlas-card-title">${escapeHtml(atlas.name)}</h3>
         <div class="atlas-card-stats">
           <div class="atlas-card-stat">
             <span class="atlas-card-stat-value">${fmt(atlas.dandiset_count)}</span>
@@ -961,8 +983,8 @@ function onMouseMove(event) {
         : 'No DANDI datasets reference this region';
       tooltip.classList.remove('hidden');
       tooltip.innerHTML = `
-        <div class="tooltip-name">${name}</div>
-        <div class="tooltip-acronym">${acronym}</div>
+        <div class="tooltip-name">${escapeHtml(name)}</div>
+        <div class="tooltip-acronym">${escapeHtml(acronym)}</div>
         <div class="tooltip-info">${infoLine}</div>
       `;
       tooltip.style.left = (event.clientX - renderer.domElement.getBoundingClientRect().left + 15) + 'px';
@@ -1405,10 +1427,14 @@ function updateTreeBadges() {
 async function enterDandisetView(dandisetId, { pushState = true, initialSubjectDir = null } = {}) {
   return transitionView('dandiset', async () => {
     // Capture prior region(s) so the dandiset panel can offer a back button.
-    // Empty selection (deep-link entry) leaves this empty and suppresses the
-    // button. Root is kept: enterRegionView(rootId) is what renders the
-    // "all dandisets" home view, so going back there is the right behavior.
-    previousRegionIdsForDandiset = selectedRegionIds.slice();
+    // Root is kept: enterRegionView(rootId) is what renders the "all
+    // dandisets" home view, so going back there is the right behavior.
+    // Returning to the same dandiset from one of its subject or session views
+    // (browser Back) keeps the regions captured on the way in; the sub-views
+    // leave selectedRegionIds empty, so recapturing would drop the button.
+    if (selectedDandiset !== dandisetId) {
+      previousRegionIdsForDandiset = selectedRegionIds.slice();
+    }
 
     selectedDandiset = dandisetId;
     selectedId = null;
@@ -1417,10 +1443,12 @@ async function enterDandisetView(dandisetId, { pushState = true, initialSubjectD
     hiddenRegionIds = new Set();
     clearDandisetExtras();
     clearElectrodePoints();
+    hideSubjectFilter();
 
     if (pushState) setHash(`dandiset=${dandisetId}`);
 
     const structureIds = dandisetToStructures[dandisetId] || [];
+    dandisetViewRegionIds = structureIds.slice();
     const activeSet = new Set(structureIds);
 
     // Ensure meshes are loaded for all structures in this dandiset
@@ -1542,26 +1570,24 @@ function transitionView(newView, work) {
 
 // Reset selection state, DOM overlays, and the 3D scene back to the atlas-init
 // look. Shared by every code path that returns the user to the "no selection"
-// state: the dandiset-filter clear button (clearDandisetFilter) and the
-// no-hash branch of applyURLState (popstate / external hash clear).
+// state: the root row in the tree, the dandiset-filter clear button, removing
+// the last region from a multi-region selection, and the no-hash branch of
+// applyURLState (popstate / external hash clear).
 //
-// Does NOT touch the URL hash — callers decide whether to push a clean URL
-// (clearDandisetFilter does; applyURLState is reacting to a hash that's
-// already empty).
+// pushState drops the hash with a new history entry, keeping ?atlas=. The
+// user-driven callers pass it; applyURLState does not, since it is reacting to
+// a hash that is already empty. Without it the previous view's hash stayed in
+// the address bar, so a reload or a copied link reopened that view.
 //
-// The Allen vs macaque 3D-view split is intentional: showAllRegions restores
-// Allen's "frosted brain" look but on macaque would leak previously loaded
-// region meshes, so macaque routes through enterRegionView(root) so only root
-// is visible.
-function enterInitView() {
+// The scene and the right panel go through enterRegionView(root), the same
+// path loadAtlas takes, so the init view looks the same however it was
+// reached: Allen shows its "frosted brain" (enterRegionView calls
+// showAllRegions for the Allen root), the other atlases show only the root,
+// and the panel lists every dandiset in the atlas.
+function enterInitView({ pushState = false } = {}) {
   transitionView('init', () => {
-    selectedId = null;
-    selectedRegionIds = [];
     selectedDandiset = null;
     dandisetSubjectCounts = null;
-    previousRegionIdsForDandiset = [];
-    hiddenRegionIds = new Set();
-    clearDandisetExtras();
 
     // Restore the Regions slider to full. Any prior auto-drop from an
     // electrode view should not bleed into the "everything" view — root
@@ -1573,39 +1599,25 @@ function enterInitView() {
       regionSlider.dispatchEvent(new Event('input', { bubbles: true }));
     }
 
-    clearElectrodePoints();
-    document.getElementById('region-visibility-overlay').classList.add('hidden');
-    leaveDandisetTreeUI();
-    syncTreeCheckboxes();
-
-    // 3D scene
-    if (activeAtlas.coordSystem === 'allen') {
-      showAllRegions();
-    } else if (meshManifest && meshManifest.root_id != null) {
+    if (meshManifest && meshManifest.root_id != null) {
       enterRegionView(meshManifest.root_id, { pushState: false, expandTree: false });
     }
 
     updateTreeBadges();
-
-    document.getElementById('region-panel').innerHTML =
-      '<p class="placeholder-text">Click a brain region to view details and associated DANDI datasets.</p>';
   });
+  if (pushState && window.location.hash) {
+    history.pushState(null, '', window.location.pathname + window.location.search);
+  }
 }
 
 function clearDandisetFilter() {
-  enterInitView();
-  // Drop only the hash. The query string carries ?atlas=, and pushing the
-  // bare pathname lost it, so a reload landed on the landing page instead of
-  // the atlas the user was in.
-  history.pushState(null, '', window.location.pathname + window.location.search);
+  enterInitView({ pushState: true });
 }
 
 // Narrow the current dandiset view to one region. This is a dandiset
 // sub-state, so it routes through transitionView('dandiset') like the other
-// returns to the dandiset view: reached from a subject or session view it
-// used to leave currentView as 'subject' / 'session', and the tree checkboxes
-// (which branch on currentView === 'dandiset') then treated a tick as a
-// multi-region selection and dropped the user out of the dandiset.
+// returns to the dandiset view, so currentView reads 'dandiset' however it
+// was reached.
 function filterDandisetPanelByRegion(structureId, { pushState = true } = {}) {
   if (!selectedDandiset) return;
 
@@ -1634,9 +1646,9 @@ function filterDandisetPanelByRegion(structureId, { pushState = true } = {}) {
     const descendantIds = getDescendantIds(structureId);
     const matchingStructures = structureIds.filter(id => descendantIds.has(id));
     if (matchingStructures.length > 0) {
-      spotlightRegions(matchingStructures);
+      spotlightDandisetRegions(matchingStructures);
     } else {
-      spotlightRegions([structureId]);
+      spotlightDandisetRegions([structureId]);
     }
 
     // Highlight region in tree. transitionView already cleared .selected.
@@ -1737,7 +1749,7 @@ async function updateDandisetPanel(dandisetId, structureIds, { initialSubjectDir
       <div class="region-header">
         ${backButtonHtml}
         <div class="region-name">Dandiset ${dandisetId}</div>
-        <div class="dandiset-detail-title" id="dandiset-detail-title">${title}</div>
+        <div class="dandiset-detail-title" id="dandiset-detail-title">${escapeHtml(title)}</div>
         <a class="dandiset-external-link" href="https://dandiarchive.org/dandiset/${dandisetId}" target="_blank" rel="noopener">
           View on DANDI Archive &#8599;
         </a>
@@ -1781,10 +1793,10 @@ async function updateDandisetPanel(dandisetId, structureIds, { initialSubjectDir
         toggleHtml += `<div class="region-visibility-list">`;
         for (const r of regionList) {
           const checked = !hiddenRegionIds.has(r.id);
-          toggleHtml += `<label class="region-visibility-row" title="${r.name}">`;
+          toggleHtml += `<label class="region-visibility-row" title="${escapeHtml(r.name)}">`;
           toggleHtml += `<input type="checkbox" data-region-id="${r.id}" ${checked ? 'checked' : ''}>`;
-          toggleHtml += `<span class="region-visibility-dot" style="background:#${r.color}"></span>`;
-          toggleHtml += `<span class="region-visibility-name">${r.acronym || r.name}</span>`;
+          toggleHtml += `<span class="region-visibility-dot" style="background:#${escapeHtml(r.color)}"></span>`;
+          toggleHtml += `<span class="region-visibility-name">${escapeHtml(r.acronym || r.name)}</span>`;
           toggleHtml += `</label>`;
         }
         toggleHtml += `</div>`;
@@ -1825,15 +1837,15 @@ async function updateDandisetPanel(dandisetId, structureIds, { initialSubjectDir
 
           // Expandable subject card with session rows
           html += `<div class="subject-group">`;
-          html += `<div class="asset-card subject-card-expandable" data-region-ids='${regionIds}' data-electrode-assets='${JSON.stringify(electrodeAssets)}' data-subject-dir="${entry.subjectDir}">`;
+          html += `<div class="asset-card subject-card-expandable" data-region-ids='${regionIds}' data-electrode-assets="${escapeHtml(JSON.stringify(electrodeAssets))}" data-subject-dir="${escapeHtml(entry.subjectDir)}">`;
           if (hasAnyElectrodes) html += `<span class="electrode-indicator" title="Has electrode coordinates"></span>`;
           html += `<span class="expand-arrow">&#x25B6;</span>`;
-          html += `<span class="asset-card-filename">${subjectId}</span>`;
+          html += `<span class="asset-card-filename">${escapeHtml(subjectId)}</span>`;
           const uniqueSessions = new Set(entry.assets.map(a => a.session || a.path)).size;
           const sessionWord = uniqueSessions === 1 ? 'session' : 'sessions';
           const fileInfo = entry.assets.length > uniqueSessions ? `, ${entry.assets.length} files` : '';
           html += `<span class="asset-card-region-count">${uniqueSessions} ${sessionWord}${fileInfo}, ${regionCount} region${regionCount !== 1 ? 's' : ''}</span>`;
-          html += `<a class="asset-card-ext" href="${dandiFilesUrl}" target="_blank" rel="noopener" title="View on DANDI Archive">&#8599;</a>`;
+          html += `<a class="asset-card-ext" href="${escapeHtml(dandiFilesUrl)}" target="_blank" rel="noopener" title="View on DANDI Archive">&#8599;</a>`;
           html += `</div>`;
           html += `<div class="session-list hidden">`;
           for (const asset of entry.assets) {
@@ -1853,13 +1865,13 @@ async function updateDandisetPanel(dandisetId, structureIds, { initialSubjectDir
             const assetRegionIds = JSON.stringify(asset.regions.map(r => r.id));
             const sessionHasElectrodes = electrodeData[asset.asset_id]?.length > 0;
             const tooltip = `Session: ${sessionLabel || 'unknown'}\nPath: ${asset.path}\nAsset ID: ${asset.asset_id}`;
-            html += `<div class="session-row" title="${tooltip.replace(/"/g, '&quot;')}" data-asset-id="${asset.asset_id}" data-region-ids='${assetRegionIds}' data-subject-dir="${entry.subjectDir}">`;
+            html += `<div class="session-row" title="${escapeHtml(tooltip)}" data-asset-id="${escapeHtml(asset.asset_id)}" data-region-ids='${assetRegionIds}' data-subject-dir="${escapeHtml(entry.subjectDir)}">`;
             if (sessionHasElectrodes) {
               const sessionKey = asset.session || asset.path;
               const color = SESSION_ELECTRODE_COLORS[sessionKeys.indexOf(sessionKey) % SESSION_ELECTRODE_COLORS.length];
               html += `<span class="electrode-indicator" title="Has electrode coordinates" style="background:#${color}; box-shadow:0 0 4px #${color}99"></span>`;
             }
-            html += `<span class="session-row-label">${label}</span>`;
+            html += `<span class="session-row-label">${escapeHtml(label)}</span>`;
             html += `<span class="asset-card-region-count">${asset.regions.length} region${asset.regions.length !== 1 ? 's' : ''}</span>`;
             html += `</div>`;
           }
@@ -1873,11 +1885,11 @@ async function updateDandisetPanel(dandisetId, structureIds, { initialSubjectDir
           // name it in the filter bar, matching the rows of multi-session
           // subjects. Empty when the filename has no _ses- part.
           const singleSessionLabel = singleAsset.session ? `ses-${singleAsset.session}` : '';
-          html += `<div class="asset-card" data-region-ids='${regionIds}' data-subject-dir="${entry.subjectDir}" data-asset-id="${singleAsset.asset_id}" data-session-label="${singleSessionLabel}">`;
+          html += `<div class="asset-card" data-region-ids='${regionIds}' data-subject-dir="${escapeHtml(entry.subjectDir)}" data-asset-id="${escapeHtml(singleAsset.asset_id)}" data-session-label="${escapeHtml(singleSessionLabel)}">`;
           if (singleHasElectrodes) html += `<span class="electrode-indicator" title="Has electrode coordinates"></span>`;
-          html += `<span class="asset-card-filename">${subjectId}</span>`;
+          html += `<span class="asset-card-filename">${escapeHtml(subjectId)}</span>`;
           html += `<span class="asset-card-region-count">${regionCount} region${regionCount !== 1 ? 's' : ''}</span>`;
-          html += `<a class="asset-card-ext" href="${dandiFilesUrl}" target="_blank" rel="noopener" title="View on DANDI Archive">&#8599;</a>`;
+          html += `<a class="asset-card-ext" href="${escapeHtml(dandiFilesUrl)}" target="_blank" rel="noopener" title="View on DANDI Archive">&#8599;</a>`;
           html += `</div>`;
         }
       }
@@ -1970,13 +1982,13 @@ async function updateDandisetPanel(dandisetId, structureIds, { initialSubjectDir
             clearElectrodePoints();
             setHash(`dandiset=${dandisetId}`);
             if (hadRegionFilter) {
-              spotlightRegions(structureIds);
+              spotlightDandisetRegions(structureIds);
               updateDandisetPanel(dandisetId, structureIds);
               const newAllCard = panel.querySelector('.asset-card[data-all]');
               if (newAllCard) newAllCard.classList.add('asset-card-selected');
               return;
             }
-            spotlightRegions(JSON.parse(card.dataset.regionIds || '[]'));
+            spotlightDandisetRegions(JSON.parse(card.dataset.regionIds || '[]'));
             filterRegionVisibilityRows(null);
           });
           if (hadRegionFilter) return;
@@ -2132,6 +2144,14 @@ function filterTreeByStructureIds(structureIds) {
   });
 }
 
+// Spotlight part of the selected dandiset (a region filter, a subject, a
+// session, or all of it) and point the tree checkboxes at the same set.
+function spotlightDandisetRegions(structureIds) {
+  dandisetViewRegionIds = structureIds.slice();
+  syncTreeCheckboxes();
+  return spotlightRegions(structureIds);
+}
+
 async function spotlightRegions(structureIds) {
   const activeSet = new Set(structureIds);
 
@@ -2210,9 +2230,9 @@ function enterSubjectView({ dandisetId, subjectDir, regionIds, electrodeAssets, 
     showSubjectFilter(`Subject: ${subjectName}`);
 
     showElectrodePointsForAssets(dandisetId, electrodeAssets, { colorBySession: true });
-    setHash(`dandiset=${dandisetId}&subject=${subjectDir}`);
+    setHash(`dandiset=${dandisetId}&subject=${encodeURIComponent(subjectDir)}`);
 
-    spotlightRegions(regionIds);
+    spotlightDandisetRegions(regionIds);
     filterRegionVisibilityRows(regionIds);
   });
 }
@@ -2234,13 +2254,13 @@ function enterSessionView({ dandisetId, subjectDir, assetId, regionIds, sessionL
 
     if (assetId) {
       showElectrodePoints(dandisetId, assetId);
-      setHash(`dandiset=${dandisetId}&subject=${subjectDir}&session=${assetId}`);
+      setHash(`dandiset=${dandisetId}&subject=${encodeURIComponent(subjectDir)}&session=${encodeURIComponent(assetId)}`);
     } else {
       clearElectrodePoints();
-      setHash(`dandiset=${dandisetId}&subject=${subjectDir}`);
+      setHash(`dandiset=${dandisetId}&subject=${encodeURIComponent(subjectDir)}`);
     }
 
-    spotlightRegions(regionIds);
+    spotlightDandisetRegions(regionIds);
     filterRegionVisibilityRows(regionIds);
   });
 }
@@ -2280,7 +2300,7 @@ function enterSubjectViewFromURL(dandisetId, subjectDir, sessionAssetId) {
   // Specific session: find the row, expand the parent group for visibility,
   // route to enterSessionView.
   if (sessionAssetId) {
-    const sessionRow = panel.querySelector(`.session-row[data-asset-id="${sessionAssetId}"]`);
+    const sessionRow = panel.querySelector(`.session-row[data-asset-id="${CSS.escape(sessionAssetId)}"]`);
     if (sessionRow) {
       const group = sessionRow.closest('.subject-group');
       if (group) {
@@ -2299,7 +2319,7 @@ function enterSubjectViewFromURL(dandisetId, subjectDir, sessionAssetId) {
   }
 
   // Subject only: find the subject card.
-  const card = panel.querySelector(`.asset-card[data-subject-dir="${subjectDir}"]`);
+  const card = panel.querySelector(`.asset-card[data-subject-dir="${CSS.escape(subjectDir)}"]`);
   if (!card) return;
 
   if (card.classList.contains('subject-card-expandable')) {
@@ -2437,6 +2457,7 @@ async function showElectrodePointsForAssets(dandisetId, assetRefs, { colorBySess
   // visible; views without electrode data don't need the auto-drop.
   const regionSlider = document.getElementById('region-opacity');
   if (regionSlider && parseFloat(regionSlider.value) > ELECTRODE_VIEW_DEFAULT_REGION_OPACITY) {
+    regionOpacityBeforeElectrodeDrop = parseFloat(regionSlider.value);
     regionSlider.value = ELECTRODE_VIEW_DEFAULT_REGION_OPACITY;
     regionSlider.dispatchEvent(new Event('input', { bubbles: true }));
   }
@@ -2457,6 +2478,17 @@ function clearElectrodePoints() {
     electrodePoints = null;
   }
   document.getElementById('electrode-control-row').classList.add('hidden');
+
+  // Undo the auto-drop, unless the user has moved the slider since; their
+  // setting wins.
+  if (regionOpacityBeforeElectrodeDrop !== null) {
+    const regionSlider = document.getElementById('region-opacity');
+    if (regionSlider && parseFloat(regionSlider.value) === ELECTRODE_VIEW_DEFAULT_REGION_OPACITY) {
+      regionSlider.value = regionOpacityBeforeElectrodeDrop;
+      regionSlider.dispatchEvent(new Event('input', { bubbles: true }));
+    }
+    regionOpacityBeforeElectrodeDrop = null;
+  }
 }
 
 function enterRegionView(structureId, { expandTree = true, pushState = true } = {}) {
@@ -2480,7 +2512,13 @@ function enterRegionView(structureId, { expandTree = true, pushState = true } = 
     clearElectrodePoints();
     syncTreeCheckboxes();
 
-    if (pushState) setHash(`region=${structureId}`);
+    // The init view's URL has no hash, the same one enterInitView pushes, so
+    // the back button to the home view does not leave #region=<root> behind.
+    if (pushState && newView === 'init') {
+      history.pushState(null, '', window.location.pathname + window.location.search);
+    } else if (pushState) {
+      setHash(`region=${structureId}`);
+    }
 
     // Allen "init" view (root selected) is the colorful whole-brain look —
     // every loaded mesh visible at its natural opacity. Macaque root and any
@@ -2514,12 +2552,13 @@ function recomputeExtraMeshIds() {
   }
 }
 
-// Reapply the dandiset's scene state. Used after an extras mutation so the
-// new mesh (or removed mesh) transitions to its correct display mode.
-// Mirrors the activeSet computation in enterDandisetView.
+// Reapply the dandiset view's scene state. Used after an extras mutation so
+// the new mesh (or removed mesh) transitions to its correct display mode.
+// Mirrors the activeSet computation in enterDandisetView, over the regions the
+// current view spotlights so a subject or session view keeps its narrower set.
 function refreshDandisetScene() {
   if (selectedDandiset === null) return;
-  const structureIds = dandisetToStructures[selectedDandiset] || [];
+  const structureIds = dandisetViewRegionIds;
   const activeSet = new Set();
   const meshToRegions = new Map();
   for (const sid of structureIds) {
@@ -2556,17 +2595,18 @@ function leaveDandisetTreeUI() {
 }
 
 // Reflect current selection in tree row checkboxes. In region/init/multi
-// views this mirrors selectedRegionIds. In a dandiset view the semantics
-// shift to "is this region currently visible in 3D": dandiset regions are
-// checked unless user-hidden, and non-dandiset regions are checked iff the
-// user added them as a region-of-interest extra.
+// views this mirrors selectedRegionIds. In a dandiset view (and its region
+// filter, subject, and session sub-views) the semantics shift to "is this
+// region currently visible in 3D": regions the view spotlights are checked
+// unless user-hidden, and other regions are checked iff the user added them
+// as a region-of-interest extra.
 function syncTreeCheckboxes() {
   if (selectedDandiset !== null) {
-    const dandisetRegionSet = new Set((dandisetToStructures[selectedDandiset] || []).map(String));
+    const viewRegionSet = new Set(dandisetViewRegionIds.map(String));
     const extraSet = new Set([...dandisetExtraRegionIds].map(String));
     document.querySelectorAll('.tree-checkbox').forEach(cb => {
       const id = cb.dataset.id;
-      if (dandisetRegionSet.has(id)) {
+      if (viewRegionSet.has(id)) {
         cb.checked = !hiddenRegionIds.has(parseInt(id));
       } else {
         cb.checked = extraSet.has(id);
@@ -2586,7 +2626,7 @@ function syncTreeCheckboxes() {
 // selectedId continues to work.
 async function enterMultiRegionView(ids, { pushState = true, expandTree = true } = {}) {
   const uniqueIds = [...new Set(ids)];
-  if (uniqueIds.length === 0) { enterInitView(); return; }
+  if (uniqueIds.length === 0) { enterInitView({ pushState }); return; }
   if (uniqueIds.length === 1) { enterRegionView(uniqueIds[0], { pushState, expandTree }); return; }
 
   return transitionView('region', async () => {
@@ -2661,9 +2701,9 @@ function updateRegionPanel(structureId) {
       : '';
     let html = `
       <div class="region-header">
-        <div class="region-name">${name}${extLink}</div>
-        <div class="region-acronym">${acronym}</div>
-        <div class="region-color-bar" style="background: #${color}"></div>
+        <div class="region-name">${escapeHtml(name)}${extLink}</div>
+        <div class="region-acronym">${escapeHtml(acronym)}</div>
+        <div class="region-color-bar" style="background: #${escapeHtml(color)}"></div>
       </div>
     `;
 
@@ -2693,7 +2733,7 @@ function updateRegionPanel(structureId) {
                 <span class="dandiset-card-count">${regionCount} region${regionCount !== 1 ? 's' : ''}</span>
                 <a class="dandiset-card-ext" href="https://dandiarchive.org/dandiset/${did}" target="_blank" rel="noopener" title="Open on DANDI Archive">&#8599;</a>
               </div>
-              <div class="dandiset-card-title" data-dandiset-id="${did}">${dandisetTitles[did] || ''}</div>
+              <div class="dandiset-card-title" data-dandiset-id="${did}">${escapeHtml(dandisetTitles[did] || '')}</div>
             </div>`;
         }
 
@@ -2771,10 +2811,10 @@ function updateMultiRegionPanel(ids) {
     for (const info of regionInfos) {
       html += `
         <div class="multi-region-card" data-region-id="${info.id}">
-          <span class="multi-region-card-dot" style="background:#${info.color}"></span>
+          <span class="multi-region-card-dot" style="background:#${escapeHtml(info.color)}"></span>
           <div class="multi-region-card-text">
-            <div class="multi-region-card-name">${info.name}</div>
-            ${info.acronym ? `<div class="multi-region-card-acronym">${info.acronym}</div>` : ''}
+            <div class="multi-region-card-name">${escapeHtml(info.name)}</div>
+            ${info.acronym ? `<div class="multi-region-card-acronym">${escapeHtml(info.acronym)}</div>` : ''}
           </div>
           <button class="multi-region-card-remove" data-region-id="${info.id}" title="Remove from selection">&times;</button>
         </div>`;
@@ -2794,7 +2834,7 @@ function updateMultiRegionPanel(ids) {
               <span class="dandiset-card-count">${regionCount} region${regionCount !== 1 ? 's' : ''}</span>
               <a class="dandiset-card-ext" href="https://dandiarchive.org/dandiset/${did}" target="_blank" rel="noopener" title="Open on DANDI Archive">&#8599;</a>
             </div>
-            <div class="dandiset-card-title" data-dandiset-id="${did}">${dandisetTitles[did] || ''}</div>
+            <div class="dandiset-card-title" data-dandiset-id="${did}">${escapeHtml(dandisetTitles[did] || '')}</div>
           </div>`;
       }
 
@@ -2816,7 +2856,7 @@ function updateMultiRegionPanel(ids) {
         e.stopPropagation();
         const rid = parseInt(btn.dataset.regionId);
         const remaining = selectedRegionIds.filter(x => x !== rid);
-        if (remaining.length === 0) enterInitView();
+        if (remaining.length === 0) enterInitView({ pushState: true });
         else if (remaining.length === 1) enterRegionView(remaining[0]);
         else enterMultiRegionView(remaining);
       });
@@ -2899,8 +2939,7 @@ function createTreeNode(node, depth) {
     // Initial checked state mirrors syncTreeCheckboxes' rules so lazy-rendered
     // tree branches don't desync with the active view.
     if (selectedDandiset !== null) {
-      const dandisetRegions = dandisetToStructures[selectedDandiset] || [];
-      if (dandisetRegions.includes(node.id)) {
+      if (dandisetViewRegionIds.includes(node.id)) {
         checkbox.checked = !hiddenRegionIds.has(node.id);
       } else {
         checkbox.checked = dandisetExtraRegionIds.has(node.id);
@@ -2943,13 +2982,16 @@ function createTreeNode(node, depth) {
     checkbox.addEventListener('change', async (e) => {
       e.stopPropagation();
 
-      if (currentView === 'dandiset') {
-        // Dandiset view: checkbox toggles visibility (for dandiset regions)
-        // or ROI overlay membership (for regions not in the dandiset).
-        const dandisetRegions = dandisetToStructures[selectedDandiset] || [];
-        const isInDandiset = dandisetRegions.includes(node.id);
+      if (selectedDandiset !== null) {
+        // Dandiset view and its region filter, subject, and session
+        // sub-views: the checkbox toggles visibility (for regions the view
+        // spotlights) or ROI overlay membership (for any other region).
+        // Branching on currentView === 'dandiset' sent subject and session
+        // views down the multi-region path below, so unticking a region
+        // dropped the user out of the dandiset into the atlas init view.
+        const isInView = dandisetViewRegionIds.includes(node.id);
 
-        if (isInDandiset) {
+        if (isInView) {
           if (checkbox.checked) hiddenRegionIds.delete(node.id);
           else hiddenRegionIds.add(node.id);
           // The 3D viewer's region-visibility-overlay holds a sibling
@@ -2987,7 +3029,7 @@ function createTreeNode(node, depth) {
       const rootId = meshManifest.root_id;
       const baseIds = selectedRegionIds.filter(x => x !== node.id && x !== rootId);
       const nextIds = checkbox.checked ? [...baseIds, node.id] : baseIds;
-      if (nextIds.length === 0) enterInitView();
+      if (nextIds.length === 0) enterInitView({ pushState: true });
       else if (nextIds.length === 1) enterRegionView(nextIds[0], { expandTree: false });
       else enterMultiRegionView(nextIds, { expandTree: false });
       ensureMeshLoaded(node.id);
@@ -3036,7 +3078,7 @@ function createTreeNode(node, depth) {
   content.addEventListener('click', (e) => {
     e.stopPropagation();
     if (node.id === meshManifest.root_id) {
-      enterInitView();
+      enterInitView({ pushState: true });
     } else if (selectedDandiset) {
       filterDandisetPanelByRegion(node.id);
     } else {
@@ -3351,7 +3393,7 @@ document.getElementById('subject-filter-clear').addEventListener('click', () => 
 
     filterTreeByDandiset(selectedDandiset);
     const structureIds = dandisetToStructures[selectedDandiset] || [];
-    spotlightRegions(structureIds);
+    spotlightDandisetRegions(structureIds);
     if (hadRegionFilter) {
       updateDandisetPanel(selectedDandiset, structureIds);
     }
@@ -3410,8 +3452,8 @@ async function applyURLState() {
 
   if (params.size === 0) {
     // No hash — show default (init) view. Guard avoids redundant DOM thrash
-    // when a hashchange fires but nothing is actually selected.
-    if (selectedRegionIds.length > 0 || selectedDandiset !== null) {
+    // when a hashchange fires but the init view is already showing.
+    if (currentView !== 'init') {
       enterInitView();
     }
     return;
