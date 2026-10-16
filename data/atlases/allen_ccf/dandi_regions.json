@@ -1601,8 +1601,8 @@
     "acronym": "CA1",
     "name": "Field CA1",
     "color_hex_triplet": "7ED04B",
-    "file_count": 2252,
-    "dandiset_count": 31,
+    "file_count": 2290,
+    "dandiset_count": 32,
     "dandisets": [
       "000017",
       "000021",
@@ -1634,10 +1634,11 @@
       "001637",
       "001676",
       "001701",
-      "001710"
+      "001710",
+      "002030"
     ],
-    "total_file_count": 2252,
-    "total_dandiset_count": 31,
+    "total_file_count": 2290,
+    "total_dandiset_count": 32,
     "total_dandisets": [
       "000017",
       "000021",
@@ -1669,7 +1670,8 @@
       "001637",
       "001676",
       "001701",
-      "001710"
+      "001710",
+      "002030"
     ]
   },
   "982": {
@@ -1813,8 +1815,8 @@
       "001637",
       "001701"
     ],
-    "total_file_count": 7976,
-    "total_dandiset_count": 33,
+    "total_file_count": 8014,
+    "total_dandiset_count": 34,
     "total_dandisets": [
       "000017",
       "000021",
@@ -1848,7 +1850,8 @@
       "001637",
       "001676",
       "001701",
-      "001710"
+      "001710",
+      "002030"
     ]
   },
   "263": {
@@ -10654,8 +10657,8 @@
     "dandisets": [
       "000017"
     ],
-    "total_file_count": 3781,
-    "total_dandiset_count": 32,
+    "total_file_count": 3819,
+    "total_dandiset_count": 33,
     "total_dandisets": [
       "000017",
       "000021",
@@ -10688,7 +10691,8 @@
       "001637",
       "001676",
       "001701",
-      "001710"
+      "001710",
+      "002030"
     ]
   },
   "669": {
@@ -12806,8 +12810,8 @@
     "file_count": 0,
     "dandiset_count": 0,
     "dandisets": [],
-    "total_file_count": 25926,
-    "total_dandiset_count": 52,
+    "total_file_count": 25964,
+    "total_dandiset_count": 53,
     "total_dandisets": [
       "000017",
       "000021",
@@ -12860,7 +12864,8 @@
       "001791",
       "001868",
       "001876",
-      "001960"
+      "001960",
+      "002030"
     ]
   },
   "688": {
@@ -12870,8 +12875,8 @@
     "file_count": 0,
     "dandiset_count": 0,
     "dandisets": [],
-    "total_file_count": 26282,
-    "total_dandiset_count": 53,
+    "total_file_count": 26320,
+    "total_dandiset_count": 54,
     "total_dandisets": [
       "000017",
       "000021",
@@ -12925,7 +12930,8 @@
       "001791",
       "001868",
       "001876",
-      "001960"
+      "001960",
+      "002030"
     ]
   },
   "567": {
@@ -12935,8 +12941,8 @@
     "file_count": 0,
     "dandiset_count": 0,
     "dandisets": [],
-    "total_file_count": 28534,
-    "total_dandiset_count": 56,
+    "total_file_count": 28572,
+    "total_dandiset_count": 57,
     "total_dandisets": [
       "000017",
       "000021",
@@ -12993,7 +12999,8 @@
       "001832",
       "001868",
       "001876",
-      "001960"
+      "001960",
+      "002030"
     ]
   },
   "8": {
@@ -13003,8 +13010,8 @@
     "file_count": 0,
     "dandiset_count": 0,
     "dandisets": [],
-    "total_file_count": 40527,
-    "total_dandiset_count": 61,
+    "total_file_count": 40565,
+    "total_dandiset_count": 62,
     "total_dandisets": [
       "000017",
       "000021",
@@ -13066,7 +13073,8 @@
       "001832",
       "001868",
       "001876",
-      "001960"
+      "001960",
+      "002030"
     ]
   },
   "997": {
@@ -13076,8 +13084,8 @@
     "file_count": 0,
     "dandiset_count": 0,
     "dandisets": [],
-    "total_file_count": 46324,
-    "total_dandiset_count": 63,
+    "total_file_count": 46362,
+    "total_dandiset_count": 64,
     "total_dandisets": [
       "000017",
       "000021",
@@ -13141,7 +13149,8 @@
       "001832",
       "001868",
       "001876",
-      "001960"
+      "001960",
+      "002030"
     ]
   },
   "22": {
@@ -13725,8 +13734,8 @@
     "file_count": 0,
     "dandiset_count": 0,
     "dandisets": [],
-    "total_file_count": 5662,
-    "total_dandiset_count": 32,
+    "total_file_count": 5700,
+    "total_dandiset_count": 33,
     "total_dandisets": [
       "000017",
       "000021",
@@ -13759,7 +13768,8 @@
       "001637",
       "001676",
       "001701",
-      "001710"
+      "001710",
+      "002030"
     ]
   },
   "138": {
