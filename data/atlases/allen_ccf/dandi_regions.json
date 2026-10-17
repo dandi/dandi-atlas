@@ -1601,7 +1601,7 @@
     "acronym": "CA1",
     "name": "Field CA1",
     "color_hex_triplet": "7ED04B",
-    "file_count": 2290,
+    "file_count": 2291,
     "dandiset_count": 32,
     "dandisets": [
       "000017",
@@ -1637,7 +1637,7 @@
       "001710",
       "002030"
     ],
-    "total_file_count": 2290,
+    "total_file_count": 2291,
     "total_dandiset_count": 32,
     "total_dandisets": [
       "000017",
@@ -1815,7 +1815,7 @@
       "001637",
       "001701"
     ],
-    "total_file_count": 8014,
+    "total_file_count": 8015,
     "total_dandiset_count": 34,
     "total_dandisets": [
       "000017",
@@ -10657,7 +10657,7 @@
     "dandisets": [
       "000017"
     ],
-    "total_file_count": 3819,
+    "total_file_count": 3820,
     "total_dandiset_count": 33,
     "total_dandisets": [
       "000017",
@@ -12810,7 +12810,7 @@
     "file_count": 0,
     "dandiset_count": 0,
     "dandisets": [],
-    "total_file_count": 25964,
+    "total_file_count": 25965,
     "total_dandiset_count": 53,
     "total_dandisets": [
       "000017",
@@ -12875,7 +12875,7 @@
     "file_count": 0,
     "dandiset_count": 0,
     "dandisets": [],
-    "total_file_count": 26320,
+    "total_file_count": 26321,
     "total_dandiset_count": 54,
     "total_dandisets": [
       "000017",
@@ -12941,7 +12941,7 @@
     "file_count": 0,
     "dandiset_count": 0,
     "dandisets": [],
-    "total_file_count": 28572,
+    "total_file_count": 28573,
     "total_dandiset_count": 57,
     "total_dandisets": [
       "000017",
@@ -13010,7 +13010,7 @@
     "file_count": 0,
     "dandiset_count": 0,
     "dandisets": [],
-    "total_file_count": 40565,
+    "total_file_count": 40566,
     "total_dandiset_count": 62,
     "total_dandisets": [
       "000017",
@@ -13084,7 +13084,7 @@
     "file_count": 0,
     "dandiset_count": 0,
     "dandisets": [],
-    "total_file_count": 46362,
+    "total_file_count": 46363,
     "total_dandiset_count": 64,
     "total_dandisets": [
       "000017",
@@ -13734,7 +13734,7 @@
     "file_count": 0,
     "dandiset_count": 0,
     "dandisets": [],
-    "total_file_count": 5700,
+    "total_file_count": 5701,
     "total_dandiset_count": 33,
     "total_dandisets": [
       "000017",
