@@ -6499,6 +6499,215 @@
       "000409"
     ]
   },
+  "985": {
+    "acronym": "MOp",
+    "name": "Primary motor area",
+    "color_hex_triplet": "1F9D5A",
+    "file_count": 154,
+    "dandiset_count": 3,
+    "dandisets": [
+      "000017",
+      "000458",
+      "001051"
+    ],
+    "total_file_count": 484,
+    "total_dandiset_count": 9,
+    "total_dandisets": [
+      "000017",
+      "000458",
+      "000563",
+      "000690",
+      "001051",
+      "001191",
+      "001260",
+      "001326",
+      "001637"
+    ]
+  },
+  "993": {
+    "acronym": "MOs",
+    "name": "Secondary motor area",
+    "color_hex_triplet": "1F9D5A",
+    "file_count": 227,
+    "dandiset_count": 3,
+    "dandisets": [
+      "000017",
+      "000458",
+      "001051"
+    ],
+    "total_file_count": 926,
+    "total_dandiset_count": 12,
+    "total_dandisets": [
+      "000017",
+      "000458",
+      "000473",
+      "000563",
+      "000690",
+      "001051",
+      "001191",
+      "001260",
+      "001326",
+      "001416",
+      "001417",
+      "001637"
+    ]
+  },
+  "894": {
+    "acronym": "RSPagl",
+    "name": "Retrosplenial area, lateral agranular part",
+    "color_hex_triplet": "1AA698",
+    "file_count": 129,
+    "dandiset_count": 2,
+    "dandisets": [
+      "000458",
+      "001051"
+    ],
+    "total_file_count": 360,
+    "total_dandiset_count": 12,
+    "total_dandisets": [
+      "000021",
+      "000022",
+      "000458",
+      "000563",
+      "000690",
+      "001051",
+      "001191",
+      "001326",
+      "001420",
+      "001568",
+      "001637",
+      "001701"
+    ]
+  },
+  "329": {
+    "acronym": "SSp-bfd",
+    "name": "Primary somatosensory area, barrel field",
+    "color_hex_triplet": "188064",
+    "file_count": 48,
+    "dandiset_count": 2,
+    "dandisets": [
+      "000458",
+      "001791"
+    ],
+    "total_file_count": 681,
+    "total_dandiset_count": 9,
+    "total_dandisets": [
+      "000458",
+      "000563",
+      "000690",
+      "001260",
+      "001416",
+      "001417",
+      "001637",
+      "001791",
+      "001960"
+    ]
+  },
+  "337": {
+    "acronym": "SSp-ll",
+    "name": "Primary somatosensory area, lower limb",
+    "color_hex_triplet": "188064",
+    "file_count": 24,
+    "dandiset_count": 1,
+    "dandisets": [
+      "000458"
+    ],
+    "total_file_count": 47,
+    "total_dandiset_count": 4,
+    "total_dandisets": [
+      "000458",
+      "001260",
+      "001326",
+      "001637"
+    ]
+  },
+  "312782546": {
+    "acronym": "VISa",
+    "name": "Anterior area",
+    "color_hex_triplet": "009FAC",
+    "file_count": 127,
+    "dandiset_count": 4,
+    "dandisets": [
+      "000017",
+      "000458",
+      "000579",
+      "001051"
+    ],
+    "total_file_count": 421,
+    "total_dandiset_count": 9,
+    "total_dandisets": [
+      "000017",
+      "000458",
+      "000579",
+      "000690",
+      "001051",
+      "001191",
+      "001260",
+      "001417",
+      "001637"
+    ]
+  },
+  "956": {
+    "acronym": "fa",
+    "name": "corpus callosum, anterior forceps",
+    "color_hex_triplet": "CCCCCC",
+    "file_count": 69,
+    "dandiset_count": 8,
+    "dandisets": [
+      "000458",
+      "000473",
+      "001191",
+      "001260",
+      "001326",
+      "001416",
+      "001417",
+      "001637"
+    ],
+    "total_file_count": 165,
+    "total_dandiset_count": 11,
+    "total_dandisets": [
+      "000409",
+      "000458",
+      "000473",
+      "001191",
+      "001260",
+      "001326",
+      "001416",
+      "001417",
+      "001568",
+      "001637",
+      "001701"
+    ]
+  },
+  "971": {
+    "acronym": "fp",
+    "name": "corpus callosum, posterior forceps",
+    "color_hex_triplet": "CCCCCC",
+    "file_count": 114,
+    "dandiset_count": 8,
+    "dandisets": [
+      "000458",
+      "001191",
+      "001260",
+      "001326",
+      "001416",
+      "001417",
+      "001568",
+      "001637"
+    ],
+    "total_file_count": 114,
+    "total_dandiset_count": 8,
+    "total_dandisets": [
+      "000458",
+      "001191",
+      "001260",
+      "001326",
+      "001416",
+      "001417",
+      "001568",
+      "001637"
+    ]
+  },
   "39": {
     "acronym": "ACAd",
     "name": "Anterior cingulate area, dorsal part",
@@ -6521,6 +6730,403 @@
       "001260",
       "001326",
       "001416",
+      "001417",
+      "001637"
+    ]
+  },
+  "48": {
+    "acronym": "ACAv",
+    "name": "Anterior cingulate area, ventral part",
+    "color_hex_triplet": "40A666",
+    "file_count": 89,
+    "dandiset_count": 2,
+    "dandisets": [
+      "000458",
+      "001051"
+    ],
+    "total_file_count": 239,
+    "total_dandiset_count": 10,
+    "total_dandisets": [
+      "000458",
+      "000473",
+      "000563",
+      "000690",
+      "001051",
+      "001260",
+      "001326",
+      "001416",
+      "001417",
+      "001637"
+    ]
+  },
+  "972": {
+    "acronym": "PL",
+    "name": "Prelimbic area",
+    "color_hex_triplet": "2FA850",
+    "file_count": 59,
+    "dandiset_count": 3,
+    "dandisets": [
+      "000017",
+      "000458",
+      "001051"
+    ],
+    "total_file_count": 323,
+    "total_dandiset_count": 11,
+    "total_dandisets": [
+      "000017",
+      "000458",
+      "000473",
+      "000690",
+      "001051",
+      "001191",
+      "001260",
+      "001326",
+      "001416",
+      "001417",
+      "001637"
+    ]
+  },
+  "361": {
+    "acronym": "SSp-tr",
+    "name": "Primary somatosensory area, trunk",
+    "color_hex_triplet": "188064",
+    "file_count": 98,
+    "dandiset_count": 2,
+    "dandisets": [
+      "000458",
+      "001868"
+    ],
+    "total_file_count": 222,
+    "total_dandiset_count": 5,
+    "total_dandisets": [
+      "000458",
+      "001260",
+      "001637",
+      "001701",
+      "001868"
+    ]
+  },
+  "44": {
+    "acronym": "ILA",
+    "name": "Infralimbic area",
+    "color_hex_triplet": "59B363",
+    "file_count": 40,
+    "dandiset_count": 3,
+    "dandisets": [
+      "000017",
+      "000458",
+      "001051"
+    ],
+    "total_file_count": 222,
+    "total_dandiset_count": 10,
+    "total_dandisets": [
+      "000017",
+      "000458",
+      "000473",
+      "000690",
+      "001051",
+      "001191",
+      "001260",
+      "001326",
+      "001417",
+      "001637"
+    ]
+  },
+  "496345668": {
+    "acronym": "LGd-co",
+    "name": "Dorsal part of the lateral geniculate complex, core",
+    "color_hex_triplet": "FF8084",
+    "file_count": 177,
+    "dandiset_count": 11,
+    "dandisets": [
+      "000248",
+      "000253",
+      "000458",
+      "000563",
+      "000690",
+      "001191",
+      "001260",
+      "001326",
+      "001416",
+      "001417",
+      "001637"
+    ],
+    "total_file_count": 177,
+    "total_dandiset_count": 11,
+    "total_dandisets": [
+      "000248",
+      "000253",
+      "000458",
+      "000563",
+      "000690",
+      "001191",
+      "001260",
+      "001326",
+      "001416",
+      "001417",
+      "001637"
+    ]
+  },
+  "496345672": {
+    "acronym": "LGd-ip",
+    "name": "Dorsal part of the lateral geniculate complex, ipsilateral zone",
+    "color_hex_triplet": "FF8084",
+    "file_count": 49,
+    "dandiset_count": 6,
+    "dandisets": [
+      "000248",
+      "000458",
+      "000563",
+      "001326",
+      "001417",
+      "001637"
+    ],
+    "total_file_count": 49,
+    "total_dandiset_count": 6,
+    "total_dandisets": [
+      "000248",
+      "000458",
+      "000563",
+      "001326",
+      "001417",
+      "001637"
+    ]
+  },
+  "496345664": {
+    "acronym": "LGd-sh",
+    "name": "Dorsal part of the lateral geniculate complex, shell",
+    "color_hex_triplet": "FF8084",
+    "file_count": 163,
+    "dandiset_count": 10,
+    "dandisets": [
+      "000248",
+      "000253",
+      "000458",
+      "000563",
+      "000690",
+      "001191",
+      "001326",
+      "001416",
+      "001417",
+      "001637"
+    ],
+    "total_file_count": 163,
+    "total_dandiset_count": 10,
+    "total_dandisets": [
+      "000248",
+      "000253",
+      "000458",
+      "000563",
+      "000690",
+      "001191",
+      "001326",
+      "001416",
+      "001417",
+      "001637"
+    ]
+  },
+  "986": {
+    "acronym": "ccs",
+    "name": "corpus callosum, splenium",
+    "color_hex_triplet": "CCCCCC",
+    "file_count": 85,
+    "dandiset_count": 7,
+    "dandisets": [
+      "000458",
+      "001191",
+      "001260",
+      "001326",
+      "001416",
+      "001417",
+      "001637"
+    ],
+    "total_file_count": 85,
+    "total_dandiset_count": 7,
+    "total_dandisets": [
+      "000458",
+      "001191",
+      "001260",
+      "001326",
+      "001416",
+      "001417",
+      "001637"
+    ]
+  },
+  "1072": {
+    "acronym": "MGd",
+    "name": "Medial geniculate complex, dorsal part",
+    "color_hex_triplet": "FF8084",
+    "file_count": 190,
+    "dandiset_count": 15,
+    "dandisets": [
+      "000021",
+      "000022",
+      "000248",
+      "000253",
+      "000458",
+      "000563",
+      "000690",
+      "001051",
+      "001191",
+      "001326",
+      "001416",
+      "001417",
+      "001421",
+      "001568",
+      "001637"
+    ],
+    "total_file_count": 190,
+    "total_dandiset_count": 15,
+    "total_dandisets": [
+      "000021",
+      "000022",
+      "000248",
+      "000253",
+      "000458",
+      "000563",
+      "000690",
+      "001051",
+      "001191",
+      "001326",
+      "001416",
+      "001417",
+      "001421",
+      "001568",
+      "001637"
+    ]
+  },
+  "1088": {
+    "acronym": "MGm",
+    "name": "Medial geniculate complex, medial part",
+    "color_hex_triplet": "FF8084",
+    "file_count": 145,
+    "dandiset_count": 13,
+    "dandisets": [
+      "000021",
+      "000022",
+      "000248",
+      "000253",
+      "000458",
+      "000563",
+      "000690",
+      "001051",
+      "001191",
+      "001326",
+      "001417",
+      "001421",
+      "001637"
+    ],
+    "total_file_count": 145,
+    "total_dandiset_count": 13,
+    "total_dandisets": [
+      "000021",
+      "000022",
+      "000248",
+      "000253",
+      "000458",
+      "000563",
+      "000690",
+      "001051",
+      "001191",
+      "001326",
+      "001417",
+      "001421",
+      "001637"
+    ]
+  },
+  "1079": {
+    "acronym": "MGv",
+    "name": "Medial geniculate complex, ventral part",
+    "color_hex_triplet": "FF8084",
+    "file_count": 181,
+    "dandiset_count": 15,
+    "dandisets": [
+      "000021",
+      "000022",
+      "000248",
+      "000253",
+      "000458",
+      "000563",
+      "000690",
+      "001051",
+      "001191",
+      "001326",
+      "001416",
+      "001417",
+      "001421",
+      "001568",
+      "001637"
+    ],
+    "total_file_count": 181,
+    "total_dandiset_count": 15,
+    "total_dandisets": [
+      "000021",
+      "000022",
+      "000248",
+      "000253",
+      "000458",
+      "000563",
+      "000690",
+      "001051",
+      "001191",
+      "001326",
+      "001416",
+      "001417",
+      "001421",
+      "001568",
+      "001637"
+    ]
+  },
+  "381": {
+    "acronym": "SNr",
+    "name": "Substantia nigra, reticular part",
+    "color_hex_triplet": "FF90FF",
+    "file_count": 424,
+    "dandiset_count": 5,
+    "dandisets": [
+      "000017",
+      "000248",
+      "000458",
+      "001326",
+      "001777"
+    ],
+    "total_file_count": 424,
+    "total_dandiset_count": 5,
+    "total_dandisets": [
+      "000017",
+      "000248",
+      "000458",
+      "001326",
+      "001777"
+    ]
+  },
+  "597": {
+    "acronym": "TTd",
+    "name": "Taenia tecta, dorsal part",
+    "color_hex_triplet": "62D09F",
+    "file_count": 87,
+    "dandiset_count": 9,
+    "dandisets": [
+      "000458",
+      "000473",
+      "000690",
+      "001051",
+      "001191",
+      "001260",
+      "001326",
+      "001417",
+      "001637"
+    ],
+    "total_file_count": 87,
+    "total_dandiset_count": 9,
+    "total_dandisets": [
+      "000458",
+      "000473",
+      "000690",
+      "001051",
+      "001191",
+      "001260",
+      "001326",
       "001417",
       "001637"
     ]
@@ -6581,32 +7187,6 @@
       "001326"
     ]
   },
-  "44": {
-    "acronym": "ILA",
-    "name": "Infralimbic area",
-    "color_hex_triplet": "59B363",
-    "file_count": 40,
-    "dandiset_count": 3,
-    "dandisets": [
-      "000017",
-      "000458",
-      "001051"
-    ],
-    "total_file_count": 222,
-    "total_dandiset_count": 10,
-    "total_dandisets": [
-      "000017",
-      "000458",
-      "000473",
-      "000690",
-      "001051",
-      "001191",
-      "001260",
-      "001326",
-      "001417",
-      "001637"
-    ]
-  },
   "170": {
     "acronym": "LGd",
     "name": "Dorsal part of the lateral geniculate complex",
@@ -6628,34 +7208,6 @@
       "000248",
       "000253",
       "000458",
-      "000563",
-      "000690",
-      "001051",
-      "001191",
-      "001260",
-      "001326",
-      "001416",
-      "001417",
-      "001637"
-    ]
-  },
-  "993": {
-    "acronym": "MOs",
-    "name": "Secondary motor area",
-    "color_hex_triplet": "1F9D5A",
-    "file_count": 227,
-    "dandiset_count": 3,
-    "dandisets": [
-      "000017",
-      "000458",
-      "001051"
-    ],
-    "total_file_count": 926,
-    "total_dandiset_count": 12,
-    "total_dandisets": [
-      "000017",
-      "000458",
-      "000473",
       "000563",
       "000690",
       "001051",
@@ -6689,33 +7241,6 @@
       "001637"
     ]
   },
-  "972": {
-    "acronym": "PL",
-    "name": "Prelimbic area",
-    "color_hex_triplet": "2FA850",
-    "file_count": 59,
-    "dandiset_count": 3,
-    "dandisets": [
-      "000017",
-      "000458",
-      "001051"
-    ],
-    "total_file_count": 323,
-    "total_dandiset_count": 11,
-    "total_dandisets": [
-      "000017",
-      "000458",
-      "000473",
-      "000690",
-      "001051",
-      "001191",
-      "001260",
-      "001326",
-      "001416",
-      "001417",
-      "001637"
-    ]
-  },
   "322": {
     "acronym": "SSp",
     "name": "Primary somatosensory area",
@@ -6743,62 +7268,6 @@
       "001791",
       "001868",
       "001960"
-    ]
-  },
-  "597": {
-    "acronym": "TTd",
-    "name": "Taenia tecta, dorsal part",
-    "color_hex_triplet": "62D09F",
-    "file_count": 87,
-    "dandiset_count": 9,
-    "dandisets": [
-      "000458",
-      "000473",
-      "000690",
-      "001051",
-      "001191",
-      "001260",
-      "001326",
-      "001417",
-      "001637"
-    ],
-    "total_file_count": 87,
-    "total_dandiset_count": 9,
-    "total_dandisets": [
-      "000458",
-      "000473",
-      "000690",
-      "001051",
-      "001191",
-      "001260",
-      "001326",
-      "001417",
-      "001637"
-    ]
-  },
-  "48": {
-    "acronym": "ACAv",
-    "name": "Anterior cingulate area, ventral part",
-    "color_hex_triplet": "40A666",
-    "file_count": 89,
-    "dandiset_count": 2,
-    "dandisets": [
-      "000458",
-      "001051"
-    ],
-    "total_file_count": 239,
-    "total_dandiset_count": 10,
-    "total_dandisets": [
-      "000458",
-      "000473",
-      "000563",
-      "000690",
-      "001051",
-      "001260",
-      "001326",
-      "001416",
-      "001417",
-      "001637"
     ]
   },
   "879": {
@@ -6988,127 +7457,6 @@
       "001420"
     ]
   },
-  "1079": {
-    "acronym": "MGv",
-    "name": "Medial geniculate complex, ventral part",
-    "color_hex_triplet": "FF8084",
-    "file_count": 181,
-    "dandiset_count": 15,
-    "dandisets": [
-      "000021",
-      "000022",
-      "000248",
-      "000253",
-      "000458",
-      "000563",
-      "000690",
-      "001051",
-      "001191",
-      "001326",
-      "001416",
-      "001417",
-      "001421",
-      "001568",
-      "001637"
-    ],
-    "total_file_count": 181,
-    "total_dandiset_count": 15,
-    "total_dandisets": [
-      "000021",
-      "000022",
-      "000248",
-      "000253",
-      "000458",
-      "000563",
-      "000690",
-      "001051",
-      "001191",
-      "001326",
-      "001416",
-      "001417",
-      "001421",
-      "001568",
-      "001637"
-    ]
-  },
-  "985": {
-    "acronym": "MOp",
-    "name": "Primary motor area",
-    "color_hex_triplet": "1F9D5A",
-    "file_count": 154,
-    "dandiset_count": 3,
-    "dandisets": [
-      "000017",
-      "000458",
-      "001051"
-    ],
-    "total_file_count": 484,
-    "total_dandiset_count": 9,
-    "total_dandisets": [
-      "000017",
-      "000458",
-      "000563",
-      "000690",
-      "001051",
-      "001191",
-      "001260",
-      "001326",
-      "001637"
-    ]
-  },
-  "894": {
-    "acronym": "RSPagl",
-    "name": "Retrosplenial area, lateral agranular part",
-    "color_hex_triplet": "1AA698",
-    "file_count": 129,
-    "dandiset_count": 2,
-    "dandisets": [
-      "000458",
-      "001051"
-    ],
-    "total_file_count": 360,
-    "total_dandiset_count": 12,
-    "total_dandisets": [
-      "000021",
-      "000022",
-      "000458",
-      "000563",
-      "000690",
-      "001051",
-      "001191",
-      "001326",
-      "001420",
-      "001568",
-      "001637",
-      "001701"
-    ]
-  },
-  "312782546": {
-    "acronym": "VISa",
-    "name": "Anterior area",
-    "color_hex_triplet": "009FAC",
-    "file_count": 127,
-    "dandiset_count": 4,
-    "dandisets": [
-      "000017",
-      "000458",
-      "000579",
-      "001051"
-    ],
-    "total_file_count": 421,
-    "total_dandiset_count": 9,
-    "total_dandisets": [
-      "000017",
-      "000458",
-      "000579",
-      "000690",
-      "001051",
-      "001191",
-      "001260",
-      "001417",
-      "001637"
-    ]
-  },
   "312782574": {
     "acronym": "VISli",
     "name": "Laterointermediate area",
@@ -7152,49 +7500,6 @@
       "001051",
       "001326",
       "001417",
-      "001637"
-    ]
-  },
-  "1072": {
-    "acronym": "MGd",
-    "name": "Medial geniculate complex, dorsal part",
-    "color_hex_triplet": "FF8084",
-    "file_count": 190,
-    "dandiset_count": 15,
-    "dandisets": [
-      "000021",
-      "000022",
-      "000248",
-      "000253",
-      "000458",
-      "000563",
-      "000690",
-      "001051",
-      "001191",
-      "001326",
-      "001416",
-      "001417",
-      "001421",
-      "001568",
-      "001637"
-    ],
-    "total_file_count": 190,
-    "total_dandiset_count": 15,
-    "total_dandisets": [
-      "000021",
-      "000022",
-      "000248",
-      "000253",
-      "000458",
-      "000563",
-      "000690",
-      "001051",
-      "001191",
-      "001326",
-      "001416",
-      "001417",
-      "001421",
-      "001568",
       "001637"
     ]
   },
@@ -7292,45 +7597,6 @@
       "001051",
       "001191",
       "001260"
-    ]
-  },
-  "1088": {
-    "acronym": "MGm",
-    "name": "Medial geniculate complex, medial part",
-    "color_hex_triplet": "FF8084",
-    "file_count": 145,
-    "dandiset_count": 13,
-    "dandisets": [
-      "000021",
-      "000022",
-      "000248",
-      "000253",
-      "000458",
-      "000563",
-      "000690",
-      "001051",
-      "001191",
-      "001326",
-      "001417",
-      "001421",
-      "001637"
-    ],
-    "total_file_count": 145,
-    "total_dandiset_count": 13,
-    "total_dandisets": [
-      "000021",
-      "000022",
-      "000248",
-      "000253",
-      "000458",
-      "000563",
-      "000690",
-      "001051",
-      "001191",
-      "001326",
-      "001417",
-      "001421",
-      "001637"
     ]
   },
   "1096": {
@@ -8662,39 +8928,6 @@
       "001417"
     ]
   },
-  "496345664": {
-    "acronym": "LGd-sh",
-    "name": "Dorsal part of the lateral geniculate complex, shell",
-    "color_hex_triplet": "FF8084",
-    "file_count": 163,
-    "dandiset_count": 10,
-    "dandisets": [
-      "000248",
-      "000253",
-      "000458",
-      "000563",
-      "000690",
-      "001191",
-      "001326",
-      "001416",
-      "001417",
-      "001637"
-    ],
-    "total_file_count": 163,
-    "total_dandiset_count": 10,
-    "total_dandisets": [
-      "000248",
-      "000253",
-      "000458",
-      "000563",
-      "000690",
-      "001191",
-      "001326",
-      "001416",
-      "001417",
-      "001637"
-    ]
-  },
   "828": {
     "acronym": "ICe",
     "name": "Inferior colliculus, external nucleus",
@@ -8739,41 +8972,6 @@
       "001326",
       "001568",
       "001701"
-    ]
-  },
-  "496345668": {
-    "acronym": "LGd-co",
-    "name": "Dorsal part of the lateral geniculate complex, core",
-    "color_hex_triplet": "FF8084",
-    "file_count": 177,
-    "dandiset_count": 11,
-    "dandisets": [
-      "000248",
-      "000253",
-      "000458",
-      "000563",
-      "000690",
-      "001191",
-      "001260",
-      "001326",
-      "001416",
-      "001417",
-      "001637"
-    ],
-    "total_file_count": 177,
-    "total_dandiset_count": 11,
-    "total_dandisets": [
-      "000248",
-      "000253",
-      "000458",
-      "000563",
-      "000690",
-      "001191",
-      "001260",
-      "001326",
-      "001416",
-      "001417",
-      "001637"
     ]
   },
   "289": {
@@ -9262,62 +9460,6 @@
       "001637"
     ]
   },
-  "986": {
-    "acronym": "ccs",
-    "name": "corpus callosum, splenium",
-    "color_hex_triplet": "CCCCCC",
-    "file_count": 85,
-    "dandiset_count": 7,
-    "dandisets": [
-      "000458",
-      "001191",
-      "001260",
-      "001326",
-      "001416",
-      "001417",
-      "001637"
-    ],
-    "total_file_count": 85,
-    "total_dandiset_count": 7,
-    "total_dandisets": [
-      "000458",
-      "001191",
-      "001260",
-      "001326",
-      "001416",
-      "001417",
-      "001637"
-    ]
-  },
-  "971": {
-    "acronym": "fp",
-    "name": "corpus callosum, posterior forceps",
-    "color_hex_triplet": "CCCCCC",
-    "file_count": 114,
-    "dandiset_count": 8,
-    "dandisets": [
-      "000458",
-      "001191",
-      "001260",
-      "001326",
-      "001416",
-      "001417",
-      "001568",
-      "001637"
-    ],
-    "total_file_count": 114,
-    "total_dandiset_count": 8,
-    "total_dandisets": [
-      "000458",
-      "001191",
-      "001260",
-      "001326",
-      "001416",
-      "001417",
-      "001568",
-      "001637"
-    ]
-  },
   "1054": {
     "acronym": "ILA6a",
     "name": "Infralimbic area, layer 6a",
@@ -9458,38 +9600,6 @@
       "001416",
       "001417",
       "001637"
-    ]
-  },
-  "956": {
-    "acronym": "fa",
-    "name": "corpus callosum, anterior forceps",
-    "color_hex_triplet": "CCCCCC",
-    "file_count": 69,
-    "dandiset_count": 8,
-    "dandisets": [
-      "000458",
-      "000473",
-      "001191",
-      "001260",
-      "001326",
-      "001416",
-      "001417",
-      "001637"
-    ],
-    "total_file_count": 165,
-    "total_dandiset_count": 11,
-    "total_dandisets": [
-      "000409",
-      "000458",
-      "000473",
-      "001191",
-      "001260",
-      "001326",
-      "001416",
-      "001417",
-      "001568",
-      "001637",
-      "001701"
     ]
   },
   "1081": {
@@ -9784,31 +9894,6 @@
     "total_dandisets": [
       "000690",
       "001260",
-      "001326",
-      "001417",
-      "001637"
-    ]
-  },
-  "496345672": {
-    "acronym": "LGd-ip",
-    "name": "Dorsal part of the lateral geniculate complex, ipsilateral zone",
-    "color_hex_triplet": "FF8084",
-    "file_count": 49,
-    "dandiset_count": 6,
-    "dandisets": [
-      "000248",
-      "000458",
-      "000563",
-      "001326",
-      "001417",
-      "001637"
-    ],
-    "total_file_count": 49,
-    "total_dandiset_count": 6,
-    "total_dandisets": [
-      "000248",
-      "000458",
-      "000563",
       "001326",
       "001417",
       "001637"
@@ -10357,73 +10442,6 @@
     "total_dandiset_count": 1,
     "total_dandisets": [
       "001637"
-    ]
-  },
-  "381": {
-    "acronym": "SNr",
-    "name": "Substantia nigra, reticular part",
-    "color_hex_triplet": "FF90FF",
-    "file_count": 424,
-    "dandiset_count": 5,
-    "dandisets": [
-      "000017",
-      "000248",
-      "000458",
-      "001326",
-      "001777"
-    ],
-    "total_file_count": 424,
-    "total_dandiset_count": 5,
-    "total_dandisets": [
-      "000017",
-      "000248",
-      "000458",
-      "001326",
-      "001777"
-    ]
-  },
-  "361": {
-    "acronym": "SSp-tr",
-    "name": "Primary somatosensory area, trunk",
-    "color_hex_triplet": "188064",
-    "file_count": 98,
-    "dandiset_count": 2,
-    "dandisets": [
-      "000458",
-      "001868"
-    ],
-    "total_file_count": 222,
-    "total_dandiset_count": 5,
-    "total_dandisets": [
-      "000458",
-      "001260",
-      "001637",
-      "001701",
-      "001868"
-    ]
-  },
-  "329": {
-    "acronym": "SSp-bfd",
-    "name": "Primary somatosensory area, barrel field",
-    "color_hex_triplet": "188064",
-    "file_count": 48,
-    "dandiset_count": 2,
-    "dandisets": [
-      "000458",
-      "001791"
-    ],
-    "total_file_count": 681,
-    "total_dandiset_count": 9,
-    "total_dandisets": [
-      "000458",
-      "000563",
-      "000690",
-      "001260",
-      "001416",
-      "001417",
-      "001637",
-      "001791",
-      "001960"
     ]
   },
   "31": {
@@ -11156,24 +11174,6 @@
       "000563",
       "000690",
       "001326"
-    ]
-  },
-  "337": {
-    "acronym": "SSp-ll",
-    "name": "Primary somatosensory area, lower limb",
-    "color_hex_triplet": "188064",
-    "file_count": 24,
-    "dandiset_count": 1,
-    "dandisets": [
-      "000458"
-    ],
-    "total_file_count": 47,
-    "total_dandiset_count": 4,
-    "total_dandisets": [
-      "000458",
-      "001260",
-      "001326",
-      "001637"
     ]
   },
   "620": {
@@ -14833,35 +14833,6 @@
       "000409"
     ]
   },
-  "1008": {
-    "acronym": "GENd",
-    "name": "Geniculate group, dorsal thalamus",
-    "color_hex_triplet": "FF8084",
-    "file_count": 0,
-    "dandiset_count": 0,
-    "dandisets": [],
-    "total_file_count": 1121,
-    "total_dandiset_count": 17,
-    "total_dandisets": [
-      "000017",
-      "000021",
-      "000022",
-      "000248",
-      "000253",
-      "000458",
-      "000563",
-      "000690",
-      "001051",
-      "001191",
-      "001260",
-      "001326",
-      "001416",
-      "001417",
-      "001421",
-      "001568",
-      "001637"
-    ]
-  },
   "500": {
     "acronym": "MO",
     "name": "Somatomotor areas",
@@ -14910,6 +14881,35 @@
       "001791",
       "001868",
       "001960"
+    ]
+  },
+  "1008": {
+    "acronym": "GENd",
+    "name": "Geniculate group, dorsal thalamus",
+    "color_hex_triplet": "FF8084",
+    "file_count": 0,
+    "dandiset_count": 0,
+    "dandisets": [],
+    "total_file_count": 1121,
+    "total_dandiset_count": 17,
+    "total_dandisets": [
+      "000017",
+      "000021",
+      "000022",
+      "000248",
+      "000253",
+      "000458",
+      "000563",
+      "000690",
+      "001051",
+      "001191",
+      "001260",
+      "001326",
+      "001416",
+      "001417",
+      "001421",
+      "001568",
+      "001637"
     ]
   },
   "909": {
