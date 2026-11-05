@@ -10083,29 +10083,86 @@
       "001637"
     ]
   },
-  "981": {
-    "acronym": "SSp-bfd1",
-    "name": "Primary somatosensory area, barrel field, layer 1",
-    "color_hex_triplet": "188064",
-    "file_count": 73,
+  "810": {
+    "acronym": "ACAv6a",
+    "name": "Anterior cingulate area, ventral part, 6a",
+    "color_hex_triplet": "40A666",
+    "file_count": 41,
     "dandiset_count": 6,
     "dandisets": [
       "000563",
       "000690",
       "001260",
-      "001416",
+      "001326",
       "001417",
-      "001960"
+      "001637"
     ],
-    "total_file_count": 73,
+    "total_file_count": 41,
     "total_dandiset_count": 6,
     "total_dandisets": [
       "000563",
       "000690",
       "001260",
-      "001416",
+      "001326",
       "001417",
-      "001960"
+      "001637"
+    ]
+  },
+  "819": {
+    "acronym": "ACAv6b",
+    "name": "Anterior cingulate area, ventral part, 6b",
+    "color_hex_triplet": "40A666",
+    "file_count": 26,
+    "dandiset_count": 5,
+    "dandisets": [
+      "000563",
+      "000690",
+      "001260",
+      "001417",
+      "001637"
+    ],
+    "total_file_count": 26,
+    "total_dandiset_count": 5,
+    "total_dandisets": [
+      "000563",
+      "000690",
+      "001260",
+      "001417",
+      "001637"
+    ]
+  },
+  "488": {
+    "acronym": "ORBl6b",
+    "name": "Orbital area, lateral part, layer 6b",
+    "color_hex_triplet": "248A5E",
+    "file_count": 3,
+    "dandiset_count": 1,
+    "dandisets": [
+      "001260"
+    ],
+    "total_file_count": 3,
+    "total_dandiset_count": 1,
+    "total_dandisets": [
+      "001260"
+    ]
+  },
+  "526157192": {
+    "acronym": "FRP5",
+    "name": "Frontal pole, layer 5",
+    "color_hex_triplet": "268F45",
+    "file_count": 8,
+    "dandiset_count": 3,
+    "dandisets": [
+      "000690",
+      "001260",
+      "001326"
+    ],
+    "total_file_count": 8,
+    "total_dandiset_count": 3,
+    "total_dandisets": [
+      "000690",
+      "001260",
+      "001326"
     ]
   },
   "201": {
@@ -10233,6 +10290,775 @@
       "001637"
     ]
   },
+  "1111": {
+    "acronym": "SSp-tr5",
+    "name": "Primary somatosensory area, trunk, layer 5",
+    "color_hex_triplet": "188064",
+    "file_count": 18,
+    "dandiset_count": 2,
+    "dandisets": [
+      "001260",
+      "001637"
+    ],
+    "total_file_count": 18,
+    "total_dandiset_count": 2,
+    "total_dandisets": [
+      "001260",
+      "001637"
+    ]
+  },
+  "9": {
+    "acronym": "SSp-tr6a",
+    "name": "Primary somatosensory area, trunk, layer 6a",
+    "color_hex_triplet": "188064",
+    "file_count": 33,
+    "dandiset_count": 3,
+    "dandisets": [
+      "001260",
+      "001637",
+      "001701"
+    ],
+    "total_file_count": 33,
+    "total_dandiset_count": 3,
+    "total_dandisets": [
+      "001260",
+      "001637",
+      "001701"
+    ]
+  },
+  "461": {
+    "acronym": "SSp-tr6b",
+    "name": "Primary somatosensory area, trunk, layer 6b",
+    "color_hex_triplet": "188064",
+    "file_count": 47,
+    "dandiset_count": 3,
+    "dandisets": [
+      "001260",
+      "001637",
+      "001701"
+    ],
+    "total_file_count": 47,
+    "total_dandiset_count": 3,
+    "total_dandisets": [
+      "001260",
+      "001637",
+      "001701"
+    ]
+  },
+  "478": {
+    "acronym": "SSp-ll6a",
+    "name": "Primary somatosensory area, lower limb, layer 6a",
+    "color_hex_triplet": "188064",
+    "file_count": 6,
+    "dandiset_count": 3,
+    "dandisets": [
+      "001260",
+      "001326",
+      "001637"
+    ],
+    "total_file_count": 6,
+    "total_dandiset_count": 3,
+    "total_dandisets": [
+      "001260",
+      "001326",
+      "001637"
+    ]
+  },
+  "510": {
+    "acronym": "SSp-ll6b",
+    "name": "Primary somatosensory area, lower limb, layer 6b",
+    "color_hex_triplet": "188064",
+    "file_count": 6,
+    "dandiset_count": 3,
+    "dandisets": [
+      "001260",
+      "001326",
+      "001637"
+    ],
+    "total_file_count": 6,
+    "total_dandiset_count": 3,
+    "total_dandisets": [
+      "001260",
+      "001326",
+      "001637"
+    ]
+  },
+  "670": {
+    "acronym": "SSp-tr2/3",
+    "name": "Primary somatosensory area, trunk, layer 2/3",
+    "color_hex_triplet": "188064",
+    "file_count": 10,
+    "dandiset_count": 2,
+    "dandisets": [
+      "001260",
+      "001637"
+    ],
+    "total_file_count": 10,
+    "total_dandiset_count": 2,
+    "total_dandisets": [
+      "001260",
+      "001637"
+    ]
+  },
+  "1086": {
+    "acronym": "SSp-tr4",
+    "name": "Primary somatosensory area, trunk, layer 4",
+    "color_hex_triplet": "188064",
+    "file_count": 12,
+    "dandiset_count": 2,
+    "dandisets": [
+      "001260",
+      "001637"
+    ],
+    "total_file_count": 12,
+    "total_dandiset_count": 2,
+    "total_dandisets": [
+      "001260",
+      "001637"
+    ]
+  },
+  "1101": {
+    "acronym": "AId5",
+    "name": "Agranular insular area, dorsal part, layer 5",
+    "color_hex_triplet": "219866",
+    "file_count": 4,
+    "dandiset_count": 2,
+    "dandisets": [
+      "001260",
+      "001326"
+    ],
+    "total_file_count": 4,
+    "total_dandiset_count": 2,
+    "total_dandisets": [
+      "001260",
+      "001326"
+    ]
+  },
+  "783": {
+    "acronym": "AId6a",
+    "name": "Agranular insular area, dorsal part, layer 6a",
+    "color_hex_triplet": "219866",
+    "file_count": 4,
+    "dandiset_count": 2,
+    "dandisets": [
+      "001260",
+      "001326"
+    ],
+    "total_file_count": 4,
+    "total_dandiset_count": 2,
+    "total_dandisets": [
+      "001260",
+      "001326"
+    ]
+  },
+  "694": {
+    "acronym": "AIv2/3",
+    "name": "Agranular insular area, ventral part, layer 2/3",
+    "color_hex_triplet": "219866",
+    "file_count": 4,
+    "dandiset_count": 2,
+    "dandisets": [
+      "001260",
+      "001326"
+    ],
+    "total_file_count": 4,
+    "total_dandiset_count": 2,
+    "total_dandisets": [
+      "001260",
+      "001326"
+    ]
+  },
+  "800": {
+    "acronym": "AIv5",
+    "name": "Agranular insular area, ventral part, layer 5",
+    "color_hex_triplet": "219866",
+    "file_count": 5,
+    "dandiset_count": 2,
+    "dandisets": [
+      "001260",
+      "001326"
+    ],
+    "total_file_count": 5,
+    "total_dandiset_count": 2,
+    "total_dandisets": [
+      "001260",
+      "001326"
+    ]
+  },
+  "862": {
+    "acronym": "SSs6a",
+    "name": "Supplemental somatosensory area, layer 6a",
+    "color_hex_triplet": "188064",
+    "file_count": 2,
+    "dandiset_count": 1,
+    "dandisets": [
+      "001260"
+    ],
+    "total_file_count": 2,
+    "total_dandiset_count": 1,
+    "total_dandisets": [
+      "001260"
+    ]
+  },
+  "893": {
+    "acronym": "SSs6b",
+    "name": "Supplemental somatosensory area, layer 6b",
+    "color_hex_triplet": "188064",
+    "file_count": 3,
+    "dandiset_count": 2,
+    "dandisets": [
+      "001260",
+      "001326"
+    ],
+    "total_file_count": 3,
+    "total_dandiset_count": 2,
+    "total_dandisets": [
+      "001260",
+      "001326"
+    ]
+  },
+  "638": {
+    "acronym": "GU6a",
+    "name": "Gustatory areas, layer 6a",
+    "color_hex_triplet": "009C75",
+    "file_count": 1,
+    "dandiset_count": 1,
+    "dandisets": [
+      "001260"
+    ],
+    "total_file_count": 1,
+    "total_dandiset_count": 1,
+    "total_dandisets": [
+      "001260"
+    ]
+  },
+  "657": {
+    "acronym": "SSp-m2/3",
+    "name": "Primary somatosensory area, mouth, layer 2/3",
+    "color_hex_triplet": "188064",
+    "file_count": 2,
+    "dandiset_count": 2,
+    "dandisets": [
+      "001260",
+      "001326"
+    ],
+    "total_file_count": 2,
+    "total_dandiset_count": 2,
+    "total_dandisets": [
+      "001260",
+      "001326"
+    ]
+  },
+  "950": {
+    "acronym": "SSp-m4",
+    "name": "Primary somatosensory area, mouth, layer 4",
+    "color_hex_triplet": "188064",
+    "file_count": 2,
+    "dandiset_count": 2,
+    "dandisets": [
+      "001260",
+      "001326"
+    ],
+    "total_file_count": 2,
+    "total_dandiset_count": 2,
+    "total_dandisets": [
+      "001260",
+      "001326"
+    ]
+  },
+  "974": {
+    "acronym": "SSp-m5",
+    "name": "Primary somatosensory area, mouth, layer 5",
+    "color_hex_triplet": "188064",
+    "file_count": 2,
+    "dandiset_count": 2,
+    "dandisets": [
+      "001260",
+      "001326"
+    ],
+    "total_file_count": 2,
+    "total_dandiset_count": 2,
+    "total_dandisets": [
+      "001260",
+      "001326"
+    ]
+  },
+  "1102": {
+    "acronym": "SSp-m6a",
+    "name": "Primary somatosensory area, mouth, layer 6a",
+    "color_hex_triplet": "188064",
+    "file_count": 2,
+    "dandiset_count": 2,
+    "dandisets": [
+      "001260",
+      "001326"
+    ],
+    "total_file_count": 2,
+    "total_dandiset_count": 2,
+    "total_dandisets": [
+      "001260",
+      "001326"
+    ]
+  },
+  "450": {
+    "acronym": "SSp-ul1",
+    "name": "Primary somatosensory area, upper limb, layer 1",
+    "color_hex_triplet": "188064",
+    "file_count": 3,
+    "dandiset_count": 2,
+    "dandisets": [
+      "000563",
+      "001260"
+    ],
+    "total_file_count": 3,
+    "total_dandiset_count": 2,
+    "total_dandisets": [
+      "000563",
+      "001260"
+    ]
+  },
+  "854": {
+    "acronym": "SSp-ul2/3",
+    "name": "Primary somatosensory area, upper limb, layer 2/3",
+    "color_hex_triplet": "188064",
+    "file_count": 3,
+    "dandiset_count": 2,
+    "dandisets": [
+      "000563",
+      "001260"
+    ],
+    "total_file_count": 3,
+    "total_dandiset_count": 2,
+    "total_dandisets": [
+      "000563",
+      "001260"
+    ]
+  },
+  "704": {
+    "acronym": "AIv1",
+    "name": "Agranular insular area, ventral part, layer 1",
+    "color_hex_triplet": "219866",
+    "file_count": 1,
+    "dandiset_count": 1,
+    "dandisets": [
+      "001260"
+    ],
+    "total_file_count": 1,
+    "total_dandiset_count": 1,
+    "total_dandisets": [
+      "001260"
+    ]
+  },
+  "665": {
+    "acronym": "lot",
+    "name": "lateral olfactory tract, body",
+    "color_hex_triplet": "CCCCCC",
+    "file_count": 1,
+    "dandiset_count": 1,
+    "dandisets": [
+      "001260"
+    ],
+    "total_file_count": 1,
+    "total_dandiset_count": 1,
+    "total_dandisets": [
+      "001260"
+    ]
+  },
+  "252": {
+    "acronym": "AUDd5",
+    "name": "Dorsal auditory area, layer 5",
+    "color_hex_triplet": "019399",
+    "file_count": 4,
+    "dandiset_count": 1,
+    "dandisets": [
+      "001260"
+    ],
+    "total_file_count": 4,
+    "total_dandiset_count": 1,
+    "total_dandisets": [
+      "001260"
+    ]
+  },
+  "156": {
+    "acronym": "AUDd6a",
+    "name": "Dorsal auditory area, layer 6a",
+    "color_hex_triplet": "019399",
+    "file_count": 3,
+    "dandiset_count": 1,
+    "dandisets": [
+      "001260"
+    ],
+    "total_file_count": 3,
+    "total_dandiset_count": 1,
+    "total_dandisets": [
+      "001260"
+    ]
+  },
+  "243": {
+    "acronym": "AUDd6b",
+    "name": "Dorsal auditory area, layer 6b",
+    "color_hex_triplet": "019399",
+    "file_count": 3,
+    "dandiset_count": 1,
+    "dandisets": [
+      "001260"
+    ],
+    "total_file_count": 3,
+    "total_dandiset_count": 1,
+    "total_dandisets": [
+      "001260"
+    ]
+  },
+  "806": {
+    "acronym": "SSs2/3",
+    "name": "Supplemental somatosensory area, layer 2/3",
+    "color_hex_triplet": "188064",
+    "file_count": 2,
+    "dandiset_count": 1,
+    "dandisets": [
+      "001260"
+    ],
+    "total_file_count": 2,
+    "total_dandiset_count": 1,
+    "total_dandisets": [
+      "001260"
+    ]
+  },
+  "1035": {
+    "acronym": "SSs4",
+    "name": "Supplemental somatosensory area, layer 4",
+    "color_hex_triplet": "188064",
+    "file_count": 2,
+    "dandiset_count": 1,
+    "dandisets": [
+      "001260"
+    ],
+    "total_file_count": 2,
+    "total_dandiset_count": 1,
+    "total_dandisets": [
+      "001260"
+    ]
+  },
+  "1090": {
+    "acronym": "SSs5",
+    "name": "Supplemental somatosensory area, layer 5",
+    "color_hex_triplet": "188064",
+    "file_count": 2,
+    "dandiset_count": 1,
+    "dandisets": [
+      "001260"
+    ],
+    "total_file_count": 2,
+    "total_dandiset_count": 1,
+    "total_dandisets": [
+      "001260"
+    ]
+  },
+  "1127": {
+    "acronym": "TEa2/3",
+    "name": "Temporal association areas, layer 2/3",
+    "color_hex_triplet": "15B0B3",
+    "file_count": 2,
+    "dandiset_count": 1,
+    "dandisets": [
+      "001260"
+    ],
+    "total_file_count": 2,
+    "total_dandiset_count": 1,
+    "total_dandisets": [
+      "001260"
+    ]
+  },
+  "234": {
+    "acronym": "TEa4",
+    "name": "Temporal association areas, layer 4",
+    "color_hex_triplet": "15B0B3",
+    "file_count": 2,
+    "dandiset_count": 1,
+    "dandisets": [
+      "001260"
+    ],
+    "total_file_count": 2,
+    "total_dandiset_count": 1,
+    "total_dandisets": [
+      "001260"
+    ]
+  },
+  "312782582": {
+    "acronym": "VISli2/3",
+    "name": "Laterointermediate area, layer 2/3",
+    "color_hex_triplet": "08858C",
+    "file_count": 7,
+    "dandiset_count": 2,
+    "dandisets": [
+      "000690",
+      "001260"
+    ],
+    "total_file_count": 7,
+    "total_dandiset_count": 2,
+    "total_dandisets": [
+      "000690",
+      "001260"
+    ]
+  },
+  "935": {
+    "acronym": "ACAd1",
+    "name": "Anterior cingulate area, dorsal part, layer 1",
+    "color_hex_triplet": "40A666",
+    "file_count": 2,
+    "dandiset_count": 2,
+    "dandisets": [
+      "001260",
+      "001326"
+    ],
+    "total_file_count": 2,
+    "total_dandiset_count": 2,
+    "total_dandisets": [
+      "001260",
+      "001326"
+    ]
+  },
+  "605": {
+    "acronym": "TTv",
+    "name": "Taenia tecta, ventral part",
+    "color_hex_triplet": "62D09F",
+    "file_count": 2,
+    "dandiset_count": 1,
+    "dandisets": [
+      "001260"
+    ],
+    "total_file_count": 2,
+    "total_dandiset_count": 1,
+    "total_dandisets": [
+      "001260"
+    ]
+  },
+  "600": {
+    "acronym": "AUDd2/3",
+    "name": "Dorsal auditory area, layer 2/3",
+    "color_hex_triplet": "019399",
+    "file_count": 2,
+    "dandiset_count": 1,
+    "dandisets": [
+      "001260"
+    ],
+    "total_file_count": 2,
+    "total_dandiset_count": 1,
+    "total_dandisets": [
+      "001260"
+    ]
+  },
+  "678": {
+    "acronym": "AUDd4",
+    "name": "Dorsal auditory area, layer 4",
+    "color_hex_triplet": "019399",
+    "file_count": 3,
+    "dandiset_count": 1,
+    "dandisets": [
+      "001260"
+    ],
+    "total_file_count": 3,
+    "total_dandiset_count": 1,
+    "total_dandisets": [
+      "001260"
+    ]
+  },
+  "1005": {
+    "acronym": "AUDp6b",
+    "name": "Primary auditory area, layer 6b",
+    "color_hex_triplet": "019399",
+    "file_count": 2,
+    "dandiset_count": 1,
+    "dandisets": [
+      "001260"
+    ],
+    "total_file_count": 2,
+    "total_dandiset_count": 1,
+    "total_dandisets": [
+      "001260"
+    ]
+  },
+  "312782586": {
+    "acronym": "VISli4",
+    "name": "Laterointermediate area, layer 4",
+    "color_hex_triplet": "08858C",
+    "file_count": 7,
+    "dandiset_count": 2,
+    "dandisets": [
+      "000690",
+      "001260"
+    ],
+    "total_file_count": 7,
+    "total_dandiset_count": 2,
+    "total_dandisets": [
+      "000690",
+      "001260"
+    ]
+  },
+  "312782590": {
+    "acronym": "VISli5",
+    "name": "Laterointermediate area, layer 5",
+    "color_hex_triplet": "08858C",
+    "file_count": 7,
+    "dandiset_count": 2,
+    "dandisets": [
+      "000690",
+      "001260"
+    ],
+    "total_file_count": 7,
+    "total_dandiset_count": 2,
+    "total_dandisets": [
+      "000690",
+      "001260"
+    ]
+  },
+  "643": {
+    "acronym": "AUDpo2/3",
+    "name": "Posterior auditory area, layer 2/3",
+    "color_hex_triplet": "019399",
+    "file_count": 3,
+    "dandiset_count": 1,
+    "dandisets": [
+      "001260"
+    ],
+    "total_file_count": 3,
+    "total_dandiset_count": 1,
+    "total_dandisets": [
+      "001260"
+    ]
+  },
+  "791": {
+    "acronym": "AUDpo5",
+    "name": "Posterior auditory area, layer 5",
+    "color_hex_triplet": "019399",
+    "file_count": 3,
+    "dandiset_count": 1,
+    "dandisets": [
+      "001260"
+    ],
+    "total_file_count": 3,
+    "total_dandiset_count": 1,
+    "total_dandisets": [
+      "001260"
+    ]
+  },
+  "249": {
+    "acronym": "AUDpo6a",
+    "name": "Posterior auditory area, layer 6a",
+    "color_hex_triplet": "019399",
+    "file_count": 2,
+    "dandiset_count": 1,
+    "dandisets": [
+      "001260"
+    ],
+    "total_file_count": 2,
+    "total_dandiset_count": 1,
+    "total_dandisets": [
+      "001260"
+    ]
+  },
+  "456": {
+    "acronym": "AUDpo6b",
+    "name": "Posterior auditory area, layer 6b",
+    "color_hex_triplet": "019399",
+    "file_count": 2,
+    "dandiset_count": 1,
+    "dandisets": [
+      "001260"
+    ],
+    "total_file_count": 2,
+    "total_dandiset_count": 1,
+    "total_dandisets": [
+      "001260"
+    ]
+  },
+  "981": {
+    "acronym": "SSp-bfd1",
+    "name": "Primary somatosensory area, barrel field, layer 1",
+    "color_hex_triplet": "188064",
+    "file_count": 73,
+    "dandiset_count": 6,
+    "dandisets": [
+      "000563",
+      "000690",
+      "001260",
+      "001416",
+      "001417",
+      "001960"
+    ],
+    "total_file_count": 73,
+    "total_dandiset_count": 6,
+    "total_dandisets": [
+      "000563",
+      "000690",
+      "001260",
+      "001416",
+      "001417",
+      "001960"
+    ]
+  },
+  "847": {
+    "acronym": "AUDp5",
+    "name": "Primary auditory area, layer 5",
+    "color_hex_triplet": "019399",
+    "file_count": 1,
+    "dandiset_count": 1,
+    "dandisets": [
+      "001260"
+    ],
+    "total_file_count": 1,
+    "total_dandiset_count": 1,
+    "total_dandisets": [
+      "001260"
+    ]
+  },
+  "954": {
+    "acronym": "AUDp6a",
+    "name": "Primary auditory area, layer 6a",
+    "color_hex_triplet": "019399",
+    "file_count": 1,
+    "dandiset_count": 1,
+    "dandisets": [
+      "001260"
+    ],
+    "total_file_count": 1,
+    "total_dandiset_count": 1,
+    "total_dandisets": [
+      "001260"
+    ]
+  },
+  "759": {
+    "acronym": "AUDpo4",
+    "name": "Posterior auditory area, layer 4",
+    "color_hex_triplet": "019399",
+    "file_count": 2,
+    "dandiset_count": 1,
+    "dandisets": [
+      "001260"
+    ],
+    "total_file_count": 2,
+    "total_dandiset_count": 1,
+    "total_dandisets": [
+      "001260"
+    ]
+  },
+  "448": {
+    "acronym": "ORBl1",
+    "name": "Orbital area, lateral part, layer 1",
+    "color_hex_triplet": "248A5E",
+    "file_count": 2,
+    "dandiset_count": 2,
+    "dandisets": [
+      "001260",
+      "001326"
+    ],
+    "total_file_count": 2,
+    "total_dandiset_count": 2,
+    "total_dandisets": [
+      "001260",
+      "001326"
+    ]
+  },
   "588": {
     "acronym": "ACAv1",
     "name": "Anterior cingulate area, ventral part, layer 1",
@@ -10256,52 +11082,79 @@
       "001637"
     ]
   },
-  "810": {
-    "acronym": "ACAv6a",
-    "name": "Anterior cingulate area, ventral part, 6a",
-    "color_hex_triplet": "40A666",
-    "file_count": 41,
-    "dandiset_count": 6,
+  "654": {
+    "acronym": "SSp-n4",
+    "name": "Primary somatosensory area, nose, layer 4",
+    "color_hex_triplet": "188064",
+    "file_count": 1,
+    "dandiset_count": 1,
     "dandisets": [
-      "000563",
-      "000690",
-      "001260",
-      "001326",
-      "001417",
-      "001637"
+      "001260"
     ],
-    "total_file_count": 41,
-    "total_dandiset_count": 6,
+    "total_file_count": 1,
+    "total_dandiset_count": 1,
     "total_dandisets": [
-      "000563",
-      "000690",
-      "001260",
-      "001326",
-      "001417",
-      "001637"
+      "001260"
     ]
   },
-  "819": {
-    "acronym": "ACAv6b",
-    "name": "Anterior cingulate area, ventral part, 6b",
-    "color_hex_triplet": "40A666",
-    "file_count": 26,
-    "dandiset_count": 5,
+  "702": {
+    "acronym": "SSp-n5",
+    "name": "Primary somatosensory area, nose, layer 5",
+    "color_hex_triplet": "188064",
+    "file_count": 1,
+    "dandiset_count": 1,
     "dandisets": [
-      "000563",
-      "000690",
-      "001260",
-      "001417",
-      "001637"
+      "001260"
     ],
-    "total_file_count": 26,
-    "total_dandiset_count": 5,
+    "total_file_count": 1,
+    "total_dandiset_count": 1,
     "total_dandisets": [
-      "000563",
-      "000690",
-      "001260",
-      "001417",
-      "001637"
+      "001260"
+    ]
+  },
+  "889": {
+    "acronym": "SSp-n6a",
+    "name": "Primary somatosensory area, nose, layer 6a",
+    "color_hex_triplet": "188064",
+    "file_count": 1,
+    "dandiset_count": 1,
+    "dandisets": [
+      "001260"
+    ],
+    "total_file_count": 1,
+    "total_dandiset_count": 1,
+    "total_dandisets": [
+      "001260"
+    ]
+  },
+  "929": {
+    "acronym": "SSp-n6b",
+    "name": "Primary somatosensory area, nose, layer 6b",
+    "color_hex_triplet": "188064",
+    "file_count": 1,
+    "dandiset_count": 1,
+    "dandisets": [
+      "001260"
+    ],
+    "total_file_count": 1,
+    "total_dandiset_count": 1,
+    "total_dandisets": [
+      "001260"
+    ]
+  },
+  "484": {
+    "acronym": "ORBm1",
+    "name": "Orbital area, medial part, layer 1",
+    "color_hex_triplet": "248A5E",
+    "file_count": 1,
+    "dandiset_count": 1,
+    "dandisets": [
+      "001260"
+    ],
+    "total_file_count": 1,
+    "total_dandiset_count": 1,
+    "total_dandisets": [
+      "001260"
     ]
   },
   "707": {
@@ -10368,61 +11221,6 @@
       "001701"
     ]
   },
-  "1111": {
-    "acronym": "SSp-tr5",
-    "name": "Primary somatosensory area, trunk, layer 5",
-    "color_hex_triplet": "188064",
-    "file_count": 18,
-    "dandiset_count": 2,
-    "dandisets": [
-      "001260",
-      "001637"
-    ],
-    "total_file_count": 18,
-    "total_dandiset_count": 2,
-    "total_dandisets": [
-      "001260",
-      "001637"
-    ]
-  },
-  "478": {
-    "acronym": "SSp-ll6a",
-    "name": "Primary somatosensory area, lower limb, layer 6a",
-    "color_hex_triplet": "188064",
-    "file_count": 6,
-    "dandiset_count": 3,
-    "dandisets": [
-      "001260",
-      "001326",
-      "001637"
-    ],
-    "total_file_count": 6,
-    "total_dandiset_count": 3,
-    "total_dandisets": [
-      "001260",
-      "001326",
-      "001637"
-    ]
-  },
-  "510": {
-    "acronym": "SSp-ll6b",
-    "name": "Primary somatosensory area, lower limb, layer 6b",
-    "color_hex_triplet": "188064",
-    "file_count": 6,
-    "dandiset_count": 3,
-    "dandisets": [
-      "001260",
-      "001326",
-      "001637"
-    ],
-    "total_file_count": 6,
-    "total_dandiset_count": 3,
-    "total_dandisets": [
-      "001260",
-      "001326",
-      "001637"
-    ]
-  },
   "1006": {
     "acronym": "SSp-tr1",
     "name": "Primary somatosensory area, trunk, layer 1",
@@ -10436,59 +11234,6 @@
     "total_dandiset_count": 1,
     "total_dandisets": [
       "001637"
-    ]
-  },
-  "670": {
-    "acronym": "SSp-tr2/3",
-    "name": "Primary somatosensory area, trunk, layer 2/3",
-    "color_hex_triplet": "188064",
-    "file_count": 10,
-    "dandiset_count": 2,
-    "dandisets": [
-      "001260",
-      "001637"
-    ],
-    "total_file_count": 10,
-    "total_dandiset_count": 2,
-    "total_dandisets": [
-      "001260",
-      "001637"
-    ]
-  },
-  "1086": {
-    "acronym": "SSp-tr4",
-    "name": "Primary somatosensory area, trunk, layer 4",
-    "color_hex_triplet": "188064",
-    "file_count": 12,
-    "dandiset_count": 2,
-    "dandisets": [
-      "001260",
-      "001637"
-    ],
-    "total_file_count": 12,
-    "total_dandiset_count": 2,
-    "total_dandisets": [
-      "001260",
-      "001637"
-    ]
-  },
-  "9": {
-    "acronym": "SSp-tr6a",
-    "name": "Primary somatosensory area, trunk, layer 6a",
-    "color_hex_triplet": "188064",
-    "file_count": 33,
-    "dandiset_count": 3,
-    "dandisets": [
-      "001260",
-      "001637",
-      "001701"
-    ],
-    "total_file_count": 33,
-    "total_dandiset_count": 3,
-    "total_dandisets": [
-      "001260",
-      "001637",
-      "001701"
     ]
   },
   "182305709": {
@@ -10519,25 +11264,6 @@
     "total_dandiset_count": 1,
     "total_dandisets": [
       "001637"
-    ]
-  },
-  "461": {
-    "acronym": "SSp-tr6b",
-    "name": "Primary somatosensory area, trunk, layer 6b",
-    "color_hex_triplet": "188064",
-    "file_count": 47,
-    "dandiset_count": 3,
-    "dandisets": [
-      "001260",
-      "001637",
-      "001701"
-    ],
-    "total_file_count": 47,
-    "total_dandiset_count": 3,
-    "total_dandisets": [
-      "001260",
-      "001637",
-      "001701"
     ]
   },
   "1030": {
@@ -10657,6 +11383,24 @@
     "total_dandiset_count": 1,
     "total_dandisets": [
       "001637"
+    ]
+  },
+  "95": {
+    "acronym": "AI",
+    "name": "Agranular insular area",
+    "color_hex_triplet": "219866",
+    "file_count": 2,
+    "dandiset_count": 1,
+    "dandisets": [
+      "001839"
+    ],
+    "total_file_count": 22,
+    "total_dandiset_count": 4,
+    "total_dandisets": [
+      "000473",
+      "001260",
+      "001326",
+      "001839"
     ]
   },
   "31": {
@@ -11389,40 +12133,6 @@
       "001326"
     ]
   },
-  "450": {
-    "acronym": "SSp-ul1",
-    "name": "Primary somatosensory area, upper limb, layer 1",
-    "color_hex_triplet": "188064",
-    "file_count": 3,
-    "dandiset_count": 2,
-    "dandisets": [
-      "000563",
-      "001260"
-    ],
-    "total_file_count": 3,
-    "total_dandiset_count": 2,
-    "total_dandisets": [
-      "000563",
-      "001260"
-    ]
-  },
-  "854": {
-    "acronym": "SSp-ul2/3",
-    "name": "Primary somatosensory area, upper limb, layer 2/3",
-    "color_hex_triplet": "188064",
-    "file_count": 3,
-    "dandiset_count": 2,
-    "dandisets": [
-      "000563",
-      "001260"
-    ],
-    "total_file_count": 3,
-    "total_dandiset_count": 2,
-    "total_dandisets": [
-      "000563",
-      "001260"
-    ]
-  },
   "577": {
     "acronym": "SSp-ul4",
     "name": "Primary somatosensory area, upper limb, layer 4",
@@ -11669,57 +12379,6 @@
       "000690"
     ]
   },
-  "312782582": {
-    "acronym": "VISli2/3",
-    "name": "Laterointermediate area, layer 2/3",
-    "color_hex_triplet": "08858C",
-    "file_count": 7,
-    "dandiset_count": 2,
-    "dandisets": [
-      "000690",
-      "001260"
-    ],
-    "total_file_count": 7,
-    "total_dandiset_count": 2,
-    "total_dandisets": [
-      "000690",
-      "001260"
-    ]
-  },
-  "312782586": {
-    "acronym": "VISli4",
-    "name": "Laterointermediate area, layer 4",
-    "color_hex_triplet": "08858C",
-    "file_count": 7,
-    "dandiset_count": 2,
-    "dandisets": [
-      "000690",
-      "001260"
-    ],
-    "total_file_count": 7,
-    "total_dandiset_count": 2,
-    "total_dandisets": [
-      "000690",
-      "001260"
-    ]
-  },
-  "312782590": {
-    "acronym": "VISli5",
-    "name": "Laterointermediate area, layer 5",
-    "color_hex_triplet": "08858C",
-    "file_count": 7,
-    "dandiset_count": 2,
-    "dandisets": [
-      "000690",
-      "001260"
-    ],
-    "total_file_count": 7,
-    "total_dandiset_count": 2,
-    "total_dandisets": [
-      "000690",
-      "001260"
-    ]
-  },
   "312782594": {
     "acronym": "VISli6a",
     "name": "Laterointermediate area, layer 6a",
@@ -11891,647 +12550,6 @@
     "total_dandiset_count": 1,
     "total_dandisets": [
       "000690"
-    ]
-  },
-  "526157192": {
-    "acronym": "FRP5",
-    "name": "Frontal pole, layer 5",
-    "color_hex_triplet": "268F45",
-    "file_count": 8,
-    "dandiset_count": 3,
-    "dandisets": [
-      "000690",
-      "001260",
-      "001326"
-    ],
-    "total_file_count": 8,
-    "total_dandiset_count": 3,
-    "total_dandisets": [
-      "000690",
-      "001260",
-      "001326"
-    ]
-  },
-  "488": {
-    "acronym": "ORBl6b",
-    "name": "Orbital area, lateral part, layer 6b",
-    "color_hex_triplet": "248A5E",
-    "file_count": 3,
-    "dandiset_count": 1,
-    "dandisets": [
-      "001260"
-    ],
-    "total_file_count": 3,
-    "total_dandiset_count": 1,
-    "total_dandisets": [
-      "001260"
-    ]
-  },
-  "1101": {
-    "acronym": "AId5",
-    "name": "Agranular insular area, dorsal part, layer 5",
-    "color_hex_triplet": "219866",
-    "file_count": 4,
-    "dandiset_count": 2,
-    "dandisets": [
-      "001260",
-      "001326"
-    ],
-    "total_file_count": 4,
-    "total_dandiset_count": 2,
-    "total_dandisets": [
-      "001260",
-      "001326"
-    ]
-  },
-  "783": {
-    "acronym": "AId6a",
-    "name": "Agranular insular area, dorsal part, layer 6a",
-    "color_hex_triplet": "219866",
-    "file_count": 4,
-    "dandiset_count": 2,
-    "dandisets": [
-      "001260",
-      "001326"
-    ],
-    "total_file_count": 4,
-    "total_dandiset_count": 2,
-    "total_dandisets": [
-      "001260",
-      "001326"
-    ]
-  },
-  "694": {
-    "acronym": "AIv2/3",
-    "name": "Agranular insular area, ventral part, layer 2/3",
-    "color_hex_triplet": "219866",
-    "file_count": 4,
-    "dandiset_count": 2,
-    "dandisets": [
-      "001260",
-      "001326"
-    ],
-    "total_file_count": 4,
-    "total_dandiset_count": 2,
-    "total_dandisets": [
-      "001260",
-      "001326"
-    ]
-  },
-  "800": {
-    "acronym": "AIv5",
-    "name": "Agranular insular area, ventral part, layer 5",
-    "color_hex_triplet": "219866",
-    "file_count": 5,
-    "dandiset_count": 2,
-    "dandisets": [
-      "001260",
-      "001326"
-    ],
-    "total_file_count": 5,
-    "total_dandiset_count": 2,
-    "total_dandisets": [
-      "001260",
-      "001326"
-    ]
-  },
-  "862": {
-    "acronym": "SSs6a",
-    "name": "Supplemental somatosensory area, layer 6a",
-    "color_hex_triplet": "188064",
-    "file_count": 2,
-    "dandiset_count": 1,
-    "dandisets": [
-      "001260"
-    ],
-    "total_file_count": 2,
-    "total_dandiset_count": 1,
-    "total_dandisets": [
-      "001260"
-    ]
-  },
-  "893": {
-    "acronym": "SSs6b",
-    "name": "Supplemental somatosensory area, layer 6b",
-    "color_hex_triplet": "188064",
-    "file_count": 3,
-    "dandiset_count": 2,
-    "dandisets": [
-      "001260",
-      "001326"
-    ],
-    "total_file_count": 3,
-    "total_dandiset_count": 2,
-    "total_dandisets": [
-      "001260",
-      "001326"
-    ]
-  },
-  "638": {
-    "acronym": "GU6a",
-    "name": "Gustatory areas, layer 6a",
-    "color_hex_triplet": "009C75",
-    "file_count": 1,
-    "dandiset_count": 1,
-    "dandisets": [
-      "001260"
-    ],
-    "total_file_count": 1,
-    "total_dandiset_count": 1,
-    "total_dandisets": [
-      "001260"
-    ]
-  },
-  "657": {
-    "acronym": "SSp-m2/3",
-    "name": "Primary somatosensory area, mouth, layer 2/3",
-    "color_hex_triplet": "188064",
-    "file_count": 2,
-    "dandiset_count": 2,
-    "dandisets": [
-      "001260",
-      "001326"
-    ],
-    "total_file_count": 2,
-    "total_dandiset_count": 2,
-    "total_dandisets": [
-      "001260",
-      "001326"
-    ]
-  },
-  "950": {
-    "acronym": "SSp-m4",
-    "name": "Primary somatosensory area, mouth, layer 4",
-    "color_hex_triplet": "188064",
-    "file_count": 2,
-    "dandiset_count": 2,
-    "dandisets": [
-      "001260",
-      "001326"
-    ],
-    "total_file_count": 2,
-    "total_dandiset_count": 2,
-    "total_dandisets": [
-      "001260",
-      "001326"
-    ]
-  },
-  "974": {
-    "acronym": "SSp-m5",
-    "name": "Primary somatosensory area, mouth, layer 5",
-    "color_hex_triplet": "188064",
-    "file_count": 2,
-    "dandiset_count": 2,
-    "dandisets": [
-      "001260",
-      "001326"
-    ],
-    "total_file_count": 2,
-    "total_dandiset_count": 2,
-    "total_dandisets": [
-      "001260",
-      "001326"
-    ]
-  },
-  "1102": {
-    "acronym": "SSp-m6a",
-    "name": "Primary somatosensory area, mouth, layer 6a",
-    "color_hex_triplet": "188064",
-    "file_count": 2,
-    "dandiset_count": 2,
-    "dandisets": [
-      "001260",
-      "001326"
-    ],
-    "total_file_count": 2,
-    "total_dandiset_count": 2,
-    "total_dandisets": [
-      "001260",
-      "001326"
-    ]
-  },
-  "704": {
-    "acronym": "AIv1",
-    "name": "Agranular insular area, ventral part, layer 1",
-    "color_hex_triplet": "219866",
-    "file_count": 1,
-    "dandiset_count": 1,
-    "dandisets": [
-      "001260"
-    ],
-    "total_file_count": 1,
-    "total_dandiset_count": 1,
-    "total_dandisets": [
-      "001260"
-    ]
-  },
-  "665": {
-    "acronym": "lot",
-    "name": "lateral olfactory tract, body",
-    "color_hex_triplet": "CCCCCC",
-    "file_count": 1,
-    "dandiset_count": 1,
-    "dandisets": [
-      "001260"
-    ],
-    "total_file_count": 1,
-    "total_dandiset_count": 1,
-    "total_dandisets": [
-      "001260"
-    ]
-  },
-  "252": {
-    "acronym": "AUDd5",
-    "name": "Dorsal auditory area, layer 5",
-    "color_hex_triplet": "019399",
-    "file_count": 4,
-    "dandiset_count": 1,
-    "dandisets": [
-      "001260"
-    ],
-    "total_file_count": 4,
-    "total_dandiset_count": 1,
-    "total_dandisets": [
-      "001260"
-    ]
-  },
-  "156": {
-    "acronym": "AUDd6a",
-    "name": "Dorsal auditory area, layer 6a",
-    "color_hex_triplet": "019399",
-    "file_count": 3,
-    "dandiset_count": 1,
-    "dandisets": [
-      "001260"
-    ],
-    "total_file_count": 3,
-    "total_dandiset_count": 1,
-    "total_dandisets": [
-      "001260"
-    ]
-  },
-  "243": {
-    "acronym": "AUDd6b",
-    "name": "Dorsal auditory area, layer 6b",
-    "color_hex_triplet": "019399",
-    "file_count": 3,
-    "dandiset_count": 1,
-    "dandisets": [
-      "001260"
-    ],
-    "total_file_count": 3,
-    "total_dandiset_count": 1,
-    "total_dandisets": [
-      "001260"
-    ]
-  },
-  "806": {
-    "acronym": "SSs2/3",
-    "name": "Supplemental somatosensory area, layer 2/3",
-    "color_hex_triplet": "188064",
-    "file_count": 2,
-    "dandiset_count": 1,
-    "dandisets": [
-      "001260"
-    ],
-    "total_file_count": 2,
-    "total_dandiset_count": 1,
-    "total_dandisets": [
-      "001260"
-    ]
-  },
-  "1035": {
-    "acronym": "SSs4",
-    "name": "Supplemental somatosensory area, layer 4",
-    "color_hex_triplet": "188064",
-    "file_count": 2,
-    "dandiset_count": 1,
-    "dandisets": [
-      "001260"
-    ],
-    "total_file_count": 2,
-    "total_dandiset_count": 1,
-    "total_dandisets": [
-      "001260"
-    ]
-  },
-  "1090": {
-    "acronym": "SSs5",
-    "name": "Supplemental somatosensory area, layer 5",
-    "color_hex_triplet": "188064",
-    "file_count": 2,
-    "dandiset_count": 1,
-    "dandisets": [
-      "001260"
-    ],
-    "total_file_count": 2,
-    "total_dandiset_count": 1,
-    "total_dandisets": [
-      "001260"
-    ]
-  },
-  "1127": {
-    "acronym": "TEa2/3",
-    "name": "Temporal association areas, layer 2/3",
-    "color_hex_triplet": "15B0B3",
-    "file_count": 2,
-    "dandiset_count": 1,
-    "dandisets": [
-      "001260"
-    ],
-    "total_file_count": 2,
-    "total_dandiset_count": 1,
-    "total_dandisets": [
-      "001260"
-    ]
-  },
-  "234": {
-    "acronym": "TEa4",
-    "name": "Temporal association areas, layer 4",
-    "color_hex_triplet": "15B0B3",
-    "file_count": 2,
-    "dandiset_count": 1,
-    "dandisets": [
-      "001260"
-    ],
-    "total_file_count": 2,
-    "total_dandiset_count": 1,
-    "total_dandisets": [
-      "001260"
-    ]
-  },
-  "935": {
-    "acronym": "ACAd1",
-    "name": "Anterior cingulate area, dorsal part, layer 1",
-    "color_hex_triplet": "40A666",
-    "file_count": 2,
-    "dandiset_count": 2,
-    "dandisets": [
-      "001260",
-      "001326"
-    ],
-    "total_file_count": 2,
-    "total_dandiset_count": 2,
-    "total_dandisets": [
-      "001260",
-      "001326"
-    ]
-  },
-  "605": {
-    "acronym": "TTv",
-    "name": "Taenia tecta, ventral part",
-    "color_hex_triplet": "62D09F",
-    "file_count": 2,
-    "dandiset_count": 1,
-    "dandisets": [
-      "001260"
-    ],
-    "total_file_count": 2,
-    "total_dandiset_count": 1,
-    "total_dandisets": [
-      "001260"
-    ]
-  },
-  "600": {
-    "acronym": "AUDd2/3",
-    "name": "Dorsal auditory area, layer 2/3",
-    "color_hex_triplet": "019399",
-    "file_count": 2,
-    "dandiset_count": 1,
-    "dandisets": [
-      "001260"
-    ],
-    "total_file_count": 2,
-    "total_dandiset_count": 1,
-    "total_dandisets": [
-      "001260"
-    ]
-  },
-  "678": {
-    "acronym": "AUDd4",
-    "name": "Dorsal auditory area, layer 4",
-    "color_hex_triplet": "019399",
-    "file_count": 3,
-    "dandiset_count": 1,
-    "dandisets": [
-      "001260"
-    ],
-    "total_file_count": 3,
-    "total_dandiset_count": 1,
-    "total_dandisets": [
-      "001260"
-    ]
-  },
-  "1005": {
-    "acronym": "AUDp6b",
-    "name": "Primary auditory area, layer 6b",
-    "color_hex_triplet": "019399",
-    "file_count": 2,
-    "dandiset_count": 1,
-    "dandisets": [
-      "001260"
-    ],
-    "total_file_count": 2,
-    "total_dandiset_count": 1,
-    "total_dandisets": [
-      "001260"
-    ]
-  },
-  "643": {
-    "acronym": "AUDpo2/3",
-    "name": "Posterior auditory area, layer 2/3",
-    "color_hex_triplet": "019399",
-    "file_count": 3,
-    "dandiset_count": 1,
-    "dandisets": [
-      "001260"
-    ],
-    "total_file_count": 3,
-    "total_dandiset_count": 1,
-    "total_dandisets": [
-      "001260"
-    ]
-  },
-  "791": {
-    "acronym": "AUDpo5",
-    "name": "Posterior auditory area, layer 5",
-    "color_hex_triplet": "019399",
-    "file_count": 3,
-    "dandiset_count": 1,
-    "dandisets": [
-      "001260"
-    ],
-    "total_file_count": 3,
-    "total_dandiset_count": 1,
-    "total_dandisets": [
-      "001260"
-    ]
-  },
-  "249": {
-    "acronym": "AUDpo6a",
-    "name": "Posterior auditory area, layer 6a",
-    "color_hex_triplet": "019399",
-    "file_count": 2,
-    "dandiset_count": 1,
-    "dandisets": [
-      "001260"
-    ],
-    "total_file_count": 2,
-    "total_dandiset_count": 1,
-    "total_dandisets": [
-      "001260"
-    ]
-  },
-  "456": {
-    "acronym": "AUDpo6b",
-    "name": "Posterior auditory area, layer 6b",
-    "color_hex_triplet": "019399",
-    "file_count": 2,
-    "dandiset_count": 1,
-    "dandisets": [
-      "001260"
-    ],
-    "total_file_count": 2,
-    "total_dandiset_count": 1,
-    "total_dandisets": [
-      "001260"
-    ]
-  },
-  "847": {
-    "acronym": "AUDp5",
-    "name": "Primary auditory area, layer 5",
-    "color_hex_triplet": "019399",
-    "file_count": 1,
-    "dandiset_count": 1,
-    "dandisets": [
-      "001260"
-    ],
-    "total_file_count": 1,
-    "total_dandiset_count": 1,
-    "total_dandisets": [
-      "001260"
-    ]
-  },
-  "954": {
-    "acronym": "AUDp6a",
-    "name": "Primary auditory area, layer 6a",
-    "color_hex_triplet": "019399",
-    "file_count": 1,
-    "dandiset_count": 1,
-    "dandisets": [
-      "001260"
-    ],
-    "total_file_count": 1,
-    "total_dandiset_count": 1,
-    "total_dandisets": [
-      "001260"
-    ]
-  },
-  "759": {
-    "acronym": "AUDpo4",
-    "name": "Posterior auditory area, layer 4",
-    "color_hex_triplet": "019399",
-    "file_count": 2,
-    "dandiset_count": 1,
-    "dandisets": [
-      "001260"
-    ],
-    "total_file_count": 2,
-    "total_dandiset_count": 1,
-    "total_dandisets": [
-      "001260"
-    ]
-  },
-  "448": {
-    "acronym": "ORBl1",
-    "name": "Orbital area, lateral part, layer 1",
-    "color_hex_triplet": "248A5E",
-    "file_count": 2,
-    "dandiset_count": 2,
-    "dandisets": [
-      "001260",
-      "001326"
-    ],
-    "total_file_count": 2,
-    "total_dandiset_count": 2,
-    "total_dandisets": [
-      "001260",
-      "001326"
-    ]
-  },
-  "654": {
-    "acronym": "SSp-n4",
-    "name": "Primary somatosensory area, nose, layer 4",
-    "color_hex_triplet": "188064",
-    "file_count": 1,
-    "dandiset_count": 1,
-    "dandisets": [
-      "001260"
-    ],
-    "total_file_count": 1,
-    "total_dandiset_count": 1,
-    "total_dandisets": [
-      "001260"
-    ]
-  },
-  "702": {
-    "acronym": "SSp-n5",
-    "name": "Primary somatosensory area, nose, layer 5",
-    "color_hex_triplet": "188064",
-    "file_count": 1,
-    "dandiset_count": 1,
-    "dandisets": [
-      "001260"
-    ],
-    "total_file_count": 1,
-    "total_dandiset_count": 1,
-    "total_dandisets": [
-      "001260"
-    ]
-  },
-  "889": {
-    "acronym": "SSp-n6a",
-    "name": "Primary somatosensory area, nose, layer 6a",
-    "color_hex_triplet": "188064",
-    "file_count": 1,
-    "dandiset_count": 1,
-    "dandisets": [
-      "001260"
-    ],
-    "total_file_count": 1,
-    "total_dandiset_count": 1,
-    "total_dandisets": [
-      "001260"
-    ]
-  },
-  "929": {
-    "acronym": "SSp-n6b",
-    "name": "Primary somatosensory area, nose, layer 6b",
-    "color_hex_triplet": "188064",
-    "file_count": 1,
-    "dandiset_count": 1,
-    "dandisets": [
-      "001260"
-    ],
-    "total_file_count": 1,
-    "total_dandiset_count": 1,
-    "total_dandisets": [
-      "001260"
-    ]
-  },
-  "484": {
-    "acronym": "ORBm1",
-    "name": "Orbital area, medial part, layer 1",
-    "color_hex_triplet": "248A5E",
-    "file_count": 1,
-    "dandiset_count": 1,
-    "dandisets": [
-      "001260"
-    ],
-    "total_file_count": 1,
-    "total_dandiset_count": 1,
-    "total_dandisets": [
-      "001260"
     ]
   },
   "725": {
@@ -12872,8 +12890,8 @@
     "file_count": 0,
     "dandiset_count": 0,
     "dandisets": [],
-    "total_file_count": 17440,
-    "total_dandiset_count": 37,
+    "total_file_count": 17442,
+    "total_dandiset_count": 38,
     "total_dandisets": [
       "000017",
       "000021",
@@ -12909,6 +12927,7 @@
       "001637",
       "001701",
       "001791",
+      "001839",
       "001868",
       "001876",
       "001960"
@@ -12921,8 +12940,8 @@
     "file_count": 0,
     "dandiset_count": 0,
     "dandisets": [],
-    "total_file_count": 26142,
-    "total_dandiset_count": 53,
+    "total_file_count": 26144,
+    "total_dandiset_count": 54,
     "total_dandisets": [
       "000017",
       "000021",
@@ -12973,6 +12992,7 @@
       "001701",
       "001710",
       "001791",
+      "001839",
       "001868",
       "001876",
       "001960",
@@ -12986,8 +13006,8 @@
     "file_count": 0,
     "dandiset_count": 0,
     "dandisets": [],
-    "total_file_count": 26498,
-    "total_dandiset_count": 54,
+    "total_file_count": 26500,
+    "total_dandiset_count": 55,
     "total_dandisets": [
       "000017",
       "000021",
@@ -13039,6 +13059,7 @@
       "001701",
       "001710",
       "001791",
+      "001839",
       "001868",
       "001876",
       "001960",
@@ -13052,8 +13073,8 @@
     "file_count": 0,
     "dandiset_count": 0,
     "dandisets": [],
-    "total_file_count": 28754,
-    "total_dandiset_count": 57,
+    "total_file_count": 28756,
+    "total_dandiset_count": 58,
     "total_dandisets": [
       "000017",
       "000021",
@@ -13108,6 +13129,7 @@
       "001710",
       "001791",
       "001832",
+      "001839",
       "001868",
       "001876",
       "001960",
@@ -13121,8 +13143,8 @@
     "file_count": 0,
     "dandiset_count": 0,
     "dandisets": [],
-    "total_file_count": 40784,
-    "total_dandiset_count": 62,
+    "total_file_count": 40786,
+    "total_dandiset_count": 63,
     "total_dandisets": [
       "000017",
       "000021",
@@ -13182,6 +13204,7 @@
       "001777",
       "001791",
       "001832",
+      "001839",
       "001868",
       "001876",
       "001960",
@@ -13195,8 +13218,8 @@
     "file_count": 0,
     "dandiset_count": 0,
     "dandisets": [],
-    "total_file_count": 46620,
-    "total_dandiset_count": 64,
+    "total_file_count": 46622,
+    "total_dandiset_count": 65,
     "total_dandisets": [
       "000017",
       "000021",
@@ -13258,6 +13281,7 @@
       "001777",
       "001791",
       "001832",
+      "001839",
       "001868",
       "001876",
       "001960",
@@ -14927,21 +14951,6 @@
       "001326"
     ]
   },
-  "95": {
-    "acronym": "AI",
-    "name": "Agranular insular area",
-    "color_hex_triplet": "219866",
-    "file_count": 0,
-    "dandiset_count": 0,
-    "dandisets": [],
-    "total_file_count": 20,
-    "total_dandiset_count": 3,
-    "total_dandisets": [
-      "000473",
-      "001260",
-      "001326"
-    ]
-  },
   "909": {
     "acronym": "ENT",
     "name": "Entorhinal area",
@@ -14971,74 +14980,6 @@
       "000017",
       "001051",
       "001260"
-    ]
-  },
-  "182305689": {
-    "acronym": "SSp-un",
-    "name": "Primary somatosensory area, unassigned",
-    "color_hex_triplet": "188064",
-    "file_count": 0,
-    "dandiset_count": 0,
-    "dandisets": [],
-    "total_file_count": 4,
-    "total_dandiset_count": 1,
-    "total_dandisets": [
-      "001637"
-    ]
-  },
-  "647": {
-    "acronym": "COAp",
-    "name": "Cortical amygdalar area, posterior part",
-    "color_hex_triplet": "61E7B7",
-    "file_count": 0,
-    "dandiset_count": 0,
-    "dandisets": [],
-    "total_file_count": 5,
-    "total_dandiset_count": 2,
-    "total_dandisets": [
-      "000022",
-      "001326"
-    ]
-  },
-  "369": {
-    "acronym": "SSp-ul",
-    "name": "Primary somatosensory area, upper limb",
-    "color_hex_triplet": "188064",
-    "file_count": 0,
-    "dandiset_count": 0,
-    "dandisets": [],
-    "total_file_count": 16,
-    "total_dandiset_count": 3,
-    "total_dandisets": [
-      "000563",
-      "001260",
-      "001326"
-    ]
-  },
-  "480149202": {
-    "acronym": "VISrll",
-    "name": "Rostrolateral lateral visual area",
-    "color_hex_triplet": "188064",
-    "file_count": 0,
-    "dandiset_count": 0,
-    "dandisets": [],
-    "total_file_count": 12,
-    "total_dandiset_count": 1,
-    "total_dandisets": [
-      "000563"
-    ]
-  },
-  "918": {
-    "acronym": "ENTl",
-    "name": "Entorhinal area, lateral part",
-    "color_hex_triplet": "32B825",
-    "file_count": 0,
-    "dandiset_count": 0,
-    "dandisets": [],
-    "total_file_count": 31,
-    "total_dandiset_count": 1,
-    "total_dandisets": [
-      "000690"
     ]
   },
   "104": {
@@ -15078,6 +15019,21 @@
     "total_file_count": 10,
     "total_dandiset_count": 2,
     "total_dandisets": [
+      "001260",
+      "001326"
+    ]
+  },
+  "369": {
+    "acronym": "SSp-ul",
+    "name": "Primary somatosensory area, upper limb",
+    "color_hex_triplet": "188064",
+    "file_count": 0,
+    "dandiset_count": 0,
+    "dandisets": [],
+    "total_file_count": 16,
+    "total_dandiset_count": 3,
+    "total_dandisets": [
+      "000563",
       "001260",
       "001326"
     ]
@@ -15145,6 +15101,59 @@
     "total_dandiset_count": 1,
     "total_dandisets": [
       "001260"
+    ]
+  },
+  "182305689": {
+    "acronym": "SSp-un",
+    "name": "Primary somatosensory area, unassigned",
+    "color_hex_triplet": "188064",
+    "file_count": 0,
+    "dandiset_count": 0,
+    "dandisets": [],
+    "total_file_count": 4,
+    "total_dandiset_count": 1,
+    "total_dandisets": [
+      "001637"
+    ]
+  },
+  "647": {
+    "acronym": "COAp",
+    "name": "Cortical amygdalar area, posterior part",
+    "color_hex_triplet": "61E7B7",
+    "file_count": 0,
+    "dandiset_count": 0,
+    "dandisets": [],
+    "total_file_count": 5,
+    "total_dandiset_count": 2,
+    "total_dandisets": [
+      "000022",
+      "001326"
+    ]
+  },
+  "480149202": {
+    "acronym": "VISrll",
+    "name": "Rostrolateral lateral visual area",
+    "color_hex_triplet": "188064",
+    "file_count": 0,
+    "dandiset_count": 0,
+    "dandisets": [],
+    "total_file_count": 12,
+    "total_dandiset_count": 1,
+    "total_dandisets": [
+      "000563"
+    ]
+  },
+  "918": {
+    "acronym": "ENTl",
+    "name": "Entorhinal area, lateral part",
+    "color_hex_triplet": "32B825",
+    "file_count": 0,
+    "dandiset_count": 0,
+    "dandisets": [],
+    "total_file_count": 31,
+    "total_dandiset_count": 1,
+    "total_dandisets": [
+      "000690"
     ]
   },
   "619": {
