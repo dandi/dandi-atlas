@@ -275,7 +275,7 @@
     "acronym": "AD",
     "name": "Anterodorsal nucleus",
     "color_hex_triplet": "FF909F",
-    "file_count": 53,
+    "file_count": 91,
     "dandiset_count": 6,
     "dandisets": [
       "000056",
@@ -285,7 +285,7 @@
       "001191",
       "001637"
     ],
-    "total_file_count": 53,
+    "total_file_count": 91,
     "total_dandiset_count": 6,
     "total_dandisets": [
       "000056",
@@ -300,7 +300,7 @@
     "acronym": "CA1",
     "name": "Field CA1",
     "color_hex_triplet": "7ED04B",
-    "file_count": 2560,
+    "file_count": 2718,
     "dandiset_count": 34,
     "dandisets": [
       "000017",
@@ -338,7 +338,7 @@
       "002030",
       "002047"
     ],
-    "total_file_count": 2560,
+    "total_file_count": 2718,
     "total_dandiset_count": 34,
     "total_dandisets": [
       "000017",
@@ -381,7 +381,7 @@
     "acronym": "PL",
     "name": "Prelimbic area",
     "color_hex_triplet": "2FA850",
-    "file_count": 63,
+    "file_count": 64,
     "dandiset_count": 4,
     "dandisets": [
       "000017",
@@ -389,7 +389,7 @@
       "000458",
       "001051"
     ],
-    "total_file_count": 327,
+    "total_file_count": 328,
     "total_dandiset_count": 12,
     "total_dandisets": [
       "000017",
@@ -410,7 +410,7 @@
     "acronym": "RT",
     "name": "Reticular nucleus of the thalamus",
     "color_hex_triplet": "FF909F",
-    "file_count": 188,
+    "file_count": 189,
     "dandiset_count": 13,
     "dandisets": [
       "000017",
@@ -427,7 +427,7 @@
       "001417",
       "001637"
     ],
-    "total_file_count": 188,
+    "total_file_count": 189,
     "total_dandiset_count": 13,
     "total_dandisets": [
       "000017",
@@ -443,6 +443,49 @@
       "001416",
       "001417",
       "001637"
+    ]
+  },
+  "1037": {
+    "acronym": "POST",
+    "name": "Postsubiculum",
+    "color_hex_triplet": "48C83C",
+    "file_count": 661,
+    "dandiset_count": 15,
+    "dandisets": [
+      "000017",
+      "000021",
+      "000022",
+      "000056",
+      "000248",
+      "000253",
+      "000409",
+      "000563",
+      "000690",
+      "000939",
+      "001051",
+      "001191",
+      "001417",
+      "001568",
+      "001676"
+    ],
+    "total_file_count": 661,
+    "total_dandiset_count": 15,
+    "total_dandisets": [
+      "000017",
+      "000021",
+      "000022",
+      "000056",
+      "000248",
+      "000253",
+      "000409",
+      "000563",
+      "000690",
+      "000939",
+      "001051",
+      "001191",
+      "001417",
+      "001568",
+      "001676"
     ]
   },
   "59": {
@@ -610,7 +653,7 @@
       "001417",
       "001637"
     ],
-    "total_file_count": 5616,
+    "total_file_count": 5655,
     "total_dandiset_count": 22,
     "total_dandisets": [
       "000017",
@@ -1928,7 +1971,7 @@
       "001637",
       "001701"
     ],
-    "total_file_count": 8303,
+    "total_file_count": 8487,
     "total_dandiset_count": 36,
     "total_dandisets": [
       "000017",
@@ -2153,47 +2196,6 @@
       "001191",
       "001417",
       "001568"
-    ]
-  },
-  "1037": {
-    "acronym": "POST",
-    "name": "Postsubiculum",
-    "color_hex_triplet": "48C83C",
-    "file_count": 635,
-    "dandiset_count": 14,
-    "dandisets": [
-      "000017",
-      "000021",
-      "000022",
-      "000248",
-      "000253",
-      "000409",
-      "000563",
-      "000690",
-      "000939",
-      "001051",
-      "001191",
-      "001417",
-      "001568",
-      "001676"
-    ],
-    "total_file_count": 635,
-    "total_dandiset_count": 14,
-    "total_dandisets": [
-      "000017",
-      "000021",
-      "000022",
-      "000248",
-      "000253",
-      "000409",
-      "000563",
-      "000690",
-      "000939",
-      "001051",
-      "001191",
-      "001417",
-      "001568",
-      "001676"
     ]
   },
   "502": {
@@ -11771,7 +11773,7 @@
     "dandisets": [
       "000017"
     ],
-    "total_file_count": 4096,
+    "total_file_count": 4254,
     "total_dandiset_count": 35,
     "total_dandisets": [
       "000017",
@@ -12940,7 +12942,7 @@
     "file_count": 0,
     "dandiset_count": 0,
     "dandisets": [],
-    "total_file_count": 17485,
+    "total_file_count": 17486,
     "total_dandiset_count": 40,
     "total_dandisets": [
       "000017",
@@ -12992,7 +12994,7 @@
     "file_count": 0,
     "dandiset_count": 0,
     "dandisets": [],
-    "total_file_count": 26452,
+    "total_file_count": 26637,
     "total_dandiset_count": 57,
     "total_dandisets": [
       "000017",
@@ -13061,7 +13063,7 @@
     "file_count": 0,
     "dandiset_count": 0,
     "dandisets": [],
-    "total_file_count": 26808,
+    "total_file_count": 26993,
     "total_dandiset_count": 58,
     "total_dandisets": [
       "000017",
@@ -13131,7 +13133,7 @@
     "file_count": 0,
     "dandiset_count": 0,
     "dandisets": [],
-    "total_file_count": 29064,
+    "total_file_count": 29249,
     "total_dandiset_count": 61,
     "total_dandisets": [
       "000017",
@@ -13204,7 +13206,7 @@
     "file_count": 0,
     "dandiset_count": 0,
     "dandisets": [],
-    "total_file_count": 41102,
+    "total_file_count": 41326,
     "total_dandiset_count": 66,
     "total_dandisets": [
       "000017",
@@ -13282,7 +13284,7 @@
     "file_count": 0,
     "dandiset_count": 0,
     "dandisets": [],
-    "total_file_count": 46938,
+    "total_file_count": 47162,
     "total_dandiset_count": 68,
     "total_dandisets": [
       "000017",
@@ -13362,7 +13364,7 @@
     "file_count": 0,
     "dandiset_count": 0,
     "dandisets": [],
-    "total_file_count": 462,
+    "total_file_count": 500,
     "total_dandiset_count": 15,
     "total_dandisets": [
       "000017",
@@ -13389,7 +13391,7 @@
     "file_count": 0,
     "dandiset_count": 0,
     "dandisets": [],
-    "total_file_count": 3076,
+    "total_file_count": 3115,
     "total_dandiset_count": 21,
     "total_dandisets": [
       "000017",
@@ -13422,7 +13424,7 @@
     "file_count": 0,
     "dandiset_count": 0,
     "dandisets": [],
-    "total_file_count": 6539,
+    "total_file_count": 6578,
     "total_dandiset_count": 25,
     "total_dandisets": [
       "000017",
@@ -13459,7 +13461,7 @@
     "file_count": 0,
     "dandiset_count": 0,
     "dandisets": [],
-    "total_file_count": 11349,
+    "total_file_count": 11388,
     "total_dandiset_count": 28,
     "total_dandisets": [
       "000017",
@@ -13499,7 +13501,7 @@
     "file_count": 0,
     "dandiset_count": 0,
     "dandisets": [],
-    "total_file_count": 5989,
+    "total_file_count": 6147,
     "total_dandiset_count": 35,
     "total_dandisets": [
       "000017",
@@ -13537,6 +13539,39 @@
       "001710",
       "002030",
       "002047"
+    ]
+  },
+  "822": {
+    "acronym": "RHP",
+    "name": "Retrohippocampal region",
+    "color_hex_triplet": "32B825",
+    "file_count": 0,
+    "dandiset_count": 0,
+    "dandisets": [],
+    "total_file_count": 2004,
+    "total_dandiset_count": 21,
+    "total_dandisets": [
+      "000017",
+      "000021",
+      "000022",
+      "000056",
+      "000248",
+      "000253",
+      "000409",
+      "000458",
+      "000563",
+      "000690",
+      "000939",
+      "001051",
+      "001191",
+      "001260",
+      "001326",
+      "001416",
+      "001417",
+      "001568",
+      "001637",
+      "001676",
+      "001701"
     ]
   },
   "444": {
@@ -14235,38 +14270,6 @@
     "total_dandisets": [
       "000409",
       "001326"
-    ]
-  },
-  "822": {
-    "acronym": "RHP",
-    "name": "Retrohippocampal region",
-    "color_hex_triplet": "32B825",
-    "file_count": 0,
-    "dandiset_count": 0,
-    "dandisets": [],
-    "total_file_count": 1978,
-    "total_dandiset_count": 20,
-    "total_dandisets": [
-      "000017",
-      "000021",
-      "000022",
-      "000248",
-      "000253",
-      "000409",
-      "000458",
-      "000563",
-      "000690",
-      "000939",
-      "001051",
-      "001191",
-      "001260",
-      "001326",
-      "001416",
-      "001417",
-      "001568",
-      "001637",
-      "001676",
-      "001701"
     ]
   },
   "848": {
