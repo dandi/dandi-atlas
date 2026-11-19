@@ -884,8 +884,14 @@ async function loadInitialMeshes(gen) {
   // Determine which meshes to load
   let allToLoad;
   if (activeAtlas.coordSystem === 'allen') {
-    // CCF: only load data structures (original behavior)
-    allToLoad = meshManifest.data_structures.filter(id => id !== meshManifest.root_id);
+    // CCF: only load data structures (original behavior). Some of them have
+    // no mesh: the Allen CCF publishes none for structures such as the
+    // generic "Visual areas, layer 6a", and the pipeline lists those in
+    // no_mesh. Asking for them anyway cost a failed request each on every
+    // load.
+    allToLoad = meshManifest.data_structures.filter(id =>
+      id !== meshManifest.root_id && !noMeshIds.has(id)
+    );
   } else {
     // Macaque: load every GLB produced by the build so the anatomical tree
     // is fully populated even when the user navigates to a non-data region.
