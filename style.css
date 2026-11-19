@@ -277,6 +277,7 @@ body {
   flex: 1;
   position: relative;
   overflow: hidden;
+  container: viewer / inline-size;
 }
 
 #brain-canvas {
@@ -407,20 +408,39 @@ body {
   color: var(--text-primary);
 }
 
-/* Controls hint */
+/* Controls hint. Centred by auto margins between the two insets, not by
+   left: 50% plus a transform, because that form caps the width at half the
+   viewer and so needed nowrap. This one stays a single line while there is
+   room and wraps inside the viewer when there is not. */
 .controls-hint {
   position: absolute;
   bottom: 12px;
-  left: 50%;
-  transform: translateX(-50%);
+  left: 12px;
+  right: 12px;
+  width: fit-content;
+  margin-inline: auto;
   background: rgba(15, 52, 96, 0.8);
   color: var(--text-secondary);
   font-size: 11px;
+  line-height: 1.5;
+  text-align: center;
+  text-wrap: balance;
   padding: 6px 14px;
   border-radius: 20px;
   pointer-events: none;
   backdrop-filter: blur(4px);
-  white-space: nowrap;
+}
+
+/* The hint shares the viewer's bottom edge with the "Created by" link on the
+   left and the GitHub link on the right. On one line it is about 685px wide
+   and the link is about 150px, so below roughly 1040px of viewer the two
+   collide. That is a matter of the viewer's width, which depends on the
+   window and on how far the left sidebar has been dragged, hence a container
+   query. Under the threshold the hint moves up to a row of its own. */
+@container viewer (max-width: 1080px) {
+  .controls-hint {
+    bottom: 40px;
+  }
 }
 
 .last-updated:not(:empty) {
@@ -1780,12 +1800,8 @@ body:not(.landing-active) > #atlas-landing {
     bottom: auto;
     left: 92px;
     right: 8px;
-    transform: none;
     padding: 6px 10px;
     border-radius: 10px;
-    white-space: normal;
-    text-align: center;
-    line-height: 1.5;
   }
 
   .loading-overlay.hidden ~ .controls-hint {
