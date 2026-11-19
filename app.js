@@ -726,13 +726,24 @@ function setupScene() {
 
   // Events
   canvas.addEventListener('mousemove', onMouseMove);
-  canvas.addEventListener('pointerdown', (e) => { pointerDownPos = { x: e.clientX, y: e.clientY }; });
+  canvas.addEventListener('pointerdown', (e) => {
+    pointerDownPos = { x: e.clientX, y: e.clientY };
+    // A touch has no hover, so the tooltip and highlight left by the last tap
+    // would otherwise sit over the brain for the whole of the next drag.
+    if (e.pointerType === 'touch') clearHover();
+  });
   canvas.addEventListener('click', onClick);
-  window.addEventListener('resize', onResize);
+  // Observe the viewer itself, not the window: its size also changes when the
+  // layout switches between the side-by-side and stacked arrangements, when a
+  // phone rotates, and when the landing page hides or reveals it.
+  new ResizeObserver(onResize).observe(viewer);
 }
 
 function onResize() {
   const viewer = document.getElementById('viewer');
+  // Hidden under the landing page: nothing to size, and 0/0 would leave a NaN
+  // aspect on the camera.
+  if (!viewer.clientWidth || !viewer.clientHeight) return;
   camera.aspect = viewer.clientWidth / viewer.clientHeight;
   camera.updateProjectionMatrix();
   renderer.setSize(viewer.clientWidth, viewer.clientHeight);
@@ -944,8 +955,7 @@ function onMouseMove(event) {
           <div class="tooltip-info">${escapeHtml(point.subjectLabel)} &middot; ${escapeHtml(point.assetLabel)}</div>
           <div class="tooltip-info">${ATLAS_COORD_LABELS[activeAtlasKey] || activeAtlasKey}: ${formatCoord(point.coord[0])}, ${formatCoord(point.coord[1])}, ${formatCoord(point.coord[2])}</div>
         `;
-        tooltip.style.left = (event.clientX - rect.left + 15) + 'px';
-        tooltip.style.top = (event.clientY - rect.top + 15) + 'px';
+        placeTooltip(tooltip, event.clientX - rect.left, event.clientY - rect.top);
         renderer.domElement.style.cursor = 'crosshair';
         return;
       }
@@ -987,18 +997,37 @@ function onMouseMove(event) {
         <div class="tooltip-acronym">${escapeHtml(acronym)}</div>
         <div class="tooltip-info">${infoLine}</div>
       `;
-      tooltip.style.left = (event.clientX - renderer.domElement.getBoundingClientRect().left + 15) + 'px';
-      tooltip.style.top = (event.clientY - renderer.domElement.getBoundingClientRect().top + 15) + 'px';
+      placeTooltip(tooltip, event.clientX - rect.left, event.clientY - rect.top);
     }
     renderer.domElement.style.cursor = 'pointer';
   } else {
-    if (hoveredId !== null) {
-      unhighlightMesh(hoveredId);
-      hoveredId = null;
-    }
-    tooltip.classList.add('hidden');
+    clearHover();
     renderer.domElement.style.cursor = 'default';
   }
+}
+
+function clearHover() {
+  if (hoveredId !== null) {
+    unhighlightMesh(hoveredId);
+    hoveredId = null;
+  }
+  document.getElementById('tooltip').classList.add('hidden');
+}
+
+// Put the tooltip just below and right of the pointer, pulled back inside the
+// viewer when it would cross the right or bottom edge. On a phone the viewer
+// is narrow enough that most of the brain is within a tooltip's width of the
+// edge. x and y are relative to the canvas.
+function placeTooltip(tooltip, x, y) {
+  const viewer = document.getElementById('viewer');
+  const margin = 8;
+  const left = Math.min(x + 15, viewer.clientWidth - tooltip.offsetWidth - margin);
+  let top = y + 15;
+  if (top + tooltip.offsetHeight + margin > viewer.clientHeight) {
+    top = y - tooltip.offsetHeight - 15;
+  }
+  tooltip.style.left = Math.max(margin, left) + 'px';
+  tooltip.style.top = Math.max(margin, top) + 'px';
 }
 
 function highlightMesh(structureId) {
@@ -1041,6 +1070,7 @@ function onClick(event) {
     } else {
       enterRegionView(sid);
     }
+    showPanel('details');
   }
 }
 
@@ -2916,7 +2946,8 @@ function createTreeNode(node, depth) {
   const content = document.createElement('div');
   content.className = 'tree-node-content';
   content.dataset.id = node.id;
-  content.style.paddingLeft = (depth * 16 + 8) + 'px';
+  // The indent itself is in style.css, which narrows the step on small screens.
+  content.style.setProperty('--depth', depth);
 
   // Toggle arrow
   const toggle = document.createElement('span');
@@ -3085,6 +3116,7 @@ function createTreeNode(node, depth) {
       enterRegionView(node.id, { expandTree: false });
     }
     ensureMeshLoaded(node.id);
+    showPanel('details');
   });
 
   return el;
@@ -3289,6 +3321,39 @@ document.getElementById('orient-buttons').addEventListener('click', (e) => {
   const btn = e.target.closest('button');
   if (btn) setView(btn.dataset.view);
 });
+
+// ── Panel Tabs (narrow screens) ────────────────────────────────────────────
+// On a narrow screen the two sidebars share one slot below the viewer and
+// body[data-panel] says which one is showing. On a wide screen both are always
+// visible and the attribute has no effect, so callers do not need to know
+// which layout is active.
+function showPanel(name) {
+  document.body.dataset.panel = name;
+  for (const tab of document.querySelectorAll('#panel-tabs [role="tab"]')) {
+    tab.setAttribute('aria-selected', String(tab.dataset.panel === name));
+  }
+  // The tree was not laid out while it was hidden, so the scroll that follows
+  // a selection made in the 3D view did nothing. Catch up now.
+  if (name === 'regions') {
+    document.querySelector('.tree-node-content.selected')?.scrollIntoView({ block: 'nearest' });
+  }
+}
+
+document.getElementById('panel-tabs').addEventListener('click', (e) => {
+  const tab = e.target.closest('[role="tab"]');
+  if (tab) showPanel(tab.dataset.panel);
+});
+
+// A link that names a region or dandiset is asking for the details; a bare
+// atlas starts on the tree.
+if (window.location.hash.slice(1)) showPanel('details');
+
+// The per-region visibility list opens over the top right of the viewer. On a
+// narrow screen that is a large share of the brain, so it starts collapsed
+// there. Keep the query in step with the narrow-screen block in style.css.
+if (window.matchMedia('(max-width: 768px), (pointer: coarse) and (max-height: 500px)').matches) {
+  document.getElementById('region-visibility-overlay').classList.add('collapsed');
+}
 
 // ── Sidebar Resize ─────────────────────────────────────────────────────────
 function setupResize() {

@@ -9,9 +9,9 @@
        touch icon is the one variant with a solid navy background. -->
   <link rel="icon" href="favicon.ico" sizes="any">
   <link rel="apple-touch-icon" href="apple-touch-icon.png">
-  <link rel="stylesheet" href="style.css?v=10">
+  <link rel="stylesheet" href="style.css?v=11">
 </head>
-<body class="landing-active">
+<body class="landing-active" data-panel="regions">
   <!-- GitHub mark, defined once and referenced by <use> from both the landing
        page footer and the viewer, so the path data is not duplicated. -->
   <svg width="0" height="0" style="position:absolute" aria-hidden="true">
@@ -42,6 +42,14 @@
       </a>
     </footer>
   </section>
+
+  <!-- Narrow screens only (hidden by CSS otherwise): the viewer sits on top and
+       the two sidebars share the space below it, one at a time. These tabs pick
+       which one shows by setting body[data-panel]. -->
+  <nav id="panel-tabs" class="panel-tabs" role="tablist" aria-label="Panels">
+    <button type="button" role="tab" data-panel="regions" aria-controls="sidebar-left" aria-selected="true">Regions</button>
+    <button type="button" role="tab" data-panel="details" aria-controls="sidebar-right" aria-selected="false">Details</button>
+  </nav>
 
   <!-- Left sidebar: Hierarchy tree -->
   <aside id="sidebar-left" class="sidebar">
@@ -89,7 +97,6 @@
         <input type="range" id="electrode-opacity" min="0" max="1" step="0.05" value="1">
       </div>
     </div>
-    <a href="https://atlas.brain-map.org/" target="_blank" rel="noopener" class="ccf-attribution">Atlas: Allen Institute CCF</a>
     <div id="region-visibility-overlay" class="region-visibility-overlay hidden"></div>
     <div id="tooltip" class="tooltip hidden"></div>
     <div id="loading-overlay" class="loading-overlay">
@@ -97,15 +104,22 @@
       <p id="loading-text">Loading brain atlas...</p>
     </div>
     <div id="controls-hint" class="controls-hint">
-      Left-click drag: rotate &middot; Scroll: zoom &middot; Right-click drag: pan &middot; Click region: select
+      <span class="hint-mouse">Left-click drag: rotate &middot; Scroll: zoom &middot; Right-click drag: pan &middot; Click region: select</span>
+      <span class="hint-touch">Drag: rotate &middot; Pinch: zoom &middot; Two-finger drag: pan &middot; Tap region: select</span>
       <span id="last-updated" class="last-updated"></span>
     </div>
-    <a href="https://github.com/dandi/dandi-atlas" target="_blank" rel="noopener" class="github-link" title="View on GitHub">
-      <svg width="20" height="20" fill="currentColor" aria-hidden="true"><use href="#icon-github"/></svg>
-    </a>
-    <a href="https://catalystneuro.com" target="_blank" rel="noopener" class="created-by-link">
-      Created by <img src="cn-logo-banner.png" alt="CatalystNeuro" class="cn-logo">
-    </a>
+    <!-- Wide screens pin these three links to separate corners of the viewer,
+         so the wrapper generates no box there (display: contents). Narrow
+         screens turn it into a single row along the bottom edge. -->
+    <div class="viewer-footer">
+      <a href="https://catalystneuro.com" target="_blank" rel="noopener" class="created-by-link">
+        <span class="created-by-text">Created by</span> <img src="cn-logo-banner.png" alt="CatalystNeuro" class="cn-logo">
+      </a>
+      <a href="https://atlas.brain-map.org/" target="_blank" rel="noopener" class="ccf-attribution">Atlas: Allen Institute CCF</a>
+      <a href="https://github.com/dandi/dandi-atlas" target="_blank" rel="noopener" class="github-link" title="View on GitHub">
+        <svg width="20" height="20" fill="currentColor" aria-hidden="true"><use href="#icon-github"/></svg>
+      </a>
+    </div>
   </main>
 
   <!-- Right sidebar: Region info + dandisets -->
@@ -126,6 +140,6 @@
     }
   }
   </script>
-  <script type="module" src="app.js?v=32"></script>
+  <script type="module" src="app.js?v=33"></script>
 </body>
 </html>
