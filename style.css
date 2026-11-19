@@ -150,6 +150,7 @@ body {
   display: flex;
   align-items: center;
   padding: 3px 8px;
+  padding-left: calc(var(--depth, 0) * var(--tree-indent, 16px) + 8px);
   cursor: pointer;
   font-size: 13px;
   line-height: 1.4;
@@ -1465,4 +1466,425 @@ body:not(.landing-active) > #atlas-landing {
   font-size: 11px;
   color: var(--text-secondary);
   letter-spacing: 0.02em;
+}
+
+/* ── Viewer footer ───────────────────────────────────────────────────────
+   Wraps the three corner links. No box of its own on wide screens, so each
+   link keeps positioning itself against #viewer. */
+.viewer-footer {
+  display: contents;
+}
+
+/* ── Touch input ─────────────────────────────────────────────────────────
+   Keyed on the pointer, not the screen width, so a tablet in the wide layout
+   gets these too. */
+.hint-touch {
+  display: none;
+}
+
+@media (hover: none) and (pointer: coarse) {
+  .hint-mouse {
+    display: none;
+  }
+
+  .hint-touch {
+    display: inline;
+  }
+}
+
+@media (pointer: coarse) {
+  /* Rows and their controls grow to a size a finger can hit. The left padding
+     is the depth indent, so only the other three sides change. */
+  .tree-node-content {
+    padding-top: 7px;
+    padding-bottom: 7px;
+    padding-right: 12px;
+    font-size: 15px;
+  }
+
+  .tree-toggle {
+    width: 30px;
+    height: 30px;
+    font-size: 12px;
+  }
+
+  .tree-checkbox {
+    width: 20px;
+    height: 20px;
+    margin: 0 10px 0 2px;
+  }
+
+  .tree-color-dot {
+    width: 12px;
+    height: 12px;
+    margin-right: 8px;
+  }
+
+  .tree-badge {
+    font-size: 11px;
+  }
+
+  .region-visibility-row {
+    padding: 7px 10px;
+    font-size: 13px;
+  }
+
+  .region-visibility-header {
+    padding: 8px 10px;
+  }
+
+  .region-visibility-row input[type="checkbox"],
+  .region-visibility-all-label input[type="checkbox"] {
+    width: 18px;
+    height: 18px;
+  }
+
+  .region-visibility-collapse-btn {
+    padding: 6px 8px;
+    font-size: 12px;
+  }
+
+  .dandiset-card-ext,
+  .asset-card-ext {
+    padding: 8px 12px;
+  }
+
+  #dandiset-filter-clear,
+  #subject-filter-clear,
+  .multi-region-card-remove {
+    padding: 6px 12px;
+    font-size: 22px;
+  }
+
+  .session-row {
+    padding-top: 10px;
+    padding-bottom: 10px;
+  }
+
+  .pagination-btn {
+    padding: 8px 16px;
+    font-size: 13px;
+  }
+}
+
+/* ── Narrow screens ──────────────────────────────────────────────────────
+   Three side-by-side columns need about 800px. Below that the viewer goes on
+   top and the two sidebars share the space under it, one at a time, picked by
+   the tab bar (body[data-panel], set in app.js). A phone held sideways is
+   wider than 768px but too short for the wide layout, hence the second
+   condition. app.js repeats this query for the visibility overlay. */
+.panel-tabs,
+.panel-toggle {
+  display: none;
+}
+
+@media (max-width: 768px), (pointer: coarse) and (max-height: 500px) {
+  body {
+    display: grid;
+    grid-template:
+      "viewer" 44%
+      "tabs" auto
+      "panel" minmax(0, 1fr)
+      / 100%;
+  }
+
+  #viewer {
+    grid-area: viewer;
+    min-width: 0;
+    min-height: 0;
+  }
+
+  .panel-tabs {
+    grid-area: tabs;
+    display: flex;
+    background: var(--bg-header);
+    border-top: 1px solid var(--border-color);
+    border-bottom: 1px solid var(--border-color);
+  }
+
+  body.landing-active > .panel-tabs {
+    display: none;
+  }
+
+  .panel-tabs button {
+    flex: 1;
+    min-height: 44px;
+    padding: 0 8px;
+    background: none;
+    border: none;
+    border-bottom: 2px solid transparent;
+    color: var(--text-secondary);
+    font: inherit;
+    font-size: 13px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    cursor: pointer;
+  }
+
+  .panel-tabs button[aria-selected="true"] {
+    color: var(--accent);
+    border-bottom-color: var(--accent);
+  }
+
+  /* !important beats the inline width the drag handle leaves behind when a
+     wide window is resized and then narrowed. */
+  #sidebar-left,
+  #sidebar-right {
+    grid-area: panel;
+    width: auto !important;
+    min-width: 0;
+    max-width: none;
+    min-height: 0;
+    border: none;
+  }
+
+  body[data-panel="regions"] > #sidebar-right,
+  body[data-panel="details"] > #sidebar-left {
+    display: none;
+  }
+
+  .resize-handle {
+    display: none;
+  }
+
+  /* The tabs already name the panels, so the headings go and the atlas
+     picker shares one row with the search box. 16px on both keeps iOS Safari
+     from zooming the page when either takes focus. */
+  .sidebar-header {
+    display: flex;
+    gap: 8px;
+    padding: 8px 12px;
+  }
+
+  .sidebar-header h2,
+  #sidebar-right .sidebar-header {
+    display: none;
+  }
+
+  .atlas-selector {
+    flex: 0 1 44%;
+    width: auto;
+    min-width: 0;
+    margin-bottom: 0;
+    padding: 8px 10px;
+    font-size: 16px;
+  }
+
+  #search-box {
+    flex: 1 1 56%;
+    min-width: 0;
+    font-size: 16px;
+  }
+
+  .region-panel {
+    padding: 12px;
+  }
+
+  /* The Allen tree runs nine levels deep. At the wide-screen step the indent
+     alone would take a third of a phone's width. */
+  .tree-container {
+    --tree-indent: 10px;
+  }
+
+  /* Viewer overlays. Orientation buttons become a 2x3 block that pairs each
+     view with its opposite; the opacity sliders move to the bottom left so
+     the top right stays free for the region visibility list. */
+  .orient-buttons {
+    top: 8px;
+    left: 8px;
+    display: grid;
+    grid-template-columns: repeat(2, 36px);
+  }
+
+  .orient-buttons button {
+    width: 36px;
+    height: 36px;
+  }
+
+  .viewer-controls {
+    top: auto;
+    left: 8px;
+    bottom: 34px;
+    padding: 6px 10px;
+  }
+
+  .viewer-controls input[type="range"] {
+    width: 96px;
+  }
+
+  .region-visibility-overlay {
+    top: 8px;
+    right: 8px;
+    width: 170px;
+    max-height: calc(100% - 50px);
+    display: flex;
+    flex-direction: column;
+  }
+
+  .region-visibility-list {
+    flex: 1;
+    min-height: 0;
+    max-height: none;
+  }
+
+  .tooltip {
+    max-width: 200px;
+    font-size: 12px;
+  }
+
+  /* One row along the bottom edge: logo, atlas credit, GitHub. The credit
+     takes the slack and truncates before it can run into its neighbours. */
+  .viewer-footer {
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 50;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 6px 8px;
+  }
+
+  #viewer .created-by-link,
+  #viewer .github-link,
+  .ccf-attribution {
+    position: static;
+    transform: none;
+  }
+
+  #viewer .github-link {
+    display: flex;
+  }
+
+  .created-by-text {
+    display: none;
+  }
+
+  .ccf-attribution {
+    flex: 1;
+    min-width: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    text-align: center;
+    font-size: 11px;
+  }
+
+  /* The gesture hint has no free corner to live in here, so it shows beside
+     the orientation buttons once the atlas has loaded and then fades. The
+     data timestamp it carries on wide screens is on the landing page. */
+  .controls-hint {
+    top: 8px;
+    bottom: auto;
+    left: 92px;
+    right: 8px;
+    transform: none;
+    padding: 6px 10px;
+    border-radius: 10px;
+    white-space: normal;
+    text-align: center;
+    line-height: 1.5;
+  }
+
+  .loading-overlay.hidden ~ .controls-hint {
+    animation: hint-fade 0.6s ease 7s forwards;
+  }
+
+  /* The visibility list takes the same strip in the dandiset views. */
+  .region-visibility-overlay:not(.hidden) ~ .controls-hint {
+    display: none;
+  }
+
+  .controls-hint .last-updated {
+    display: none;
+  }
+
+  /* Landing page */
+  .atlas-landing {
+    padding: 32px 16px 24px;
+  }
+
+  .atlas-landing-header {
+    margin-bottom: 28px;
+  }
+
+  .atlas-landing-header h1 {
+    font-size: 24px;
+  }
+
+  .atlas-landing-groups {
+    gap: 28px;
+  }
+
+  .atlas-landing-footer {
+    padding-top: 28px;
+  }
+}
+
+@keyframes hint-fade {
+  to {
+    opacity: 0;
+    visibility: hidden;
+  }
+}
+
+/* Phone held sideways: the viewer keeps the full height on the left and the
+   tabs and panel stack in a column on the right. */
+@media (pointer: coarse) and (max-height: 500px) and (orientation: landscape) {
+  body {
+    grid-template:
+      "viewer tabs" auto
+      "viewer panel" minmax(0, 1fr)
+      / minmax(0, 1fr) minmax(280px, 44%);
+  }
+
+  .panel-tabs {
+    border-top: none;
+    border-left: 1px solid var(--border-color);
+  }
+
+  #sidebar-left,
+  #sidebar-right {
+    border-left: 1px solid var(--border-color);
+  }
+
+  /* A handle on the viewer's right edge, midway between the visibility list
+     above it and the GitHub link below. It points right while the panel is
+     showing and flips once the panel is hidden. */
+  .panel-toggle {
+    position: absolute;
+    top: 50%;
+    right: 0;
+    transform: translateY(-50%);
+    z-index: 60;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 32px;
+    height: 72px;
+    padding: 0;
+    background: rgba(15, 52, 96, 0.85);
+    border: 1px solid var(--border-color);
+    border-right: none;
+    border-radius: 8px 0 0 8px;
+    color: var(--text-secondary);
+    cursor: pointer;
+    backdrop-filter: blur(4px);
+  }
+
+  body.panel-collapsed .panel-toggle svg {
+    transform: rotate(180deg);
+  }
+
+  body.panel-collapsed {
+    grid-template: "viewer" minmax(0, 1fr) / minmax(0, 1fr);
+  }
+
+  body.panel-collapsed > .panel-tabs,
+  body.panel-collapsed > #sidebar-left,
+  body.panel-collapsed > #sidebar-right {
+    display: none;
+  }
 }
