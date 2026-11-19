@@ -1573,7 +1573,8 @@ body:not(.landing-active) > #atlas-landing {
    the tab bar (body[data-panel], set in app.js). A phone held sideways is
    wider than 768px but too short for the wide layout, hence the second
    condition. app.js repeats this query for the visibility overlay. */
-.panel-tabs {
+.panel-tabs,
+.panel-toggle {
   display: none;
 }
 
@@ -1847,5 +1848,43 @@ body:not(.landing-active) > #atlas-landing {
   #sidebar-left,
   #sidebar-right {
     border-left: 1px solid var(--border-color);
+  }
+
+  /* A handle on the viewer's right edge, midway between the visibility list
+     above it and the GitHub link below. It points right while the panel is
+     showing and flips once the panel is hidden. */
+  .panel-toggle {
+    position: absolute;
+    top: 50%;
+    right: 0;
+    transform: translateY(-50%);
+    z-index: 60;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 32px;
+    height: 72px;
+    padding: 0;
+    background: rgba(15, 52, 96, 0.85);
+    border: 1px solid var(--border-color);
+    border-right: none;
+    border-radius: 8px 0 0 8px;
+    color: var(--text-secondary);
+    cursor: pointer;
+    backdrop-filter: blur(4px);
+  }
+
+  body.panel-collapsed .panel-toggle svg {
+    transform: rotate(180deg);
+  }
+
+  body.panel-collapsed {
+    grid-template: "viewer" minmax(0, 1fr) / minmax(0, 1fr);
+  }
+
+  body.panel-collapsed > .panel-tabs,
+  body.panel-collapsed > #sidebar-left,
+  body.panel-collapsed > #sidebar-right {
+    display: none;
   }
 }

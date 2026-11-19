@@ -3344,6 +3344,19 @@ document.getElementById('panel-tabs').addEventListener('click', (e) => {
   if (tab) showPanel(tab.dataset.panel);
 });
 
+// Sideways phone: the handle on the viewer's right edge hides the tabs and
+// panel so the brain gets the full screen, and brings them back. The class
+// only has CSS behind it in that layout, so turning the phone upright shows
+// the panel again without touching the state here. The viewer's
+// ResizeObserver picks up the new canvas size.
+document.getElementById('panel-toggle').addEventListener('click', (e) => {
+  const collapsed = document.body.classList.toggle('panel-collapsed');
+  const label = collapsed ? 'Show panel' : 'Hide panel';
+  e.currentTarget.setAttribute('aria-expanded', String(!collapsed));
+  e.currentTarget.setAttribute('aria-label', label);
+  e.currentTarget.title = label;
+});
+
 // A link that names a region or dandiset is asking for the details; a bare
 // atlas starts on the tree.
 if (window.location.hash.slice(1)) showPanel('details');
