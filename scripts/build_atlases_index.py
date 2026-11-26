@@ -30,6 +30,19 @@ The "dandisets" list lets other sites (e.g. the DANDI Archive landing
 page) decide whether a given dandiset has anything to show here without
 downloading the much larger per-atlas data files.
 
+For each of those dandisets it also writes
+data/atlases/<atlas>/dandisets/<dandiset_id>.json, so other sites (e.g. the
+DANDI Archive file browser) can link a subject or session straight into the
+viewer without downloading the atlas's whole dandiset_assets.json:
+
+  {"subjects": ["sub-M1", ...], "sessions": {"<asset_id>": "sub-M1", ...}}
+
+"subjects" are the values the viewer accepts in #...&subject=, and
+"sessions" maps every asset the viewer lists (its #...&session= values) to
+its subject. Subjects are grouped the way the viewer groups them: an asset's
+top-level directory, or for a file at the dandiset root, the part of its
+name before the first "_".
+
 Run after the per-atlas update scripts (update_data.py for Allen CCF,
 update_macaque_data.py for the macaque atlases). Idempotent.
 """
@@ -77,6 +90,48 @@ def summarize_atlas(atlas_dir: Path) -> dict:
         "regions_with_data": regions_with_data,
         "dandisets": sorted(root_entry.get("total_dandisets", [])),
     }
+
+
+def subject_of(asset_path: str) -> str:
+    """The viewer's subject for an asset path (see updateDandisetPanel in app.js)."""
+    parts = asset_path.split("/")
+    return parts[0] if len(parts) > 1 else asset_path.split("_")[0]
+
+
+def write_dandiset_lookups(atlas_dir: Path, dandisets: list[str]) -> int:
+    """Write dandisets/<id>.json for each listed dandiset; remove stale ones.
+
+    Returns the number of files written.
+    """
+    assets_path = atlas_dir / "dandiset_assets.json"
+    if not assets_path.exists():
+        return 0
+    all_assets = json.loads(assets_path.read_text())
+    out_dir = atlas_dir / "dandisets"
+    out_dir.mkdir(exist_ok=True)
+
+    written = set()
+    for did in dandisets:
+        sessions = {
+            asset["asset_id"]: subject_of(asset["path"])
+            for asset in all_assets.get(did, [])
+            if asset.get("asset_id") and asset.get("path")
+        }
+        if not sessions:
+            continue
+        record = {
+            "subjects": sorted(set(sessions.values())),
+            "sessions": dict(sorted(sessions.items())),
+        }
+        name = f"{did}.json"
+        (out_dir / name).write_text(json.dumps(record, separators=(",", ":")) + "\n")
+        written.add(name)
+
+    # A dandiset that left this atlas's list must not keep linking here.
+    for stale in out_dir.glob("*.json"):
+        if stale.name not in written:
+            stale.unlink()
+    return len(written)
 
 
 def stamp_last_updated_date() -> None:
@@ -197,9 +252,11 @@ def main() -> None:
 
         record = {**entry, "preview": preview_rel, **stats}
         atlases.append(record)
+        lookups = write_dandiset_lookups(atlas_dir, stats["dandisets"])
         print(
             f"  {entry['key']:11s} dandisets={stats['dandiset_count']:>5}  "
-            f"files={stats['file_count']:>6}  regions_with_data={stats['regions_with_data']:>4}"
+            f"files={stats['file_count']:>6}  regions_with_data={stats['regions_with_data']:>4}  "
+            f"lookup_files={lookups:>4}"
         )
 
     INDEX_PATH.write_text(json.dumps({"atlases": atlases}, indent=2) + "\n")
